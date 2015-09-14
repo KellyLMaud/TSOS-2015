@@ -49,6 +49,15 @@ var TSOS;
             // prompt <string>
             sc = new TSOS.ShellCommand(this.shellPrompt, "prompt", "<string> - Sets the prompt.");
             this.commandList[this.commandList.length] = sc;
+            // command date
+            sc = new TSOS.ShellCommand(this.shellDate, "date", "displays current date and time.");
+            this.commandList[this.commandList.length] = sc;
+            // command whereami
+            sc = new TSOS.ShellCommand(this.shellWhereami, "whereami", "displays the users location.");
+            this.commandList[this.commandList.length] = sc;
+            // command whichshouldieat
+            sc = new TSOS.ShellCommand(this.shellWhichshouldieat, "whichshouldieat", "<list> chooses a food item from the list.");
+            this.commandList[this.commandList.length] = sc;
             // ps  - list the running processes and their IDs
             // kill <id> - kills the specified process id.
             //
@@ -193,7 +202,17 @@ var TSOS;
                 var topic = args[0];
                 switch (topic) {
                     case "help":
-                        _StdOut.putText("Help displays a list of (hopefully) valid commands.");
+                        _StdOut.putText("ver - displays the current version data.");
+                        _StdOut.putText("help - this is the help command. seek help.");
+                        _StdOut.putText("shutdown - Shuts down the virtual OS but leaves the underlying host / hardware simulation running.");
+                        _StdOut.putText("cls - Clears the screen and resets the cursor position.");
+                        _StdOut.putText("man <topic> - Displays the MANual page for <topic>.");
+                        _StdOut.putText("trace <on | off> - Turns the OS trace on or off.");
+                        _StdOut.putText("rot13 <string> - Does rot13 obfuscation on <string>.");
+                        _StdOut.putText("prompt <string> - Sets the prompt.");
+                        _StdOut.putText("date - displays the current date and time.");
+                        _StdOut.putText("whereami- displays the users current location.");
+                        _StdOut.putText("whichshouldieat <food list> - display a food option for the user to eat.");
                         break;
                     // TODO: Make descriptive MANual page entries for the the rest of the shell commands here.
                     default:
@@ -244,6 +263,19 @@ var TSOS;
             }
             else {
                 _StdOut.putText("Usage: prompt <string>  Please supply a string.");
+            }
+        };
+        Shell.prototype.shellDate = function (args) {
+            var date = new Date().toLocaleDateString();
+            _StdOut.putText(date);
+        };
+        Shell.prototype.shellWhereami = function (args) {
+            _StdOut.putText("You're in the CLI of the coolest OS ever designed.");
+        };
+        Shell.prototype.shellWhichshouldieat = function (args) {
+            if(args.length > 0){
+                var food = args[Math.floor(Math.random() * args.length)]
+                _StdOut.putText(food);
             }
         };
         return Shell;
