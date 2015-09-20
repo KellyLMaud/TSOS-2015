@@ -82,7 +82,6 @@ var TSOS;
                 _DrawingContext.fontDescent(this.currentFont, this.currentFontSize) +
                 _FontHeightMargin;
             // TODO: Handle scrolling. (iProject 1)
-            //if(this.currentYPosition > _Canvas.height){}
 
         };
         return Console;

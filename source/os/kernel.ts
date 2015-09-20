@@ -80,6 +80,11 @@ module TSOS {
                This, on the other hand, is the clock pulse from the hardware / VM / host that tells the kernel
                that it has to look for interrupts and process them if it finds any.                           */
 
+            var dt = document.getElementById("DateTime");
+            var date = new Date();
+            var datetime = date.toLocaleDateString() + " " + date.toLocaleTimeString(navigator.language, {hour: '2-digit', minute:'2-digit'});
+            <HTMLelement>dt.value = datetime;
+
             // Check for an interrupt, are any. Page 560
             if (_KernelInterruptQueue.getSize() > 0) {
                 // Process the first interrupt on the interrupt queue.
@@ -91,6 +96,7 @@ module TSOS {
             } else {                      // If there are no interrupts and there is nothing being executed then just be idle. {
                 this.krnTrace("Idle");
             }
+
         }
 
 
@@ -173,6 +179,7 @@ module TSOS {
 
         public krnTrapError(msg) {
             Control.hostLog("OS ERROR - TRAP: " + msg);
+            _StdOut.putText("Ahhhhh it's the blue screen of death!");
             // TODO: Display error on console, perhaps in some sort of colored screen. (Maybe blue?)
             this.krnShutdown();
         }

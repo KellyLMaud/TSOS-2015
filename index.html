@@ -31,7 +31,7 @@
    <!-- Other Routines -->
    <script type="text/javascript" src="distrib/utils.js"></script>
    <!-- Uncomment this line below to enable GLaDOS testing -->
-   <script type="text/javascript" src="http://www.labouseur.com/courses/os/projects/glados.js"></script>
+   <!--<script type="text/javascript" src="http://www.labouseur.com/courses/os/projects/glados.js"></script>-->
 </head>
 
 <body onload="onDocumentLoad()">
@@ -74,7 +74,30 @@
       </canvas>
    </div>
 
-   <div id="divLog" style="margin-left:520px;">
+    <div id="divDateTime" style="margin-left:520px;">
+        <label>
+            Date:
+            <br>
+            <text name="DateTime"
+                  id  ="DateTime"
+                  rows="2"
+                  cols="48"
+                  readonly></text>
+        </label>
+    </div>
+    <div id="divStatusBar" style="margin-left:520px;">
+        <label>
+            Status:
+            <br>
+            <textarea name="taStatusBar"
+                  id  ="taStatusBar"
+                  rows="2"
+                  cols="48"
+                  readonly></textarea>
+        </label>
+    </div>
+
+    <div id="divLog" style="margin-left:520px;">
       <label>
          Host Log
          <br>
@@ -97,6 +120,8 @@
          ></textarea>
       </label>
    </div>
+
+
 </div>
 
 <p class="footerText" style="clear:both;">
