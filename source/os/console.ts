@@ -81,11 +81,17 @@ module TSOS {
              * Font descent measures from the baseline to the lowest point in the font.
              * Font height margin is extra spacing between the lines.
              */
-            this.currentYPosition += _DefaultFontSize + 
+            this.currentYPosition += _DefaultFontSize +
                                      _DrawingContext.fontDescent(this.currentFont, this.currentFontSize) +
                                      _FontHeightMargin;
 
             // TODO: Handle scrolling. (iProject 1)
+            if(this.currentYPosition >= _Canvas.height){
+                var offset =_DefaultFontSize + _DrawingContext.fontDescent(this.currentFont, this.currentFontSize) + _FontHeightMargin;
+                var img = _DrawingContext.getImageData(0,offset,_Canvas.width,_Canvas.height);
+                _DrawingContext.putImageData(img, 0, 0);
+                this.currentYPosition = _Canvas.height - this.currentFontSize;
+            }
         }
     }
  }

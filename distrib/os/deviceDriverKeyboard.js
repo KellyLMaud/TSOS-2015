@@ -42,6 +42,7 @@ var TSOS;
                 if (isShifted) {
                     chr = String.fromCharCode(keyCode);
                 }
+                _KernelInputQueue.enqueue(chr);
             }
             else if (keyCode == 192 && isShifted) {
                 chr = String.fromCharCode(126); // ~

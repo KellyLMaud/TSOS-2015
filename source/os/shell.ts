@@ -407,7 +407,6 @@ module TSOS {
 
         public shellBSOD(args) {
             _Kernel.krnTrapError("error");
-            //TODO: display a Blue Screen of Death
         }
 
 

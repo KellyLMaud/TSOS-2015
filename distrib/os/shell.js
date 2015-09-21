@@ -343,7 +343,6 @@ var TSOS;
         };
         Shell.prototype.shellBSOD = function (args) {
             _Kernel.krnTrapError("error");
-            //TODO: display a Blue Screen of Death
         };
         return Shell;
     })();
