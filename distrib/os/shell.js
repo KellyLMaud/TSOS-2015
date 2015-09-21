@@ -49,6 +49,24 @@ var TSOS;
             // prompt <string>
             sc = new TSOS.ShellCommand(this.shellPrompt, "prompt", "<string> - Sets the prompt.");
             this.commandList[this.commandList.length] = sc;
+            // date
+            sc = new TSOS.ShellCommand(this.shellDate, "date", "- displays current date and time.");
+            this.commandList[this.commandList.length] = sc;
+            // whereami
+            sc = new TSOS.ShellCommand(this.shellWhereami, "whereami", "- displays the users location.");
+            this.commandList[this.commandList.length] = sc;
+            // whichshouldieat <list>
+            sc = new TSOS.ShellCommand(this.shellWhichshouldieat, "whichshouldieat", "<list> - chooses a food item from the list.");
+            this.commandList[this.commandList.length] = sc;
+            // load
+            sc = new TSOS.ShellCommand(this.shellLoad, "load", "- validates user code in the text area.");
+            this.commandList[this.commandList.length] = sc;
+            // status <string>
+            sc = new TSOS.ShellCommand(this.shellStatus, "status", "<string> - displays the string in the status bar.");
+            this.commandList[this.commandList.length] = sc;
+            // bsod
+            sc = new TSOS.ShellCommand(this.shellBSOD, "bsod", "- tests the blue screen of death");
+            this.commandList[this.commandList.length] = sc;
             // ps  - list the running processes and their IDs
             // kill <id> - kills the specified process id.
             //
@@ -192,15 +210,47 @@ var TSOS;
             if (args.length > 0) {
                 var topic = args[0];
                 switch (topic) {
-                    case "help":
+                    case "ver":
                         _StdOut.putText("ver - displays the current version data.");
+                        break;
+                    case "help":
                         _StdOut.putText("help - this is the help command. seek help.");
+                        break;
+                    case "shutdown":
                         _StdOut.putText("shutdown - Shuts down the virtual OS but leaves the underlying host / hardware simulation running.");
+                        break;
+                    case "cls":
                         _StdOut.putText("cls - Clears the screen and resets the cursor position.");
+                        break;
+                    case "man":
                         _StdOut.putText("man <topic> - Displays the MANual page for <topic>.");
+                        break;
+                    case "trace":
                         _StdOut.putText("trace <on | off> - Turns the OS trace on or off.");
+                        break;
+                    case "rot13":
                         _StdOut.putText("rot13 <string> - Does rot13 obfuscation on <string>.");
+                        break;
+                    case "prompt":
                         _StdOut.putText("prompt <string> - Sets the prompt.");
+                        break;
+                    case "date":
+                        _StdOut.putText("date - displays the current date and time.");
+                        break;
+                    case "whereami":
+                        _StdOut.putText("whereami- displays the users current location.");
+                        break;
+                    case "whatshouldieat":
+                        _StdOut.putText("whichshouldieat <food items> - display a food option for the user to eat.");
+                        break;
+                    case "load":
+                        _StdOut.putText("load - validates user code in the text area.");
+                        break;
+                    case "status":
+                        _StdOut.putText("status <string> - displays the string in the status bar.");
+                        break;
+                    case "bsod":
+                        _StdOut.putText("bsod - tests the blue screen of death.");
                         break;
                     // TODO: Make descriptive MANual page entries for the the rest of the shell commands here.
                     default:
@@ -252,6 +302,48 @@ var TSOS;
             else {
                 _StdOut.putText("Usage: prompt <string>  Please supply a string.");
             }
+        };
+        Shell.prototype.shellDate = function (args) {
+            var date = new Date().toLocaleDateString();
+            _StdOut.putText(date);
+        };
+        Shell.prototype.shellWhereami = function (args) {
+            _StdOut.putText("You're in the CLI of the coolest OS ever designed.");
+        };
+        Shell.prototype.shellWhichshouldieat = function (args) {
+            if (args.length > 0) {
+                var food = args[Math.floor(Math.random() * args.length)];
+                _StdOut.putText(food);
+            }
+        };
+        Shell.prototype.shellLoad = function (args) {
+            var code = document.getElementById("taProgramInput").value.toUpperCase();
+            var valid = "valid";
+            if (code.length != 0) {
+                for (var i = 0; i < code.length; i++) {
+                    var c = code[i];
+                    if (c != 'A' && c != 'B' && c != 'C' && c != 'D' && c != 'E' && c != 'F' && c != ' ' && c != '1' && c != '2' && c != '3' && c != '4' && c != '5' && c != '6' && c != '7' && c != '8' && c != '9' && c != '0') {
+                        valid = "invalid";
+                    }
+                }
+            }
+            _StdOut.putText("User Program Input is " + valid);
+        };
+        Shell.prototype.shellStatus = function (args) {
+            var newstatus = "";
+            if (args.length > 0) {
+                for (var i = 0; i < args.length; i++) {
+                    newstatus = newstatus + " " + args[i];
+                }
+            }
+            var status = document.getElementById("taStatusBar");
+            var date = new Date();
+            var datetime = date.toLocaleDateString() + " " + date.toLocaleTimeString();
+            status.value = datetime + " -" + newstatus + "\n" + status.value + "\n";
+        };
+        Shell.prototype.shellBSOD = function (args) {
+            _Kernel.krnTrapError("error");
+            //TODO: display a Blue Screen of Death
         };
         return Shell;
     })();

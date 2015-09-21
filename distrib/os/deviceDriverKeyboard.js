@@ -3,8 +3,7 @@
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 /* ----------------------------------
    DeviceDriverKeyboard.ts
@@ -43,7 +42,133 @@ var TSOS;
                 if (isShifted) {
                     chr = String.fromCharCode(keyCode);
                 }
-                // TODO: Check for caps-lock and handle as shifted if so.
+            }
+            else if (keyCode == 192 && isShifted) {
+                chr = String.fromCharCode(126); // ~
+                _KernelInputQueue.enqueue(chr);
+            }
+            else if (keyCode == 192 && !isShifted) {
+                chr = String.fromCharCode(96); // `
+                _KernelInputQueue.enqueue(chr);
+            }
+            else if (keyCode == 49 && isShifted) {
+                chr = String.fromCharCode(33); // !
+                _KernelInputQueue.enqueue(chr);
+            }
+            else if (keyCode == 50 && isShifted) {
+                chr = String.fromCharCode(64); // @
+                _KernelInputQueue.enqueue(chr);
+            }
+            else if (keyCode == 51 && isShifted) {
+                chr = String.fromCharCode(35); // #
+                _KernelInputQueue.enqueue(chr);
+            }
+            else if (keyCode == 52 && isShifted) {
+                chr = String.fromCharCode(36); // $
+                _KernelInputQueue.enqueue(chr);
+            }
+            else if (keyCode == 53 && isShifted) {
+                chr = String.fromCharCode(37); // %
+                _KernelInputQueue.enqueue(chr);
+            }
+            else if (keyCode == 53 && isShifted) {
+                chr = String.fromCharCode(94); // ^
+                _KernelInputQueue.enqueue(chr);
+            }
+            else if (keyCode == 55 && isShifted) {
+                chr = String.fromCharCode(38); // &
+                _KernelInputQueue.enqueue(chr);
+            }
+            else if (keyCode == 56 && isShifted) {
+                chr = String.fromCharCode(42); // *
+                _KernelInputQueue.enqueue(chr);
+            }
+            else if (keyCode == 57 && isShifted) {
+                chr = String.fromCharCode(40); // (
+                _KernelInputQueue.enqueue(chr);
+            }
+            else if (keyCode == 48 && isShifted) {
+                chr = String.fromCharCode(41); // )
+                _KernelInputQueue.enqueue(chr);
+            }
+            else if (keyCode == 189 && !isShifted) {
+                chr = String.fromCharCode(45); // -
+                _KernelInputQueue.enqueue(chr);
+            }
+            else if (keyCode == 189 && isShifted) {
+                chr = String.fromCharCode(95); // _
+                _KernelInputQueue.enqueue(chr);
+            }
+            else if (keyCode == 187 && !isShifted) {
+                chr = String.fromCharCode(61); // =
+                _KernelInputQueue.enqueue(chr);
+            }
+            else if (keyCode == 187 && isShifted) {
+                chr = String.fromCharCode(43); // +
+                _KernelInputQueue.enqueue(chr);
+            }
+            else if (keyCode == 219 && !isShifted) {
+                chr = String.fromCharCode(91); // [
+                _KernelInputQueue.enqueue(chr);
+            }
+            else if (keyCode == 219 && isShifted) {
+                chr = String.fromCharCode(123); // {
+                _KernelInputQueue.enqueue(chr);
+            }
+            else if (keyCode == 221 && !isShifted) {
+                chr = String.fromCharCode(125); // ]
+                _KernelInputQueue.enqueue(chr);
+            }
+            else if (keyCode == 221 && isShifted) {
+                chr = String.fromCharCode(92); // }
+                _KernelInputQueue.enqueue(chr);
+            }
+            else if (keyCode == 220 && !isShifted) {
+                chr = String.fromCharCode(92); // \
+                _KernelInputQueue.enqueue(chr);
+            }
+            else if (keyCode == 220 && isShifted) {
+                chr = String.fromCharCode(124); // |
+                _KernelInputQueue.enqueue(chr);
+            }
+            else if (keyCode == 186 && !isShifted) {
+                chr = String.fromCharCode(59); // ;
+                _KernelInputQueue.enqueue(chr);
+            }
+            else if (keyCode == 186 && isShifted) {
+                chr = String.fromCharCode(58); // :
+                _KernelInputQueue.enqueue(chr);
+            }
+            else if (keyCode == 222 && !isShifted) {
+                chr = String.fromCharCode(39); // '
+                _KernelInputQueue.enqueue(chr);
+            }
+            else if (keyCode == 222 && isShifted) {
+                chr = String.fromCharCode(34); // "
+                _KernelInputQueue.enqueue(chr);
+            }
+            else if (keyCode == 188 && !isShifted) {
+                chr = String.fromCharCode(44); // ,
+                _KernelInputQueue.enqueue(chr);
+            }
+            else if (keyCode == 188 && isShifted) {
+                chr = String.fromCharCode(60); // <
+                _KernelInputQueue.enqueue(chr);
+            }
+            else if (keyCode == 190 && !isShifted) {
+                chr = String.fromCharCode(46); // .
+                _KernelInputQueue.enqueue(chr);
+            }
+            else if (keyCode == 190 && isShifted) {
+                chr = String.fromCharCode(62); // >
+                _KernelInputQueue.enqueue(chr);
+            }
+            else if (keyCode == 191 && !isShifted) {
+                chr = String.fromCharCode(47); // /
+                _KernelInputQueue.enqueue(chr);
+            }
+            else if (keyCode == 191 && isShifted) {
+                chr = String.fromCharCode(63); // ?
                 _KernelInputQueue.enqueue(chr);
             }
             else if (((keyCode >= 48) && (keyCode <= 57)) ||

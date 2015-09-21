@@ -379,17 +379,17 @@ module TSOS {
         }
 
         public shellLoad(args) {
-            var code = document.getElementById("taProgramInput").value;
+            var code = (<HTMLInputElement>document.getElementById("taProgramInput")).value.toUpperCase();
             var valid = "valid";
             if(code.length != 0){
                 for (var i = 0; i < code.length; i++) {
                     var c = code[i];
-                    if(c!='a'&&c!='b'&&c!='c'&&c!='d'&&c!='e'&&c!='f'&&c!=' '&&c!='1'&&c!='2'&&c!='3'&&c!='4'&&c!='5'&&c!='6'&&c!='7'&&c!='8'&&c!='9'&&c!='0'){
+                    if(c!='A'&&c!='B'&&c!='C'&&c!='D'&&c!='E'&&c!='F'&&c!=' '&&c!='1'&&c!='2'&&c!='3'&&c!='4'&&c!='5'&&c!='6'&&c!='7'&&c!='8'&&c!='9'&&c!='0'){
                         valid = "invalid";
                     }
                 }
             }
-            _StdOut.putText("code is " + valid);
+            _StdOut.putText("User Program Input is " + valid);
         }
 
         public shellStatus(args) {
@@ -399,15 +399,14 @@ module TSOS {
                     newstatus = newstatus + " " + args[i];
                 }
             }
-            var status = document.getElementById("taStatusBar");
+            var status = <HTMLInputElement>document.getElementById("taStatusBar");
             var date = new Date();
-            var datetime = date.toLocaleDateString() + " " + date.toLocaleTimeString(navigator.language, {hour: '2-digit', minute:'2-digit'});
-            var statusValue = <HTMLelement>status.value;
-            statusValue = datetime + " -" + newstatus + "\n" + statusValue + "\n";
+            var datetime = date.toLocaleDateString() + " " + date.toLocaleTimeString();
+            status.value = datetime + " -" + newstatus + "\n" + status.value + "\n";
         }
 
         public shellBSOD(args) {
-            krnTrapError("error");
+            _Kernel.krnTrapError("error");
             //TODO: display a Blue Screen of Death
         }
 
