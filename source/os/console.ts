@@ -52,6 +52,11 @@ module TSOS {
                         }
                     }
                     if(possibleCommands.length == 1){
+                        var c = 0;
+                        while(c < this.buffer.length){
+                            console.log(this.buffer.length);
+                            this.backspace();
+                        }
                         this.buffer = possibleCommands[0];
                         //backspace needed here to clear what was already input
                         _StdOut.putText(this.buffer);
@@ -68,30 +73,28 @@ module TSOS {
                 } else if (chr === String.fromCharCode(380)) { //     up arrow key
                     if(this.curPosition > 0){
                         this.curPosition--;
+                        var a = 0;
+                        while(a < this.buffer.length){
+                            console.log(this.buffer.length);
+                            this.backspace();
+                        }
                         this.buffer = this.enteredCommands[this.curPosition];
                         _StdOut.putText(this.buffer);
                     }
                 } else if (chr === String.fromCharCode(400)) { //     down arrow key
                     if(this.curPosition < this.enteredCommands.length){
                         this.curPosition++;
+                        var b = 0;
+                        while(b < this.buffer.length){
+                            console.log(this.buffer.length);
+                            this.backspace();
+                        }
                         this.buffer = this.enteredCommands[this.curPosition];
                         _StdOut.putText(this.buffer);
                     }
+
                 } else if (chr === String.fromCharCode(8)) { //     backspace key
-                    var buffer = _Console.buffer;
-                    var curXPos = _Console.currentXPosition;
-                    var backspacedBuffer= "";
-                    var charWidth = CanvasTextFunctions.measure(_DefaultFontFamily,_DefaultFontSize,buffer[buffer.length-1]);
-                    for(var x = 0; x < buffer.length - 1; x++){
-                        backspacedBuffer += buffer[x];
-                    }
-                    _Console.buffer = backspacedBuffer;
-                    _Console.currentXPosition = curXPos - charWidth;
-                    _DrawingContext.fillStyle= "#DFDBC3";
-                    _DrawingContext.fillRect(_Console.currentXPosition,
-                                             _Console.currentYPosition-_DefaultFontSize - 2,
-                                             charWidth,
-                                             _DefaultFontSize + _FontHeightMargin + 2 );
+                    this.backspace();
                 } else if (chr === String.fromCharCode(13)) { //     Enter key
                     //add the entered command into an array for command history recall
                     this.enteredCommands[this.enteredCommands.length] = this.buffer;
@@ -124,7 +127,22 @@ module TSOS {
                 // TODO: Write a case for Ctrl-C.
             }
         }
-
+        public backspace(): void{
+            var buffer = _Console.buffer;
+            var curXPos = _Console.currentXPosition;
+            var backspacedBuffer= "";
+            var charWidth = CanvasTextFunctions.measure(_DefaultFontFamily,_DefaultFontSize,buffer[buffer.length-1]);
+            for(var x = 0; x < buffer.length - 1; x++){
+                backspacedBuffer += buffer[x];
+            }
+            _Console.buffer = backspacedBuffer;
+            _Console.currentXPosition = curXPos - charWidth;
+            _DrawingContext.fillStyle= "#DFDBC3";
+            _DrawingContext.fillRect(_Console.currentXPosition,
+                _Console.currentYPosition-_DefaultFontSize - 2,
+                charWidth,
+                _DefaultFontSize + _FontHeightMargin + 2 );
+        }
         public putText(text): void {
             // My first inclination here was to write two functions: putChar() and putString().
             // Then I remembered that JavaScript is (sadly) untyped and it won't differentiate
