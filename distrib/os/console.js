@@ -105,6 +105,7 @@ var TSOS;
                 else {
                     // This is a "normal" character, so ...
                     // ... draw it on the screen...
+                    // line wrap
                     if (this.currentLineNumber == 0 && !this.added) {
                         this.currentBufferLine += _OsShell.promptStr;
                         this.added = true;
