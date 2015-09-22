@@ -21,6 +21,8 @@ var TSOS;
             this.currentXPosition = currentXPosition;
             this.currentYPosition = currentYPosition;
             this.buffer = buffer;
+            this.enteredCommands = [];
+            this.curPosition = 0;
         }
         Console.prototype.init = function () {
             this.clearScreen();
@@ -60,7 +62,24 @@ var TSOS;
                         _StdOut.putText(this.buffer);
                     }
                 }
+                else if (chr === String.fromCharCode(380)) {
+                    if (this.curPosition > 0) {
+                        this.curPosition--;
+                        this.buffer = this.enteredCommands[this.curPosition];
+                        _StdOut.putText(this.buffer);
+                    }
+                }
+                else if (chr === String.fromCharCode(400)) {
+                    if (this.curPosition < this.enteredCommands.length) {
+                        this.curPosition++;
+                        this.buffer = this.enteredCommands[this.curPosition];
+                        _StdOut.putText(this.buffer);
+                    }
+                }
                 else if (chr === String.fromCharCode(13)) {
+                    //add the entered command into an array for command history recall
+                    this.enteredCommands[this.enteredCommands.length] = this.buffer;
+                    this.curPosition = this.enteredCommands.length;
                     // The enter key marks the end of a console command, so ...
                     // ... tell the shell ...
                     _OsShell.handleInput(this.buffer);

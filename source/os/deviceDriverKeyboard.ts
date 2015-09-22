@@ -144,8 +144,15 @@ module TSOS {
             else if (((keyCode >= 48) && (keyCode <= 57)) ||   // digits
                         (keyCode == 32)                     ||   // space
                         (keyCode == 9)                      ||  //tab
+                        (keyCode == 8)                      ||  //backspace
                         (keyCode == 13)) {                       // enter
                 chr = String.fromCharCode(keyCode);
+                _KernelInputQueue.enqueue(chr);
+            }else if(keyCode == 38){
+                chr = String.fromCharCode(380); // up arrow
+                _KernelInputQueue.enqueue(chr);
+            }else if(keyCode == 40){
+                chr = String.fromCharCode(400); // down arrow
                 _KernelInputQueue.enqueue(chr);
             }
         }

@@ -12,6 +12,9 @@ module TSOS {
 
     export class Console {
 
+        public enteredCommands = [];
+        public curPosition = 0;
+
         constructor(public currentFont = _DefaultFontFamily,
                     public currentFontSize = _DefaultFontSize,
                     public currentXPosition = 0,
@@ -59,7 +62,22 @@ module TSOS {
                         _StdOut.putText(this.buffer);
                     }
 
+                } else if (chr === String.fromCharCode(380)) { //     up arrow key
+                    if(this.curPosition > 0){
+                        this.curPosition--;
+                        this.buffer = this.enteredCommands[this.curPosition];
+                        _StdOut.putText(this.buffer);
+                    }
+                } else if (chr === String.fromCharCode(400)) { //     down arrow key
+                    if(this.curPosition < this.enteredCommands.length){
+                        this.curPosition++;
+                        this.buffer = this.enteredCommands[this.curPosition];
+                        _StdOut.putText(this.buffer);
+                    }
                 } else if (chr === String.fromCharCode(13)) { //     Enter key
+                    //add the entered command into an array for command history recall
+                    this.enteredCommands[this.enteredCommands.length] = this.buffer;
+                    this.curPosition = this.enteredCommands.length;
                     // The enter key marks the end of a console command, so ...
                     // ... tell the shell ...
                     _OsShell.handleInput(this.buffer);
