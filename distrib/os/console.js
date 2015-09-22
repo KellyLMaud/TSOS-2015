@@ -23,6 +23,9 @@ var TSOS;
             this.buffer = buffer;
             this.enteredCommands = [];
             this.curPosition = 0;
+            this.currentLineNumber = 0;
+            this.currentBufferLine = "";
+            this.added = false;
         }
         Console.prototype.init = function () {
             this.clearScreen();
@@ -76,6 +79,19 @@ var TSOS;
                         _StdOut.putText(this.buffer);
                     }
                 }
+                else if (chr === String.fromCharCode(8)) {
+                    var buffer = _Console.buffer;
+                    var curXPos = _Console.currentXPosition;
+                    var backspacedBuffer = "";
+                    var charWidth = TSOS.CanvasTextFunctions.measure(_DefaultFontFamily, _DefaultFontSize, buffer[buffer.length - 1]);
+                    for (var x = 0; x < buffer.length - 1; x++) {
+                        backspacedBuffer += buffer[x];
+                    }
+                    _Console.buffer = backspacedBuffer;
+                    _Console.currentXPosition = curXPos - charWidth;
+                    _DrawingContext.fillStyle = "#DFDBC3";
+                    _DrawingContext.fillRect(_Console.currentXPosition, _Console.currentYPosition - _DefaultFontSize - 2, charWidth, _DefaultFontSize + _FontHeightMargin + 2);
+                }
                 else if (chr === String.fromCharCode(13)) {
                     //add the entered command into an array for command history recall
                     this.enteredCommands[this.enteredCommands.length] = this.buffer;
@@ -89,9 +105,22 @@ var TSOS;
                 else {
                     // This is a "normal" character, so ...
                     // ... draw it on the screen...
-                    this.putText(chr);
+                    if (this.currentLineNumber == 0 && !this.added) {
+                        this.currentBufferLine += _OsShell.promptStr;
+                        this.added = true;
+                    }
+                    if (TSOS.CanvasTextFunctions.measure(_DefaultFontFamily, _DefaultFontSize, this.currentBufferLine) < _Canvas.width) {
+                        this.putText(chr);
+                    }
+                    else {
+                        this.currentBufferLine = "";
+                        _StdOut.advanceLine();
+                        this.currentLineNumber++;
+                        this.putText(chr);
+                    }
                     // ... and add it to our buffer.
                     this.buffer += chr;
+                    this.currentBufferLine += chr;
                 }
             }
         };
