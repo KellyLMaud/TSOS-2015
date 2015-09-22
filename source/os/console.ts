@@ -116,7 +116,6 @@ module TSOS {
                         this.currentLineNumber++;
                         this.putText(chr);
                     }
-
                     // ... and add it to our buffer.
                     this.buffer += chr;
                     this.currentBufferLine += chr;
