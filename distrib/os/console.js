@@ -34,11 +34,33 @@ var TSOS;
             this.currentYPosition = this.currentFontSize;
         };
         Console.prototype.handleInput = function () {
+            var possibleCommands = [];
             while (_KernelInputQueue.getSize() > 0) {
                 // Get the next character from the kernel input queue.
                 var chr = _KernelInputQueue.dequeue();
                 // Check to see if it's "special" (enter or ctrl-c) or "normal" (anything else that the keyboard device driver gave us).
-                if (chr === String.fromCharCode(13)) {
+                if (chr === String.fromCharCode(9)) {
+                    for (var i in _OsShell.commandList) {
+                        if (_OsShell.commandList[i].command.search(this.buffer) == 0) {
+                            possibleCommands[possibleCommands.length] = _OsShell.commandList[i].command;
+                        }
+                    }
+                    if (possibleCommands.length == 1) {
+                        this.buffer = possibleCommands[0];
+                        //backspace needed here to clear what was already input
+                        _StdOut.putText(this.buffer);
+                    }
+                    else if (possibleCommands.length > 1) {
+                        for (var i in possibleCommands) {
+                            _StdOut.advanceLine();
+                            _StdOut.putText(possibleCommands[i]);
+                        }
+                        _StdOut.advanceLine();
+                        _OsShell.putPrompt();
+                        _StdOut.putText(this.buffer);
+                    }
+                }
+                else if (chr === String.fromCharCode(13)) {
                     // The enter key marks the end of a console command, so ...
                     // ... tell the shell ...
                     _OsShell.handleInput(this.buffer);
@@ -81,7 +103,6 @@ var TSOS;
             this.currentYPosition += _DefaultFontSize +
                 _DrawingContext.fontDescent(this.currentFont, this.currentFontSize) +
                 _FontHeightMargin;
-            // TODO: Handle scrolling. (iProject 1)
             if (this.currentYPosition >= _Canvas.height) {
                 var offset = _DefaultFontSize + _DrawingContext.fontDescent(this.currentFont, this.currentFontSize) + _FontHeightMargin;
                 var img = _DrawingContext.getImageData(0, offset, _Canvas.width, _Canvas.height);
