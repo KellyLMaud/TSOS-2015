@@ -141,7 +141,7 @@ module TSOS {
                 _KernelInputQueue.enqueue(chr);
             }
 
-            else if (((keyCode >= 48) && (keyCode <= 57)) ||   // digits
+            else if (((keyCode >= 48) && (keyCode <= 57))   ||   // digits
                         (keyCode == 32)                     ||   // space
                         (keyCode == 9)                      ||  //tab
                         (keyCode == 8)                      ||  //backspace

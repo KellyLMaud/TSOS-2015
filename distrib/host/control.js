@@ -76,11 +76,14 @@ var TSOS;
             // ... Create and initialize the CPU (because it's part of the hardware)  ...
             _CPU = new TSOS.Cpu(); // Note: We could simulate multi-core systems by instantiating more than one instance of the CPU here.
             _CPU.init(); //       There's more to do, like dealing with scheduling and such, but this would be a start. Pretty cool.
+            _MM = new TSOS.MemoryManager();
+            _MEM = new TSOS.Memory(256);
             // ... then set the host clock pulse ...
             _hardwareClockID = setInterval(TSOS.Devices.hostClockPulse, CPU_CLOCK_INTERVAL);
             // .. and call the OS Kernel Bootstrap routine.
             _Kernel = new TSOS.Kernel();
             _Kernel.krnBootstrap(); // _GLaDOS.afterStartup() will get called in there, if configured.
+            this.generateMemoryTable();
         };
         Control.hostBtnHaltOS_click = function (btn) {
             Control.hostLog("Emergency halt", "host");
@@ -97,6 +100,53 @@ var TSOS;
             // That boolean parameter is the 'forceget' flag. When it is true it causes the page to always
             // be reloaded from the server. If it is false or not specified the browser may reload the
             // page from its cache, which is not what we want.
+        };
+        Control.hostBtnSSOnOff_click = function (btn) {
+            if (_SingleStep) {
+                _SingleStep = false;
+                document.getElementById("btnSingleStep").disabled = true;
+                _OsShell.shellStatus(["Single", "Step", "is", "Off"]);
+            }
+            else {
+                _SingleStep = true;
+                document.getElementById("btnSingleStep").disabled = false;
+                _OsShell.shellStatus(["Single", "Step", "is", "On"]);
+            }
+        };
+        Control.hostBtnSingleStep_click = function (btn) {
+            _CPU.isExecuting = true;
+        };
+        Control.hostBtn12DONE_click = function (btn) {
+            document.getElementById("taProgramInput").value = "A9 03 8D 41 00 A9 01 8D 40 00 AC 40 "
+                + "00 A2 01 FF EE 40 00 AE 40 00 EC 41 00 D0 EF A9 44 8D 42 00 A9 4F 8D 43 00 A9 4E 8D 44 00 A9 45 8D 45"
+                + " 00 A9 00 8D 46 00 A2 02 A0 42 FF 00";
+        };
+        Control.hostBtnCounting_click = function (btn) {
+            document.getElementById("taProgramInput").value = "A9 00 8D 00 00 A9 00 8D 4B 00 A9 00 "
+                + "8D 4B 00 A2 03 EC 4B 00 D0 07 A2 01 EC 00 00 D0 05 A2 00 EC 00 00 D0 26 A0 4C A2 02 FF AC 4B 00 A2 01"
+                + " FF A9 01 6D 4B 00 8D 4B 00 A2 02 EC 4B 00 D0 05 A0 55 A2 02 FF A2 01 EC 00 00 D0 C5 00 00 63 6F 75 "
+                + "6E 74 69 6E 67 00 68 65 6C 6C 6F 20 77 6F 72 6C 64 00";
+        };
+        Control.hostBtn2and5_click = function (btn) {
+            document.getElementById("taProgramInput").value = "A9 00 8D 00 00 A9 00 8D 3B 00 A9 01 "
+                + "8D 3B 00 A9 00 8D 3C 00 A9 02 8D 3C 00 A9 01 6D 3B 00 8D 3B 00 A9 03 6D 3C 00 8D 3C 00 AC 3B 00 A2 01"
+                + " FF A0 3D A2 02 FF AC 3C 00 A2 01 FF 00 00 00 20 61 6E 64 20 00";
+        };
+        Control.generateMemoryTable = function () {
+            _MemTable = document.getElementById("memoryTable");
+            for (var j = 0; j < 32; j++) {
+                var tr = document.createElement("tr");
+                _MemTable.appendChild(tr);
+                for (var k = 0; k < 8; k++) {
+                    var td = document.createElement("td");
+                    td.id = j.toString();
+                    td.innerHTML = "00";
+                    tr.appendChild(td);
+                }
+            }
+        };
+        Control.updateMemTableAtLoc = function (tableRow, tableCel, newCode) {
+            _MemTable.rows[tableRow].cells[tableCel].innerHTML = newCode;
         };
         return Control;
     })();

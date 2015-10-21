@@ -15,6 +15,7 @@
    <script type="text/javascript" src="distrib/host/control.js"></script>
    <script type="text/javascript" src="distrib/host/devices.js"></script>
    <script type="text/javascript" src="distrib/host/cpu.js"></script>
+   <script type="text/javascript" src="distrib/host/memory.js"></script>
 
    <!-- Virtual OS Routines: Make sure Kernel code is last, since it needs those above it. -->
    <script type="text/javascript" src="distrib/os/interrupt.js"></script>
@@ -27,16 +28,19 @@
    <script type="text/javascript" src="distrib/os/shellCommand.js"></script>
    <script type="text/javascript" src="distrib/os/userCommand.js"></script>
    <script type="text/javascript" src="distrib/os/kernel.js"></script>
+   <script type="text/javascript" src="distrib/os/memoryManager.js"></script>
+   <script type="text/javascript" src="distrib/os/pcb.js"></script>
 
    <!-- Other Routines -->
    <script type="text/javascript" src="distrib/utils.js"></script>
    <!-- Uncomment this line below to enable GLaDOS testing -->
-   <script type="text/javascript" src="http://www.labouseur.com/courses/os/projects/glados.js"></script>
+   <!--<script type="text/javascript" src="http://www.labouseur.com/courses/os/projects/glados.js"></script>-->
 </head>
 
 <body onload="onDocumentLoad()">
 
 <div id="divMain" style="width:100%;">
+    <label>adiOS</label>
 
    <div id="divButtonBar" style="margin:4px;">
       <input type="button"
@@ -64,6 +68,48 @@
              value="Reset"
              tabindex="2"
              onclick="TSOS.Control.hostBtnReset_click(this);">
+
+       <input type="button"
+              id = "btnSingleStepOnOff"
+              name="btnSingleStepOnOff"
+              class="normal_button"
+              value="Single Step"
+              tabindex="2"
+              onclick="TSOS.Control.hostBtnSSOnOff_click(this);">
+
+       <input type="button"
+              id = "btnSingleStep"
+              name="btnSingleStep"
+              class="normal_button"
+              disabled="disabled"
+              value="Next Step"
+              tabindex="2"
+              onclick="TSOS.Control.hostBtnSingleStep_click(this);">
+
+       <input type="button"
+              id = "btnProgram12"
+              name="btnProgram12"
+              class="normal_button"
+              value="Print 12DONE"
+              tabindex="2"
+              onclick="TSOS.Control.hostBtn12DONE_click(this);">
+
+       <input type="button"
+              id = "btnProgramCounting"
+              name="btnProgramCounting"
+              class="normal_button"
+              value="Print Counting"
+              tabindex="2"
+              onclick="TSOS.Control.hostBtnCounting_click(this);">
+
+       <input type="button"
+              id = "btnProgram2and5"
+              name="btnProgram2and5"
+              class="normal_button"
+              value="Print 2 and 5"
+              tabindex="2"
+              onclick="TSOS.Control.hostBtn2and5_click(this);">
+
    </div>
 
    <div id="divConsole" style="margin:4px; width:500px; height:500px; float:left;">
@@ -123,7 +169,48 @@
    </div>
 
 
+
+    <br>
+
+    <div id="divCPUComponentsDisplay">
+        <label id='CPUDisplayLabel'>CPU</label>
+        <table id="tableCPUComponents">
+            <tr style="text-align: center;">
+                <th>PC</th>
+                <th>IR</th>
+                <th>Accum</th>
+                <th>X-Reg</th>
+                <th>Y-Reg</th>
+                <th>Z-Flag</th>
+            </tr>
+            <tr style="text-align: center;">
+                <td id="tdPC"></td>
+                <td id="tdIR"></td>
+                <td id="tdAccum"></td>
+                <td id="tdXReg"></td>
+                <td id="tdYReg"></td>
+                <td id="tdZFlag"></td>
+            </tr>
+        </table>
+    </div>
+
+    <div id="divMemoryDisplay">
+        <label id='memoryLabel'>
+            Memory
+            <br>
+            <div id="memoryDisplayWrapper" style = "height: 200px; width: 250px; overflow: scroll; background-color: aliceblue">
+                <table id="memoryTable">
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </label>
+    </div>
+
+
 </div>
+
+
 
 <p class="footerText" style="clear:both;">
    <br>

@@ -115,6 +115,12 @@ module TSOS {
                                  "- tests the blue screen of death");
             this.commandList[this.commandList.length] = sc;
 
+            // run <string>
+            sc = new ShellCommand(this.shellRun,
+                                  "run",
+                                  "<string> - runs the program with the pid specified");
+            this.commandList[this.commandList.length] = sc;
+
             // ps  - list the running processes and their IDs
             // kill <id> - kills the specified process id.
 
@@ -312,7 +318,9 @@ module TSOS {
                     case "bsod":
                         _StdOut.putText("bsod - tests the blue screen of death.");
                         break;
-                    // TODO: Make descriptive MANual page entries for the the rest of the shell commands here.
+                    case "run":
+                        _StdOut.putText("run <string pid> - runs the program with the pid specified.");
+                        break;
                     default:
                         _StdOut.putText("No manual entry for " + args[0] + ".");
                 }
@@ -380,16 +388,34 @@ module TSOS {
 
         public shellLoad(args) {
             var code = (<HTMLInputElement>document.getElementById("taProgramInput")).value.toUpperCase();
-            var valid = "valid";
-            if(code.length != 0){
+            var isValid = true;
+            if(code.length > 0){
                 for (var i = 0; i < code.length; i++) {
                     var c = code[i];
                     if(c!='A'&&c!='B'&&c!='C'&&c!='D'&&c!='E'&&c!='F'&&c!=' '&&c!='1'&&c!='2'&&c!='3'&&c!='4'&&c!='5'&&c!='6'&&c!='7'&&c!='8'&&c!='9'&&c!='0'){
-                        valid = "invalid";
+                        isValid = false;
                     }
                 }
+
+                if(isValid){
+                    var curCode = code.replace(/\n/g, " ").split(" ");
+                    _MEM.clearMemory();
+                    _MEM.memory = curCode;
+                    _currentPCB = new PCB();
+                    _StdOut.putText("Program successfully loaded");
+                    _StdOut.advanceLine();
+                    _StdOut.putText("PID: " + _currentPCB.pid);//assign a process ID & return it to the console.
+                    _StdOut.advanceLine();
+                    _MM.storeProgramInMemory(curCode);
+                    _CPU.clearProgram();
+                    //_StdOut.putText("User Program Input is Valid");
+                }else{
+                    _StdOut.putText("User Program Input is Invalid");
+                }
+            }else{
+                _StdOut.putText("No code in User Program Input to load");
             }
-            _StdOut.putText("User Program Input is " + valid);
+
         }
 
         public shellStatus(args) {
@@ -407,6 +433,20 @@ module TSOS {
 
         public shellBSOD(args) {
             _Kernel.krnTrapError("error");
+        }
+
+        public shellRun(args) {
+
+           // _CPU.isExecuting = true;
+            //_StdOut.putText("args = " + args);
+            //_StdOut.putText("pid = " + _currentPCB.pid);
+            //TODO - run the program already in memory
+            if (args.length <=0)
+                _StdOut.putText("A process ID is required.");
+            else {
+                _CPU.isExecuting = true;//_KernelInterruptQueue.enqueue(new Interrupt(2));
+
+            }
         }
 
 
