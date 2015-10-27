@@ -47,12 +47,12 @@ module TSOS {
             // Use the TypeScript cast to HTMLInputElement
             (<HTMLInputElement> document.getElementById("btnStartOS")).focus();
 
+            this.generateMemoryTable();
             //initialize memory
             _MEM = new Memory(256);
             //initialize memory manager
             _MM = new MemoryManager();
-            //initialize PCB
-            _currentPCB = new PCB();
+
 
 
             // Check for our testing and enrichment core, which
@@ -107,7 +107,7 @@ module TSOS {
             // .. and call the OS Kernel Bootstrap routine.
             _Kernel = new Kernel();
             _Kernel.krnBootstrap();  // _GLaDOS.afterStartup() will get called in there, if configured.
-            this.generateMemoryTable();
+
 
         }
 
@@ -180,8 +180,13 @@ module TSOS {
         }
 
         public static updateMemTableAtLoc(tableRow, tableCel, newCode): void {
+            //_MemTable = <HTMLTableElement>document.getElementById("memoryTable");
             _MemTable.rows[tableRow].cells[tableCel].innerHTML = newCode;
+            //var x=<HTMLTableElement>document.getElementById('memoryTable').rows;
+            //var y=x[tableRow].cells;
+            //y[tableCel].innerHTML=newCode;
         }
+
 
 
     }

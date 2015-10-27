@@ -335,6 +335,8 @@ var TSOS;
                     var curCode = code.replace(/\n/g, " ").split(" ");
                     _MEM.clearMemory();
                     _MEM.memory = curCode;
+                    //initialize PCB
+                    _currentPCB = new TSOS.PCB();
                     _StdOut.putText("Program successfully loaded");
                     _StdOut.advanceLine();
                     _StdOut.putText("PID: " + _currentPCB.pid); //assign a process ID & return it to the console.
