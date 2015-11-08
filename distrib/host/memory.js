@@ -6,25 +6,31 @@ var TSOS;
             this.initializeMemory(this.memorySize);
         }
         Memory.prototype.initializeMemory = function (size) {
-            this.memory = [size];
-            for (var x = 0; x < size; x++) {
-                this.memory[x] = "00";
+            for (var i = 0; i < this.memory.length; i++) {
+                this.memory[i] = new Array(size);
+                var currentBlock = this.memory[i];
+                for (var j = 0; j < size; j++) {
+                    currentBlock[j] = "00";
+                }
             }
         };
-        Memory.prototype.getMemory = function () {
-            return this.memory;
-        };
+        //public getMemory(partition): string []{
+        //    return this.memory[partition];
+        //}
         Memory.prototype.getMemoryAtLocation = function (memLocation) {
             return this.memory[memLocation];
         };
         Memory.prototype.clearMemory = function () {
             this.initializeMemory(this.memorySize);
-            //Control.emptyFullMemTable(this.memoryBlocks.length);
+            TSOS.Control.clearMemTable(this.memory.length);
         };
         Memory.prototype.isEmpty = function () {
-            for (var x = 0; x < this.memory.length; x++) {
-                if (this.memory[x] != "00") {
-                    return false;
+            for (var i = 0; i < this.memory.length; i++) {
+                var currentBlock = this.memory[i];
+                for (var j = 0; j < currentBlock.length; j++) {
+                    if (currentBlock[j] != "00") {
+                        return false;
+                    }
                 }
             }
             return true;

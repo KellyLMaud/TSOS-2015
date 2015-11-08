@@ -10,27 +10,37 @@ module TSOS {
 
         }
 
-        public storeProgramInMemory(code): void {
+        public storeProgramInMemory(partition, code): void {
+            if(partition == 0){
                 this.base = 0;
                 this.limit = 255;
+            } else if(partition == 1){
+                this.base = 256;
+                this.limit = 511;
+            } else if(partition == 2){
+                this.base = 512;
+                this.limit = 1023;
+            }
 
             for (var i = 0; i < code.length; i++) {
-                this.writeToMemory(i, code[i]);
+                this.writeToMemory(partition, i, code[i]);
             }
         }
 
-        public readFromMemory(loc): any {
-            return _MEM.getMemoryAtLocation(loc);
+        public readFromMemory(partition, loc): any {
+            return _MEM.getMemoryAtLocation(partition)[loc];
         }
 
-        public writeToMemory(loc, code): void {
+        public writeToMemory(partition, loc, code): void {
+            var row = partition * 32;
+
             var hexCode = this.dec2Hex(code);
-            var mem = _MEM.getMemory();
+            var mem = _MEM.getMemoryAtLocation(partition);
             if (hexCode.length < 2)
                 hexCode = "0" + hexCode;
             mem[loc] = hexCode;
 
-            Control.updateMemTableAtLoc(Math.floor(loc / 8), loc % 8, hexCode);
+            Control.updateMemTableAtLoc(Math.floor(loc / 8) + row, loc % 8, hexCode);
         }
 
         public hex2Dec(hex): number {

@@ -148,11 +148,18 @@ var TSOS;
             }
         };
         Control.updateMemTableAtLoc = function (tableRow, tableCel, newCode) {
-            //_MemTable = <HTMLTableElement>document.getElementById("memoryTable");
             _MemTable.rows[tableRow].cells[tableCel].innerHTML = newCode;
-            //var x=<HTMLTableElement>document.getElementById('memoryTable').rows;
-            //var y=x[tableRow].cells;
-            //y[tableCel].innerHTML=newCode;
+        };
+        Control.clearMemTable = function (partitions) {
+            var count = 0;
+            for (var i = 0; i < partitions; i++) {
+                for (var j = 0; j < 32; j++) {
+                    for (var k = 0; k < 8; k++) {
+                        document.getElementById(count.toString()).innerHTML = "00";
+                        count++;
+                    }
+                }
+            }
         };
         return Control;
     })();

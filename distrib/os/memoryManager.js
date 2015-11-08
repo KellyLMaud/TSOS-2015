@@ -4,23 +4,34 @@ var TSOS;
     var MemoryManager = (function () {
         function MemoryManager() {
         }
-        MemoryManager.prototype.storeProgramInMemory = function (code) {
-            this.base = 0;
-            this.limit = 255;
+        MemoryManager.prototype.storeProgramInMemory = function (partition, code) {
+            if (partition == 0) {
+                this.base = 0;
+                this.limit = 255;
+            }
+            else if (partition == 1) {
+                this.base = 256;
+                this.limit = 511;
+            }
+            else if (partition == 2) {
+                this.base = 512;
+                this.limit = 1023;
+            }
             for (var i = 0; i < code.length; i++) {
-                this.writeToMemory(i, code[i]);
+                this.writeToMemory(partition, i, code[i]);
             }
         };
-        MemoryManager.prototype.readFromMemory = function (loc) {
-            return _MEM.getMemoryAtLocation(loc);
+        MemoryManager.prototype.readFromMemory = function (partition, loc) {
+            return _MEM.getMemoryAtLocation(partition)[loc];
         };
-        MemoryManager.prototype.writeToMemory = function (loc, code) {
+        MemoryManager.prototype.writeToMemory = function (partition, loc, code) {
+            var row = partition * 32;
             var hexCode = this.dec2Hex(code);
-            var mem = _MEM.getMemory();
+            var mem = _MEM.getMemoryAtLocation(partition);
             if (hexCode.length < 2)
                 hexCode = "0" + hexCode;
             mem[loc] = hexCode;
-            TSOS.Control.updateMemTableAtLoc(Math.floor(loc / 8), loc % 8, hexCode);
+            TSOS.Control.updateMemTableAtLoc(Math.floor(loc / 8) + row, loc % 8, hexCode);
         };
         MemoryManager.prototype.hex2Dec = function (hex) {
             return parseInt(hex, 16);

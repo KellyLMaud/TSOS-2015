@@ -1,7 +1,7 @@
 module TSOS {
 
     export class Memory {
-        memory: string[];
+        memory: string[][];
         memorySize: number;
 
         constructor(size: number){
@@ -10,29 +10,35 @@ module TSOS {
         }
 
         private initializeMemory(size): void {
-            this.memory = [size];
-            for(var x = 0; x < size; x++){
-                this.memory[x] = "00";
+            for(var i = 0; i < this.memory.length; i++){
+                this.memory[i] = new Array(size);
+                var currentBlock = this.memory[i];
+                for(var j = 0; j < size; j++){
+                    currentBlock[j] = "00";
+                }
             }
         }
 
-        public getMemory(): string []{
-            return this.memory;
-        }
+        //public getMemory(partition): string []{
+        //    return this.memory[partition];
+        //}
 
-        public getMemoryAtLocation(memLocation): string {
+        public getMemoryAtLocation(memLocation): string[] {
             return this.memory[memLocation];
         }
 
         public clearMemory(): void {
             this.initializeMemory(this.memorySize);
-            //Control.emptyFullMemTable(this.memoryBlocks.length);
+            Control.clearMemTable(this.memory.length);
         }
 
         public isEmpty(): boolean {
-            for(var x = 0; x < this.memory.length; x++){
-                if(this.memory[x] != "00"){
-                    return false;
+            for(var i = 0; i < this.memory.length; i++){
+                var currentBlock = this.memory[i];
+                for(var j = 0; j < currentBlock.length; j++){
+                    if(currentBlock[j] != "00"){
+                        return false;
+                    }
                 }
             }
             return true;

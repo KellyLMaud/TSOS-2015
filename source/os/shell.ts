@@ -112,13 +112,43 @@ module TSOS {
             // bsod
             sc = new ShellCommand(this.shellBSOD,
                                  "bsod",
-                                 "- tests the blue screen of death");
+                                 "- tests the blue screen of death.");
             this.commandList[this.commandList.length] = sc;
 
             // run <string>
             sc = new ShellCommand(this.shellRun,
                                   "run",
-                                  "<string> - runs the program with the pid specified");
+                                  "<string> - runs the program with the pid specified.");
+            this.commandList[this.commandList.length] = sc;
+
+            // clearmem
+            sc = new ShellCommand(this.shellClearmem,
+                                  "clearmem",
+                                  "- clears all memory partitions.");
+            this.commandList[this.commandList.length] = sc;
+
+            // runall
+            sc = new ShellCommand(this.shellRunall,
+                                  "runall",
+                                  "- execute all programs at once.");
+            this.commandList[this.commandList.length] = sc;
+
+            // quantum <int>
+            sc = new ShellCommand(this.shellQuantum,
+                                  "quantum",
+                                  "<int> - set the Round Robin Quantum.");
+            this.commandList[this.commandList.length] = sc;
+
+            // ps
+            sc = new ShellCommand(this.shellPs,
+                                  "ps",
+                                  "- display PIDs of all active processes.");
+            this.commandList[this.commandList.length] = sc;
+
+            // kill <pid>
+            sc = new ShellCommand(this.shellKill,
+                                  "kill",
+                                  "<pid> - kill an active process.");
             this.commandList[this.commandList.length] = sc;
 
             // ps  - list the running processes and their IDs
@@ -321,6 +351,21 @@ module TSOS {
                     case "run":
                         _StdOut.putText("run <string pid> - runs the program with the pid specified.");
                         break;
+                    case "clearmem":
+                        _StdOut.putText("clearmem - clear all memory partitions.");
+                        break;
+                    case "runall":
+                        _StdOut.putText("runall - execute all programs at once");
+                        break;
+                    case "quantum":
+                        _StdOut.putText("quantum <int> - set the Round Robin quantum.");
+                        break;
+                    case "ps":
+                        _StdOut.putText("ps - displays the PIDs of active processes.");
+                        break;
+                    case "kill":
+                        _StdOut.putText("kill <pid> - kill an active process.");
+                        break;
                     default:
                         _StdOut.putText("No manual entry for " + args[0] + ".");
                 }
@@ -449,6 +494,28 @@ module TSOS {
 
             }
         }
+
+        public shellClearmem(args) {
+            _MEM.clearMemory();
+        }
+
+        public shellRunall(args) {
+
+        }
+
+        public shellQuantum(args) {
+
+        }
+
+        public shellPs(args) {
+
+        }
+
+        public shellKill(args) {
+
+        }
+
+
 
 
     }
