@@ -52,7 +52,8 @@ module TSOS {
             _MEM = new Memory(3, 256);
             //initialize memory manager
             _MM = new MemoryManager();
-
+            //initialize cpuScheduler
+            _CPUScheduler = new CpuScheduler();
 
 
             // Check for our testing and enrichment core, which

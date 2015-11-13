@@ -45,6 +45,8 @@ var TSOS;
             _MEM = new TSOS.Memory(3, 256);
             //initialize memory manager
             _MM = new TSOS.MemoryManager();
+            //initialize cpuScheduler
+            _CPUScheduler = new TSOS.CpuScheduler();
             // Check for our testing and enrichment core, which
             // may be referenced here (from index.html) as function Glados().
             if (typeof Glados === "function") {

@@ -444,8 +444,6 @@ module TSOS {
 
                 if(isValid){
                     _ProgramInput = _ProgramInput.replace(/\n/g, " ").split(" ");
-                    console.log("_ProgramInput = " + _ProgramInput);
-                    //_CPU.clearProgram();
                     var baseRegister;
                     var limitRegister;
 
@@ -471,11 +469,8 @@ module TSOS {
                     if(_CurrPartitionOfMem <= 2) {
                         _MM.storeProgramInMemory(_CurrPartitionOfMem, _ProgramInput);
                         _MEM.memory[_CurrPartitionOfMem] = _ProgramInput;
-                        //console.log("_MEM.memory = " + _MEM.memory);
-                        //console.log("current partition = " + _CurrPartitionOfMem);
                     }
 
-                    console.log(_ResidentList[0].PID);
 
                     _StdOut.putText("Program successfully loaded");
                     _StdOut.advanceLine();
@@ -532,7 +527,6 @@ module TSOS {
                         _CPU.clearProgram();
                         _CycleCounter = 0;
                         _CPU.isExecuting = true;
-                        _ReadyQueue.push(_CurrentlyExecuting);
                     }
                 }
             }else{
@@ -547,6 +541,23 @@ module TSOS {
         }
 
         public shellRunall(args) {
+            _ReadyQueue = [];
+            for(var i = 0; i < _ResidentList.length; i++){
+                _ReadyQueue.push(_ResidentList[i]);
+                if(i > 0){
+                    _ReadyQueue[i].processState = "Waiting";
+                }
+            }
+            _CurrentPCB = _ReadyQueue[0];
+
+            _CurrPartitionOfMem = _CurrentPCB.baseRegister / 256;
+
+            _CurrentPCB.processState = "Running";
+            _RunningPID = parseInt(_ReadyQueue[0].PID);
+            _ReadyQueue[0].processState = "Running";
+            _CPU.clearProgram();
+            _CycleCounter = 0;
+            _CPU.isExecuting = true;
 
         }
 
@@ -580,7 +591,20 @@ module TSOS {
                         _ReadyQueue[i].processState = "Terminated";
                         _ReadyQueue.splice(i, 1);
 
-                        _CPU.isExecuting = false;
+                        if(_ReadyQueue.length > 0){
+                            _CurrPartitionOfMem = _ReadyQueue[0].baseRegister / 256;
+                            _CurrentPCB = _ReadyQueue[0];
+                            _RunningPID = parseInt(_ReadyQueue[0].PID);
+                            _ReadyQueue[0].processState = "Running";
+
+                            _CPU.PC = _CurrentPCB.PC;
+                            _CPU.Acc = _CurrentPCB.Accum;
+                            _CPU.Xreg = _CurrentPCB.Xreg;
+                            _CPU.Yreg = _CurrentPCB.Yreg;
+                            _CPU.Zflag = _CurrentPCB.Zflag;
+                        } else {
+                            _CPU.isExecuting = false;
+                        }
                     }
                 }
             }

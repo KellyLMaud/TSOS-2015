@@ -363,8 +363,6 @@ var TSOS;
                 }
                 if (isValid) {
                     _ProgramInput = _ProgramInput.replace(/\n/g, " ").split(" ");
-                    console.log("_ProgramInput = " + _ProgramInput);
-                    //_CPU.clearProgram();
                     var baseRegister;
                     var limitRegister;
                     if (_CurrPartitionOfMem < 2) {
@@ -387,7 +385,6 @@ var TSOS;
                         _MM.storeProgramInMemory(_CurrPartitionOfMem, _ProgramInput);
                         _MEM.memory[_CurrPartitionOfMem] = _ProgramInput;
                     }
-                    console.log(_ResidentList[0].PID);
                     _StdOut.putText("Program successfully loaded");
                     _StdOut.advanceLine();
                     _StdOut.putText("PID = " + _CurrentPCB.PID);
@@ -441,7 +438,6 @@ var TSOS;
                         _CPU.clearProgram();
                         _CycleCounter = 0;
                         _CPU.isExecuting = true;
-                        _ReadyQueue.push(_CurrentlyExecuting);
                     }
                 }
             }
@@ -455,6 +451,21 @@ var TSOS;
             _StdOut.putText("Memory cleared");
         };
         Shell.prototype.shellRunall = function (args) {
+            _ReadyQueue = [];
+            for (var i = 0; i < _ResidentList.length; i++) {
+                _ReadyQueue.push(_ResidentList[i]);
+                if (i > 0) {
+                    _ReadyQueue[i].processState = "Waiting";
+                }
+            }
+            _CurrentPCB = _ReadyQueue[0];
+            _CurrPartitionOfMem = _CurrentPCB.baseRegister / 256;
+            _CurrentPCB.processState = "Running";
+            _RunningPID = parseInt(_ReadyQueue[0].PID);
+            _ReadyQueue[0].processState = "Running";
+            _CPU.clearProgram();
+            _CycleCounter = 0;
+            _CPU.isExecuting = true;
         };
         Shell.prototype.shellQuantum = function (args) {
             if (args.length > 0) {
@@ -484,7 +495,20 @@ var TSOS;
                     if (_ReadyQueue[i].PID == terminatePID) {
                         _ReadyQueue[i].processState = "Terminated";
                         _ReadyQueue.splice(i, 1);
-                        _CPU.isExecuting = false;
+                        if (_ReadyQueue.length > 0) {
+                            _CurrPartitionOfMem = _ReadyQueue[0].baseRegister / 256;
+                            _CurrentPCB = _ReadyQueue[0];
+                            _RunningPID = parseInt(_ReadyQueue[0].PID);
+                            _ReadyQueue[0].processState = "Running";
+                            _CPU.PC = _CurrentPCB.PC;
+                            _CPU.Acc = _CurrentPCB.Accum;
+                            _CPU.Xreg = _CurrentPCB.Xreg;
+                            _CPU.Yreg = _CurrentPCB.Yreg;
+                            _CPU.Zflag = _CurrentPCB.Zflag;
+                        }
+                        else {
+                            _CPU.isExecuting = false;
+                        }
                     }
                 }
             }

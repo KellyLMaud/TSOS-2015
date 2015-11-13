@@ -21,14 +21,12 @@ var KEYBOARD_IRQ = 1;
 // TODO: Make a global object and use that instead of the "_" naming convention in the global namespace.
 //
 var _PID = 0;
-//var _currentPCB;
 var _ExecutingProgram;
 var _SingleStep = false;
 var _MEM = null;
 var _MemTable = null;
 var _MM = null;
 var _ProgramInput = "";
-// loading and running programs
 var _CurrPartitionOfMem = -1;
 var _CurrentPCB = null;
 var _CurrentlyExecuting = null;
@@ -37,6 +35,7 @@ var _ResidentList = [];
 var _ReadyQueue = [];
 // CPU Scheduler
 var _QUANTUM = 6;
+var _CPUScheduler;
 var _CycleCounter = null;
 var _CPU; // Utilize TypeScript's type annotation system to ensure that _CPU is an instance of the Cpu class.
 var _OSclock = 0; // Page 23.

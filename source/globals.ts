@@ -26,7 +26,6 @@ const KEYBOARD_IRQ: number = 1;
 // TODO: Make a global object and use that instead of the "_" naming convention in the global namespace.
 //
 var _PID: number = 0;
-//var _currentPCB;
 var _ExecutingProgram;
 var _SingleStep = false;
 var _MEM: any = null;
@@ -34,8 +33,6 @@ var _MemTable: any = null;
 var _MM: any = null;
 
 var _ProgramInput: any = "";
-
-// loading and running programs
 
 var _CurrPartitionOfMem: number = -1;
 var _CurrentPCB: any = null;
@@ -47,6 +44,7 @@ var _ReadyQueue: any[] = [];
 
 // CPU Scheduler
 var _QUANTUM: number = 6;
+var _CPUScheduler: TSOS.CpuScheduler;
 var _CycleCounter: number = null;
 
 
