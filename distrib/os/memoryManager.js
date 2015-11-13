@@ -22,15 +22,21 @@ var TSOS;
             }
         };
         MemoryManager.prototype.readFromMemory = function (partition, loc) {
-            return _MEM.getMemoryAtLocation(partition)[loc];
+            var memPartition = _MEM.getMemoryPartition(partition);
+            //console.log("Part = " + partition);
+            //console.log("loc = " + loc);
+            //console.log("MEMPart = " + memPartition);
+            //console.log("MEM[loc] = " + memPartition[loc]);
+            return memPartition[loc];
+            //return mem[loc];
         };
         MemoryManager.prototype.writeToMemory = function (partition, loc, code) {
             var row = partition * 32;
             var hexCode = this.dec2Hex(code);
-            var mem = _MEM.getMemoryAtLocation(partition);
+            var memPartition = _MEM.getMemoryPartition(partition);
             if (hexCode.length < 2)
                 hexCode = "0" + hexCode;
-            mem[loc] = hexCode;
+            memPartition[loc] = hexCode;
             TSOS.Control.updateMemTableAtLoc(Math.floor(loc / 8) + row, loc % 8, hexCode);
         };
         MemoryManager.prototype.hex2Dec = function (hex) {

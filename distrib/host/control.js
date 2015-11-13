@@ -40,9 +40,9 @@ var TSOS;
             // Set focus on the start button.
             // Use the TypeScript cast to HTMLInputElement
             document.getElementById("btnStartOS").focus();
-            this.generateMemoryTable();
+            this.generateMemoryTable(3);
             //initialize memory
-            _MEM = new TSOS.Memory(256);
+            _MEM = new TSOS.Memory(3, 256);
             //initialize memory manager
             _MM = new TSOS.MemoryManager();
             // Check for our testing and enrichment core, which
@@ -134,16 +134,18 @@ var TSOS;
                 + "8D 3B 00 A9 00 8D 3C 00 A9 02 8D 3C 00 A9 01 6D 3B 00 8D 3B 00 A9 03 6D 3C 00 8D 3C 00 AC 3B 00 A2 01"
                 + " FF A0 3D A2 02 FF AC 3C 00 A2 01 FF 00 00 00 20 61 6E 64 20 00";
         };
-        Control.generateMemoryTable = function () {
+        Control.generateMemoryTable = function (partitions) {
             _MemTable = document.getElementById("memoryTable");
-            for (var j = 0; j < 32; j++) {
-                var tr = document.createElement("tr");
-                _MemTable.appendChild(tr);
-                for (var k = 0; k < 8; k++) {
-                    var td = document.createElement("td");
-                    td.id = j.toString();
-                    td.innerHTML = "00";
-                    tr.appendChild(td);
+            for (var i = 0; i < partitions; i++) {
+                for (var j = 0; j < 32; j++) {
+                    var tr = document.createElement("tr");
+                    _MemTable.appendChild(tr);
+                    for (var k = 0; k < 8; k++) {
+                        var td = document.createElement("td");
+                        td.id = j.toString();
+                        td.innerHTML = "00";
+                        tr.appendChild(td);
+                    }
                 }
             }
         };
@@ -152,12 +154,11 @@ var TSOS;
         };
         Control.clearMemTable = function (partitions) {
             var count = 0;
-            for (var i = 0; i < partitions; i++) {
-                for (var j = 0; j < 32; j++) {
-                    for (var k = 0; k < 8; k++) {
-                        document.getElementById(count.toString()).innerHTML = "00";
-                        count++;
-                    }
+            var rows = 32 * (partitions + 1);
+            for (var j = 0; j < rows; j++) {
+                for (var k = 0; k < 8; k++) {
+                    this.updateMemTableAtLoc(j, k, "00");
+                    count++;
                 }
             }
         };

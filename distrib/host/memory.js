@@ -1,34 +1,39 @@
 var TSOS;
 (function (TSOS) {
     var Memory = (function () {
-        function Memory(size) {
+        function Memory(partition, size) {
             this.memorySize = size;
+            this.memory = new Array(partition);
             this.initializeMemory(this.memorySize);
         }
         Memory.prototype.initializeMemory = function (size) {
             for (var i = 0; i < this.memory.length; i++) {
                 this.memory[i] = new Array(size);
-                var currentBlock = this.memory[i];
+                var currentPartition = this.memory[i];
                 for (var j = 0; j < size; j++) {
-                    currentBlock[j] = "00";
+                    currentPartition[j] = "00";
                 }
             }
         };
         //public getMemory(partition): string []{
         //    return this.memory[partition];
         //}
-        Memory.prototype.getMemoryAtLocation = function (memLocation) {
-            return this.memory[memLocation];
+        Memory.prototype.getMemoryPartition = function (partition) {
+            //console.log("this.memory[partition] = " + this.memory[partition]);
+            //console.log("partition = " + partition);
+            //console.log("this.memory = " + this.memory);
+            return this.memory[partition];
         };
         Memory.prototype.clearMemory = function () {
             this.initializeMemory(this.memorySize);
-            TSOS.Control.clearMemTable(this.memory.length);
+            TSOS.Control.clearMemTable(_CurrPartitionOfMem);
+            //console.log("_CurrPartitionOfMem " + _CurrPartitionOfMem);
         };
         Memory.prototype.isEmpty = function () {
             for (var i = 0; i < this.memory.length; i++) {
-                var currentBlock = this.memory[i];
-                for (var j = 0; j < currentBlock.length; j++) {
-                    if (currentBlock[j] != "00") {
+                var currentPartition = this.memory[i];
+                for (var j = 0; j < currentPartition.length; j++) {
+                    if (currentPartition[j] != "00") {
                         return false;
                     }
                 }

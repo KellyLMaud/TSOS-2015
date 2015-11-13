@@ -47,9 +47,9 @@ module TSOS {
             // Use the TypeScript cast to HTMLInputElement
             (<HTMLInputElement> document.getElementById("btnStartOS")).focus();
 
-            this.generateMemoryTable();
+            this.generateMemoryTable(3);
             //initialize memory
-            _MEM = new Memory(256);
+            _MEM = new Memory(3, 256);
             //initialize memory manager
             _MM = new MemoryManager();
 
@@ -165,16 +165,18 @@ module TSOS {
                 +" FF A0 3D A2 02 FF AC 3C 00 A2 01 FF 00 00 00 20 61 6E 64 20 00";
         }
 
-        public static generateMemoryTable(): void {
+        public static generateMemoryTable(partitions): void {
             _MemTable = <HTMLTableElement>document.getElementById("memoryTable");
-            for (var j = 0; j < 32; j++) {//32 rows
-                var tr = document.createElement("tr");
-                _MemTable.appendChild(tr);
-                for (var k = 0; k < 8; k++) {//8 columns
-                    var td = document.createElement("td");
-                    td.id = j.toString();
-                    td.innerHTML = "00";
-                    tr.appendChild(td);
+            for (var i = 0; i < partitions; i++) {//3 partitions
+                for (var j = 0; j < 32; j++) {//32 rows
+                    var tr = document.createElement("tr");
+                    _MemTable.appendChild(tr);
+                    for (var k = 0; k < 8; k++) {//8 columns
+                        var td = document.createElement("td");
+                        td.id = j.toString();
+                        td.innerHTML = "00";
+                        tr.appendChild(td);
+                    }
                 }
             }
         }
@@ -185,13 +187,12 @@ module TSOS {
 
         public static clearMemTable(partitions): void {
             var count = 0;
+            var rows = 32 * (partitions + 1);
 
-            for (var i = 0; i < partitions; i++) {
-                for (var j = 0; j < 32; j++) {
-                    for (var k = 0; k < 8; k++) {
-                        document.getElementById(count.toString()).innerHTML = "00";
-                        count++;
-                    }
+            for (var j = 0; j < rows; j++) {
+                for (var k = 0; k < 8; k++) {
+                    this.updateMemTableAtLoc(j, k, "00");
+                    count++;
                 }
             }
         }

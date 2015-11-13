@@ -432,29 +432,55 @@ module TSOS {
         }
 
         public shellLoad(args) {
-            var code = (<HTMLInputElement>document.getElementById("taProgramInput")).value.toUpperCase();
+            _ProgramInput = (<HTMLInputElement>document.getElementById("taProgramInput")).value.trim().toUpperCase();
             var isValid = true;
-            if(code.length > 0){
-                for (var i = 0; i < code.length; i++) {
-                    var c = code[i];
+            if(_ProgramInput.length > 0){
+                for (var i = 0; i < _ProgramInput.length; i++) {
+                    var c = _ProgramInput[i];
                     if(c!='A'&&c!='B'&&c!='C'&&c!='D'&&c!='E'&&c!='F'&&c!=' '&&c!='1'&&c!='2'&&c!='3'&&c!='4'&&c!='5'&&c!='6'&&c!='7'&&c!='8'&&c!='9'&&c!='0'){
                         isValid = false;
                     }
                 }
 
                 if(isValid){
-                    var curCode = code.replace(/\n/g, " ").split(" ");
-                    _MEM.clearMemory();
-                    _MEM.memory = curCode;
-                    //initialize PCB
-                    _currentPCB = new PCB();
+                    _ProgramInput = _ProgramInput.replace(/\n/g, " ").split(" ");
+                    console.log("_ProgramInput = " + _ProgramInput);
+                    //_CPU.clearProgram();
+                    var baseRegister;
+                    var limitRegister;
+
+                    if(_CurrPartitionOfMem < 2){
+                        _CurrPartitionOfMem++;
+                        baseRegister = _CurrPartitionOfMem * 256;
+                        limitRegister = (_CurrPartitionOfMem * 256) + 255;
+                    } else {
+                        _StdOut.putText("Memory full");
+                        return false;
+                    }
+
+                    _CurrentPCB = new PCB();
+                    _CurrentPCB.processState = "Resident";
+
+                    if(_CurrPartitionOfMem >= 2){
+                        _CurrentPCB.baseRegister = baseRegister;
+                        _CurrentPCB.limitRegister = limitRegister;
+                    }
+
+                    _ResidentList.push(_CurrentPCB);
+
+                    if(_CurrPartitionOfMem <= 2) {
+                        _MM.storeProgramInMemory(_CurrPartitionOfMem, _ProgramInput);
+                        _MEM.memory[_CurrPartitionOfMem] = _ProgramInput;
+                        console.log("_MEM.memory = " + _MEM.memory);
+                        console.log("cuurent partition = " + _CurrPartitionOfMem);
+                    }
+
+                    console.log(_ResidentList[0].PID);
+
                     _StdOut.putText("Program successfully loaded");
                     _StdOut.advanceLine();
-                    _StdOut.putText("PID: " + _currentPCB.pid);//assign a process ID & return it to the console.
-                    _StdOut.advanceLine();
-                    _MM.storeProgramInMemory(curCode);
-                    _CPU.clearProgram();
-                    //_StdOut.putText("User Program Input is Valid");
+                    _StdOut.putText("PID = " + _CurrentPCB.PID);
+
                 }else{
                     _StdOut.putText("User Program Input is Invalid");
                 }
@@ -481,22 +507,44 @@ module TSOS {
             _Kernel.krnTrapError("error");
         }
 
+
         public shellRun(args) {
-
-           // _CPU.isExecuting = true;
-            //_StdOut.putText("args = " + args);
-            //_StdOut.putText("pid = " + _currentPCB.pid);
-            //TODO - run the program already in memory
-            if (args.length <=0)
-                _StdOut.putText("A process ID is required.");
-            else {
-                _CPU.isExecuting = true;//_KernelInterruptQueue.enqueue(new Interrupt(2));
-
+            if(args.length > 0){
+                if(_MEM.isEmpty()) {
+                    _StdOut.putText('Nothing is in memory. Please try and load program');
+                }else {
+                    _RunningPID = parseInt(args[0]);
+                    var residentPID = -1;
+                    var residentPIDPartition = -1;
+                    for(var i = 0; i < _ResidentList.length; i++){
+                        console.log("RunningPID = " + _RunningPID);
+                        if(_ResidentList[i].PID == _RunningPID){
+                            residentPID = i;
+                            residentPIDPartition = _ResidentList[i].baseRegister / 256;
+                        }
+                    }
+                    if(residentPID == -1){
+                        _StdOut.putText('Please input correct PID');
+                    }else{
+                        _CurrPartitionOfMem = residentPIDPartition;//this is WRONG!!!!!!!!!!!
+                        _CPU.clearProgram();
+                        _CycleCounter = 0;
+                        _CPU.isExecuting = true;
+                    }
+                }
+            }else{
+                _StdOut.putText("Input PID");
             }
         }
 
         public shellClearmem(args) {
             _MEM.clearMemory();
+            //Control.resetMemory();
+            _CurrPartitionOfMem = -1;
+            _StdOut.putText("Memory cleared");
+            console.log(_MEM.memory[0]);
+            console.log(_MEM.memory[1]);
+            console.log(_MEM.memory[2]);
         }
 
         public shellRunall(args) {
@@ -504,11 +552,24 @@ module TSOS {
         }
 
         public shellQuantum(args) {
-
+            if(args.length > 0){
+                _QUANTUM = args[0];
+                _StdOut.putText("Quantum has been set to " + _QUANTUM);
+            } else {
+                _StdOut.putText("quantum <int> Please supply a quantum number.");
+            }
         }
 
         public shellPs(args) {
-
+            if(_ReadyQueue.length == 0){
+                _StdOut.putText("There are no active processes.");
+                _StdOut.advanceLine();
+            }else{
+                for(var i = 0; i < _ReadyQueue.length; i++){
+                    _StdOut.putText("PID: " + _ReadyQueue[i].PID);
+                    _StdOut.advanceLine();
+                }
+            }
         }
 
         public shellKill(args) {

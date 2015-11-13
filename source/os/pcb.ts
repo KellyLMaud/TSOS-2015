@@ -2,23 +2,30 @@
 
 module TSOS {
     export class PCB {
-        constructor(
-            //process stuff
-            public PC: number = 0,
-            public Acc: number = 0,
-            public Xreg: number = 0,
-            public Yreg: number = 0,
-            public Zflag: number = 0,
-            public pid: number = 0,
-            public code: string = "",
-            // memory
-            public base: number = 0,
-            public limit:number = 0
-        ) {
+        PID: number;
+        PC: number;
+        Accum: number;
+        Xreg: number;
+        Yreg: number;
+        Zflag: number;
+        baseRegister: number;
+        limitRegister: number;
+        processState: string;
 
-            this.pid = _pid;
-            _pid++;
+        constructor(){
+            this.PID = _PID++;
+            this.PC = 0;
+            this.Accum = 0;
+            this.Xreg = 0;
+            this.Yreg = 0;
+            this.Zflag = 0;
+            this.baseRegister = _CurrPartitionOfMem * 256;
+            this.limitRegister = (_CurrPartitionOfMem * 256) + 255;
+            this.processState = null;
+        }
 
+        public printPCB(): void {
+            _CPU.printPCB(this.PID, this.PC, this.Accum, this.Xreg, this.Yreg, this.Zflag);
         }
     }
 }

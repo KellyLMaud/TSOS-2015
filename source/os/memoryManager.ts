@@ -28,17 +28,23 @@ module TSOS {
         }
 
         public readFromMemory(partition, loc): any {
-            return _MEM.getMemoryAtLocation(partition)[loc];
+            var memPartition = _MEM.getMemoryPartition(partition);
+            //console.log("Part = " + partition);
+            //console.log("loc = " + loc);
+            //console.log("MEMPart = " + memPartition);
+            //console.log("MEM[loc] = " + memPartition[loc]);
+            return memPartition[loc];
+            //return mem[loc];
         }
 
         public writeToMemory(partition, loc, code): void {
             var row = partition * 32;
 
             var hexCode = this.dec2Hex(code);
-            var mem = _MEM.getMemoryAtLocation(partition);
+            var memPartition = _MEM.getMemoryPartition(partition);
             if (hexCode.length < 2)
                 hexCode = "0" + hexCode;
-            mem[loc] = hexCode;
+            memPartition[loc] = hexCode;
 
             Control.updateMemTableAtLoc(Math.floor(loc / 8) + row, loc % 8, hexCode);
         }
