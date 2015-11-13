@@ -20,14 +20,7 @@ module TSOS {
             }
         }
 
-        //public getMemory(partition): string []{
-        //    return this.memory[partition];
-        //}
-
         public getMemoryPartition(partition): string[] {
-            //console.log("this.memory[partition] = " + this.memory[partition]);
-            //console.log("partition = " + partition);
-            //console.log("this.memory = " + this.memory);
             return this.memory[partition];
 
         }
@@ -35,7 +28,6 @@ module TSOS {
         public clearMemory(): void {
             this.initializeMemory(this.memorySize);
             Control.clearMemTable(_CurrPartitionOfMem);
-            //console.log("_CurrPartitionOfMem " + _CurrPartitionOfMem);
         }
 
         public isEmpty(): boolean {

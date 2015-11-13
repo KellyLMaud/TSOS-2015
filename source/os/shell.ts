@@ -471,8 +471,8 @@ module TSOS {
                     if(_CurrPartitionOfMem <= 2) {
                         _MM.storeProgramInMemory(_CurrPartitionOfMem, _ProgramInput);
                         _MEM.memory[_CurrPartitionOfMem] = _ProgramInput;
-                        console.log("_MEM.memory = " + _MEM.memory);
-                        console.log("cuurent partition = " + _CurrPartitionOfMem);
+                        //console.log("_MEM.memory = " + _MEM.memory);
+                        //console.log("current partition = " + _CurrPartitionOfMem);
                     }
 
                     console.log(_ResidentList[0].PID);
@@ -511,7 +511,7 @@ module TSOS {
         public shellRun(args) {
             if(args.length > 0){
                 if(_MEM.isEmpty()) {
-                    _StdOut.putText('Nothing is in memory. Please try and load program');
+                    _StdOut.putText('Nothing is in memory');
                 }else {
                     _RunningPID = parseInt(args[0]);
                     var residentPID = -1;
@@ -524,9 +524,9 @@ module TSOS {
                         }
                     }
                     if(residentPID == -1){
-                        _StdOut.putText('Please input correct PID');
+                        _StdOut.putText('Input correct PID');
                     }else{
-                        _CurrPartitionOfMem = residentPIDPartition;//this is WRONG!!!!!!!!!!!
+                        _CurrPartitionOfMem = residentPIDPartition;
                         _CPU.clearProgram();
                         _CycleCounter = 0;
                         _CPU.isExecuting = true;
