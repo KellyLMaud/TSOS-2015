@@ -38,8 +38,8 @@ var _ProgramInput: any = "";
 // loading and running programs
 
 var _CurrPartitionOfMem: number = -1;
-//var _MemoryPartition: number = 256;
 var _CurrentPCB: any = null;
+var _CurrentlyExecuting: any = null;
 var _RunningPID: number = -1;
 
 var _ResidentList: any[] = [];
@@ -47,8 +47,6 @@ var _ReadyQueue: any[] = [];
 
 // CPU Scheduler
 var _QUANTUM: number = 6;
-//var _CPUScheduler: any = null;
-//var _SchedulerType: string = "rr";
 var _CycleCounter: number = null;
 
 

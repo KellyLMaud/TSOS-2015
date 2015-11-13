@@ -30,15 +30,13 @@ var _MM = null;
 var _ProgramInput = "";
 // loading and running programs
 var _CurrPartitionOfMem = -1;
-//var _MemoryPartition: number = 256;
 var _CurrentPCB = null;
+var _CurrentlyExecuting = null;
 var _RunningPID = -1;
 var _ResidentList = [];
 var _ReadyQueue = [];
 // CPU Scheduler
 var _QUANTUM = 6;
-//var _CPUScheduler: any = null;
-//var _SchedulerType: string = "rr";
 var _CycleCounter = null;
 var _CPU; // Utilize TypeScript's type annotation system to ensure that _CPU is an instance of the Cpu class.
 var _OSclock = 0; // Page 23.

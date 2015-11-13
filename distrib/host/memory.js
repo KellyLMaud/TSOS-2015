@@ -15,19 +15,12 @@ var TSOS;
                 }
             }
         };
-        //public getMemory(partition): string []{
-        //    return this.memory[partition];
-        //}
         Memory.prototype.getMemoryPartition = function (partition) {
-            //console.log("this.memory[partition] = " + this.memory[partition]);
-            //console.log("partition = " + partition);
-            //console.log("this.memory = " + this.memory);
             return this.memory[partition];
         };
         Memory.prototype.clearMemory = function () {
             this.initializeMemory(this.memorySize);
             TSOS.Control.clearMemTable(_CurrPartitionOfMem);
-            //console.log("_CurrPartitionOfMem " + _CurrPartitionOfMem);
         };
         Memory.prototype.isEmpty = function () {
             for (var i = 0; i < this.memory.length; i++) {

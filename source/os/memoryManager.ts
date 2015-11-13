@@ -29,12 +29,7 @@ module TSOS {
 
         public readFromMemory(partition, loc): any {
             var memPartition = _MEM.getMemoryPartition(partition);
-            //console.log("Part = " + partition);
-            //console.log("loc = " + loc);
-            //console.log("MEMPart = " + memPartition);
-            //console.log("MEM[loc] = " + memPartition[loc]);
             return memPartition[loc];
-            //return mem[loc];
         }
 
         public writeToMemory(partition, loc, code): void {

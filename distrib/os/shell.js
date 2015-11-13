@@ -386,8 +386,6 @@ var TSOS;
                     if (_CurrPartitionOfMem <= 2) {
                         _MM.storeProgramInMemory(_CurrPartitionOfMem, _ProgramInput);
                         _MEM.memory[_CurrPartitionOfMem] = _ProgramInput;
-                        console.log("_MEM.memory = " + _MEM.memory);
-                        console.log("cuurent partition = " + _CurrPartitionOfMem);
                     }
                     console.log(_ResidentList[0].PID);
                     _StdOut.putText("Program successfully loaded");
@@ -420,7 +418,7 @@ var TSOS;
         Shell.prototype.shellRun = function (args) {
             if (args.length > 0) {
                 if (_MEM.isEmpty()) {
-                    _StdOut.putText('Nothing is in memory. Please try and load program');
+                    _StdOut.putText('Nothing is in memory');
                 }
                 else {
                     _RunningPID = parseInt(args[0]);
@@ -431,16 +429,19 @@ var TSOS;
                         if (_ResidentList[i].PID == _RunningPID) {
                             residentPID = i;
                             residentPIDPartition = _ResidentList[i].baseRegister / 256;
+                            _CurrentlyExecuting = _ResidentList[i];
+                            _ResidentList.splice(i, 1);
                         }
                     }
                     if (residentPID == -1) {
-                        _StdOut.putText('Please input correct PID');
+                        _StdOut.putText('Input correct PID');
                     }
                     else {
-                        _CurrPartitionOfMem = residentPIDPartition; //this is WRONG!!!!!!!!!!!
+                        _CurrPartitionOfMem = residentPIDPartition;
                         _CPU.clearProgram();
                         _CycleCounter = 0;
                         _CPU.isExecuting = true;
+                        _ReadyQueue.push(_CurrentlyExecuting);
                     }
                 }
             }
@@ -450,12 +451,8 @@ var TSOS;
         };
         Shell.prototype.shellClearmem = function (args) {
             _MEM.clearMemory();
-            //Control.resetMemory();
             _CurrPartitionOfMem = -1;
             _StdOut.putText("Memory cleared");
-            console.log(_MEM.memory[0]);
-            console.log(_MEM.memory[1]);
-            console.log(_MEM.memory[2]);
         };
         Shell.prototype.shellRunall = function (args) {
         };
@@ -481,6 +478,16 @@ var TSOS;
             }
         };
         Shell.prototype.shellKill = function (args) {
+            if (args.length > 0) {
+                var terminatePID = args[0];
+                for (var i = 0; i < _ReadyQueue.length; i++) {
+                    if (_ReadyQueue[i].PID == terminatePID) {
+                        _ReadyQueue[i].processState = "Terminated";
+                        _ReadyQueue.splice(i, 1);
+                        _CPU.isExecuting = false;
+                    }
+                }
+            }
         };
         return Shell;
     })();

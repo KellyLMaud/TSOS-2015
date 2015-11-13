@@ -23,12 +23,7 @@ var TSOS;
         };
         MemoryManager.prototype.readFromMemory = function (partition, loc) {
             var memPartition = _MEM.getMemoryPartition(partition);
-            //console.log("Part = " + partition);
-            //console.log("loc = " + loc);
-            //console.log("MEMPart = " + memPartition);
-            //console.log("MEM[loc] = " + memPartition[loc]);
             return memPartition[loc];
-            //return mem[loc];
         };
         MemoryManager.prototype.writeToMemory = function (partition, loc, code) {
             var row = partition * 32;

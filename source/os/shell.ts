@@ -521,6 +521,8 @@ module TSOS {
                         if(_ResidentList[i].PID == _RunningPID){
                             residentPID = i;
                             residentPIDPartition = _ResidentList[i].baseRegister / 256;
+                            _CurrentlyExecuting = _ResidentList[i];
+                            _ResidentList.splice(i, 1);
                         }
                     }
                     if(residentPID == -1){
@@ -530,6 +532,7 @@ module TSOS {
                         _CPU.clearProgram();
                         _CycleCounter = 0;
                         _CPU.isExecuting = true;
+                        _ReadyQueue.push(_CurrentlyExecuting);
                     }
                 }
             }else{
@@ -539,12 +542,8 @@ module TSOS {
 
         public shellClearmem(args) {
             _MEM.clearMemory();
-            //Control.resetMemory();
             _CurrPartitionOfMem = -1;
             _StdOut.putText("Memory cleared");
-            console.log(_MEM.memory[0]);
-            console.log(_MEM.memory[1]);
-            console.log(_MEM.memory[2]);
         }
 
         public shellRunall(args) {
@@ -573,7 +572,18 @@ module TSOS {
         }
 
         public shellKill(args) {
+            if(args.length > 0){
+                var terminatePID = args[0];
 
+                for(var i = 0; i < _ReadyQueue.length; i++){
+                    if(_ReadyQueue[i].PID == terminatePID){
+                        _ReadyQueue[i].processState = "Terminated";
+                        _ReadyQueue.splice(i, 1);
+
+                        _CPU.isExecuting = false;
+                    }
+                }
+            }
         }
 
 
