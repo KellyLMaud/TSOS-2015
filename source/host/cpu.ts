@@ -261,17 +261,24 @@ module TSOS {
         }
 
 
+        public updateCPUElements(): void {
+            document.getElementById("tdPC").innerHTML = this.PC.toString();
+            document.getElementById("tdIR").innerHTML = _MM.readFromMemory(_CurrPartitionOfMem, this.PC);
+            document.getElementById("tdAccum").innerHTML = this.Acc.toString();
+            document.getElementById("tdXReg").innerHTML = this.Xreg.toString();
+            document.getElementById("tdYReg").innerHTML = this.Yreg.toString();
+            document.getElementById("tdZFlag").innerHTML = this.Zflag.toString();
+
+            //if(_ReadyQueue.length > 0){
+            //    TSOS.Control.updateReadyQueue(this.PC, this.Acc, this.Xreg, this.Yreg, this.Zflag);
+            //}
+        }
         public cycle(): void {
             _Kernel.krnTrace('CPU cycle');
             var opCode = _MM.readFromMemory(_CurrPartitionOfMem, this.PC);
             console.log(_CurrPartitionOfMem);
             console.log(this.PC);
-            document.getElementById("tdPC").innerHTML = this.PC.toString();
-            document.getElementById("tdIR").innerHTML = opCode;
-            document.getElementById("tdAccum").innerHTML = this.Acc.toString();
-            document.getElementById("tdXReg").innerHTML = this.Xreg.toString();
-            document.getElementById("tdYReg").innerHTML = this.Yreg.toString();
-            document.getElementById("tdZFlag").innerHTML = this.Zflag.toString();
+            this.updateCPUElements();
             console.log(opCode);
             this.opCodes(opCode);
             console.log("PC = " + this.PC);

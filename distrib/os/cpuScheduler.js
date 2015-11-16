@@ -9,14 +9,16 @@ var TSOS;
                 _CycleCounter = 0;
             }
             _CycleCounter++;
+            console.log("_CycleCounter++  ");
             _CPU.cycle();
         };
         CpuScheduler.prototype.roundRobin = function () {
+            console.log("ROUNDROBINCONTEXTSWITCH");
             //TSOS.Control.updateReadyQueueDisplay();
-            //_CPU.updateCPUElements();
+            _CPU.updateCPUElements();
             _ReadyQueue[0].processState = "Waiting";
-            var pcbToBeMoved = _CurrentPCB;
-            _ReadyQueue.push(pcbToBeMoved);
+            var pcbSwitch = _CurrentPCB;
+            _ReadyQueue.push(pcbSwitch);
             _ReadyQueue.shift();
             _CurrentPCB = _ReadyQueue[0];
             _RunningPID = parseInt(_ReadyQueue[0].PID);
@@ -29,7 +31,7 @@ var TSOS;
             // Calculates the current block of memory for the process to be run
             _CurrPartitionOfMem = _CurrentPCB.baseRegister / 256;
             _CPU.isExecuting = true;
-            _Kernel.krnTrace("Current cycle count > quantum of " + _QUANTUM + ", Switching context");
+            _Kernel.krnTrace("Current cycle count of " + _CycleCounter + " > quantum of " + _QUANTUM + ", Switching context");
         };
         return CpuScheduler;
     })();

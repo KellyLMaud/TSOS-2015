@@ -12,16 +12,18 @@ module TSOS {
                 _CycleCounter = 0;
             }
             _CycleCounter++;
+            console.log("_CycleCounter++  ");
             _CPU.cycle();
         }
 
         public roundRobin(): void {
+            console.log("ROUNDROBINCONTEXTSWITCH");
             //TSOS.Control.updateReadyQueueDisplay();
-            //_CPU.updateCPUElements();
+            _CPU.updateCPUElements();
 
             _ReadyQueue[0].processState = "Waiting";
-            var pcbToBeMoved = _CurrentPCB;
-            _ReadyQueue.push(pcbToBeMoved);
+            var pcbSwitch = _CurrentPCB;
+            _ReadyQueue.push(pcbSwitch);
             _ReadyQueue.shift();
 
             _CurrentPCB = _ReadyQueue[0];
@@ -39,7 +41,8 @@ module TSOS {
 
             _CPU.isExecuting = true;
 
-            _Kernel.krnTrace("Current cycle count > quantum of " + _QUANTUM + ", Switching context");
+
+            _Kernel.krnTrace("Current cycle count of " + _CycleCounter + " > quantum of " + _QUANTUM + ", Switching context");
         }
     }
 }
