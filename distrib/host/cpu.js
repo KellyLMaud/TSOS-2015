@@ -42,7 +42,7 @@ var TSOS;
         };
         Cpu.prototype.printPCB = function (PID, PC, Accum, Xreg, Yreg, Zflag) {
             _StdOut.putText("PID: " + PID);
-            _StdOut.putText(", PC: " + PC);
+            _StdOut.putText(", PC: " + (PC - 1));
             _StdOut.putText(", ACC: " + Accum);
             _StdOut.putText(", XReg: " + Xreg);
             _StdOut.putText(", YReg: " + Yreg);
@@ -121,8 +121,7 @@ var TSOS;
                 default:
                     _StdOut.putText("Undefined OP Code " + input + ".");
                     _StdOut.advanceLine();
-                    _StdOut.putText("Killing process with PID = " + _CurrentPCB.PID);
-                    _OsShell.shellKill(_CurrentPCB.PID);
+                    _CPU.isExecuting = false;
             }
         };
         Cpu.prototype.loadAccumConst = function () {
@@ -202,7 +201,7 @@ var TSOS;
                 var branchSpan = _MM.hex2Dec(_MM.readFromMemory(_CurrPartitionOfMem, this.PC));
                 this.PC++;
                 this.PC = this.PC + branchSpan;
-                if (this.PC > 256) {
+                if (this.PC >= 256) {
                     this.PC = this.PC - 256;
                 }
             }
