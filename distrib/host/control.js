@@ -164,7 +164,7 @@ var TSOS;
                 }
             }
         };
-        Control.updateReadyQueue = function () {
+        Control.updateReadyQueueDisplay = function () {
             if (_ReadyQueue.length == 1) {
                 this.updateProcessOne();
             }

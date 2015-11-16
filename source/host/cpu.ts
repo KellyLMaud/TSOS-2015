@@ -260,7 +260,6 @@ module TSOS {
             _CurrentPCB.printPCB();
         }
 
-
         public printCPUElements(): void {
             document.getElementById("tdPC").innerHTML = this.PC.toString();
             document.getElementById("tdIR").innerHTML = _MM.readFromMemory(_CurrPartitionOfMem, this.PC);
@@ -268,8 +267,6 @@ module TSOS {
             document.getElementById("tdXReg").innerHTML = this.Xreg.toString();
             document.getElementById("tdYReg").innerHTML = this.Yreg.toString();
             document.getElementById("tdZFlag").innerHTML = this.Zflag.toString();
-
-            //UpdateReadyQueue
         }
 
         public updateCPUElements(_CurrentPCB: PCB): void {

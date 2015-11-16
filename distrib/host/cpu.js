@@ -252,7 +252,6 @@ var TSOS;
             document.getElementById("tdXReg").innerHTML = this.Xreg.toString();
             document.getElementById("tdYReg").innerHTML = this.Yreg.toString();
             document.getElementById("tdZFlag").innerHTML = this.Zflag.toString();
-            //UpdateReadyQueue
         };
         Cpu.prototype.updateCPUElements = function (_CurrentPCB) {
             this.PC = _CurrentPCB.PC;

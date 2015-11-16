@@ -81,7 +81,7 @@ var TSOS;
             }
             else if (_CPU.isExecuting) {
                 _CPUScheduler.contextSwitchCheck();
-                TSOS.Control.updateReadyQueue();
+                TSOS.Control.updateReadyQueueDisplay();
                 _CPU.cycle();
             }
             else {
