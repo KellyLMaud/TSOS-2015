@@ -36,7 +36,6 @@ var _ProgramInput: any = "";
 
 var _CurrPartitionOfMem: number = -1;
 var _CurrentPCB: any = null;
-var _CurrentlyExecuting: any = null;
 var _RunningPID: number = -1;
 
 var _ResidentList: any[] = [];

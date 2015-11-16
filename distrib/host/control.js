@@ -164,6 +164,53 @@ var TSOS;
                 }
             }
         };
+        Control.updateReadyQueue = function () {
+            if (_ReadyQueue.length == 1) {
+                this.updateProcessOne();
+            }
+            else if (_ReadyQueue.length == 2) {
+                this.updateProcessOne();
+                this.updateProcessTwo();
+            }
+            else if (_ReadyQueue.length == 3) {
+                this.updateProcessOne();
+                this.updateProcessTwo();
+                this.updateProcessThree();
+            }
+        };
+        Control.updateProcessOne = function () {
+            document.getElementById("tdP0PID").innerHTML = _ReadyQueue[0].PID.toString();
+            document.getElementById("tdP0PC").innerHTML = _ReadyQueue[0].PC.toString();
+            document.getElementById("tdP0Acc").innerHTML = _ReadyQueue[0].Acc.toString();
+            document.getElementById("tdP0XReg").innerHTML = _ReadyQueue[0].Xreg.toString();
+            document.getElementById("tdP0YReg").innerHTML = _ReadyQueue[0].Yreg.toString();
+            document.getElementById("tdP0ZFlag").innerHTML = _ReadyQueue[0].Zflag.toString();
+            document.getElementById("tdP0Base").innerHTML = _ReadyQueue[0].baseRegister.toString();
+            document.getElementById("tdP0Limit").innerHTML = _ReadyQueue[0].limitRegister.toString();
+            document.getElementById("tdP0State").innerHTML = _ReadyQueue[0].processState.toString();
+        };
+        Control.updateProcessTwo = function () {
+            document.getElementById("tdP1PID").innerHTML = _ReadyQueue[1].PID.toString();
+            document.getElementById("tdP1PC").innerHTML = _ReadyQueue[1].PC.toString();
+            document.getElementById("tdP1Acc").innerHTML = _ReadyQueue[1].Acc.toString();
+            document.getElementById("tdP1XReg").innerHTML = _ReadyQueue[1].Xreg.toString();
+            document.getElementById("tdP1YReg").innerHTML = _ReadyQueue[1].Yreg.toString();
+            document.getElementById("tdP1ZFlag").innerHTML = _ReadyQueue[1].Zflag.toString();
+            document.getElementById("tdP1Base").innerHTML = _ReadyQueue[1].baseRegister.toString();
+            document.getElementById("tdP1Limit").innerHTML = _ReadyQueue[1].limitRegister.toString();
+            document.getElementById("tdP1State").innerHTML = _ReadyQueue[1].processState.toString();
+        };
+        Control.updateProcessThree = function () {
+            document.getElementById("tdP2PID").innerHTML = _ReadyQueue[2].PID.toString();
+            document.getElementById("tdP2PC").innerHTML = _ReadyQueue[2].PC.toString();
+            document.getElementById("tdP2Acc").innerHTML = _ReadyQueue[2].Acc.toString();
+            document.getElementById("tdP2XReg").innerHTML = _ReadyQueue[2].Xreg.toString();
+            document.getElementById("tdP2YReg").innerHTML = _ReadyQueue[2].Yreg.toString();
+            document.getElementById("tdP2ZFlag").innerHTML = _ReadyQueue[2].Zflag.toString();
+            document.getElementById("tdP2Base").innerHTML = _ReadyQueue[2].baseRegister.toString();
+            document.getElementById("tdP2Limit").innerHTML = _ReadyQueue[2].limitRegister.toString();
+            document.getElementById("tdP2State").innerHTML = _ReadyQueue[2].processState.toString();
+        };
         return Control;
     })();
     TSOS.Control = Control;

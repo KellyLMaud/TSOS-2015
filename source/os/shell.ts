@@ -516,7 +516,8 @@ module TSOS {
                         if(_ResidentList[i].PID == _RunningPID){
                             residentPID = i;
                             residentPIDPartition = _ResidentList[i].baseRegister / 256;
-                            _CurrentlyExecuting = _ResidentList[i];
+                            _CurrentPCB = _ResidentList[i];
+                            _ReadyQueue.push(_ResidentList[i]);
                             _ResidentList.splice(i, 1);
                         }
                     }
@@ -541,7 +542,7 @@ module TSOS {
         }
 
         public shellRunall(args) {
-            //_ReadyQueue = [];
+            _ReadyQueue = [];
             for(var i = 0; i < _ResidentList.length; i++){
                 _ReadyQueue.push(_ResidentList[i]);
                 if(i > 0){

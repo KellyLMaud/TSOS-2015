@@ -29,7 +29,6 @@ var _MM = null;
 var _ProgramInput = "";
 var _CurrPartitionOfMem = -1;
 var _CurrentPCB = null;
-var _CurrentlyExecuting = null;
 var _RunningPID = -1;
 var _ResidentList = [];
 var _ReadyQueue = [];

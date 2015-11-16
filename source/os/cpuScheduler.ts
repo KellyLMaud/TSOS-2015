@@ -18,7 +18,6 @@ module TSOS {
 
         public roundRobin(): void {
             console.log("ROUNDROBINCONTEXTSWITCH");
-            //UpdateReadyQueue
             _CPU.printCPUElements();
 
             _ReadyQueue[0].processState = "Waiting";
@@ -61,7 +60,6 @@ module TSOS {
                 pcbSwitch.Xreg = _CPU.Xreg;
                 pcbSwitch.Yreg = _CPU.Yreg;
                 pcbSwitch.Zflag = _CPU.Zflag;
-                //_ReadyQueue.push(pcbSwitch);
                 _CurrentPCB = _ReadyQueue[0];
                 _CPU.updateCPUElements(_CurrentPCB);
             }else {

@@ -80,15 +80,13 @@ var TSOS;
                 this.krnInterruptHandler(interrupt.irq, interrupt.params);
             }
             else if (_CPU.isExecuting) {
-                this.checkContextSwitch();
+                _CPUScheduler.contextSwitchCheck();
+                TSOS.Control.updateReadyQueue();
+                _CPU.cycle();
             }
             else {
                 this.krnTrace("Idle");
             }
-        };
-        Kernel.prototype.checkContextSwitch = function () {
-            _CPUScheduler.contextSwitchCheck();
-            _CPU.cycle();
         };
         //
         // Interrupt Handling
