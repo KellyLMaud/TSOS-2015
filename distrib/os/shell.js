@@ -451,7 +451,7 @@ var TSOS;
             _StdOut.putText("Memory cleared");
         };
         Shell.prototype.shellRunall = function (args) {
-            _ReadyQueue = [];
+            //_ReadyQueue = [];
             for (var i = 0; i < _ResidentList.length; i++) {
                 _ReadyQueue.push(_ResidentList[i]);
                 if (i > 0) {
@@ -501,7 +501,7 @@ var TSOS;
                             _RunningPID = parseInt(_ReadyQueue[0].PID);
                             _ReadyQueue[0].processState = "Running";
                             _CPU.PC = _CurrentPCB.PC;
-                            _CPU.Acc = _CurrentPCB.Accum;
+                            _CPU.Acc = _CurrentPCB.Acc;
                             _CPU.Xreg = _CurrentPCB.Xreg;
                             _CPU.Yreg = _CurrentPCB.Yreg;
                             _CPU.Zflag = _CurrentPCB.Zflag;

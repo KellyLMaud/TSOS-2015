@@ -101,7 +101,7 @@ module TSOS {
 
 
         public checkContextSwitch(){
-            _CPUScheduler.contextSwitch();
+            _CPUScheduler.contextSwitchCheck();
             _CPU.cycle();
         }
 

@@ -541,7 +541,7 @@ module TSOS {
         }
 
         public shellRunall(args) {
-            _ReadyQueue = [];
+            //_ReadyQueue = [];
             for(var i = 0; i < _ResidentList.length; i++){
                 _ReadyQueue.push(_ResidentList[i]);
                 if(i > 0){
@@ -549,9 +549,7 @@ module TSOS {
                 }
             }
             _CurrentPCB = _ReadyQueue[0];
-
             _CurrPartitionOfMem = _CurrentPCB.baseRegister / 256;
-
             _CurrentPCB.processState = "Running";
             _RunningPID = parseInt(_ReadyQueue[0].PID);
             _ReadyQueue[0].processState = "Running";
@@ -598,7 +596,7 @@ module TSOS {
                             _ReadyQueue[0].processState = "Running";
 
                             _CPU.PC = _CurrentPCB.PC;
-                            _CPU.Acc = _CurrentPCB.Accum;
+                            _CPU.Acc = _CurrentPCB.Acc;
                             _CPU.Xreg = _CurrentPCB.Xreg;
                             _CPU.Yreg = _CurrentPCB.Yreg;
                             _CPU.Zflag = _CurrentPCB.Zflag;

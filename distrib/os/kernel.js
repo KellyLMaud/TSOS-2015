@@ -87,7 +87,7 @@ var TSOS;
             }
         };
         Kernel.prototype.checkContextSwitch = function () {
-            _CPUScheduler.contextSwitch();
+            _CPUScheduler.contextSwitchCheck();
             _CPU.cycle();
         };
         //

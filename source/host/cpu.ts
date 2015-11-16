@@ -40,16 +40,11 @@ module TSOS {
 
         public printPCB(PID, PC, Accum, Xreg, Yreg, Zflag): void {
             _StdOut.putText("PID: " + PID);
-            _StdOut.advanceLine();
-            _StdOut.putText("PC: " + PC);
-            _StdOut.advanceLine();
-            _StdOut.putText("ACC: " + Accum);
-            _StdOut.advanceLine();
-            _StdOut.putText("XReg: " + Xreg);
-            _StdOut.advanceLine();
-            _StdOut.putText("YReg: " + Yreg);
-            _StdOut.advanceLine();
-            _StdOut.putText("XFlag: " + Zflag);
+            _StdOut.putText(", PC: " + PC);
+            _StdOut.putText(", ACC: " + Accum);
+            _StdOut.putText(", XReg: " + Xreg);
+            _StdOut.putText(", YReg: " + Yreg);
+            _StdOut.putText(", ZFlag: " + Zflag);
             _StdOut.advanceLine();
         }
 
@@ -123,6 +118,11 @@ module TSOS {
                     console.log("FF");
                     this.systemCall();
                     break;
+                default:
+                    _StdOut.putText("Undefined OP Code " + input + ".");
+                    _StdOut.advanceLine();
+                    _StdOut.putText("Killing process with PID = " + _CurrentPCB.PID);
+                    _OsShell.shellKill(_CurrentPCB.PID);
             }
         }
 
@@ -179,9 +179,9 @@ module TSOS {
         public loadYRegMem(){
             //load the y register from memory
             var adr = _MM.hex2Dec(_MM.readFromMemory(_CurrPartitionOfMem, this.PC));
-            console.log(adr);
+            //console.log(adr);
             this.Yreg = _MM.hex2Dec(_MM.readFromMemory(_CurrPartitionOfMem, adr));
-            console.log(this.Yreg);
+            //console.log(this.Yreg);
             this.PC++;
             this.PC++;
         }
@@ -196,6 +196,7 @@ module TSOS {
             //break
             this.isExecuting = false;
             this.finishProgram();
+            _CPUScheduler.breakContextSwitch();
             _OsShell.putPrompt();
         }
 
@@ -261,7 +262,7 @@ module TSOS {
         }
 
 
-        public updateCPUElements(): void {
+        public printCPUElements(): void {
             document.getElementById("tdPC").innerHTML = this.PC.toString();
             document.getElementById("tdIR").innerHTML = _MM.readFromMemory(_CurrPartitionOfMem, this.PC);
             document.getElementById("tdAccum").innerHTML = this.Acc.toString();
@@ -269,19 +270,26 @@ module TSOS {
             document.getElementById("tdYReg").innerHTML = this.Yreg.toString();
             document.getElementById("tdZFlag").innerHTML = this.Zflag.toString();
 
-            //if(_ReadyQueue.length > 0){
-            //    TSOS.Control.updateReadyQueue(this.PC, this.Acc, this.Xreg, this.Yreg, this.Zflag);
-            //}
+            //UpdateReadyQueue
         }
+
+        public updateCPUElements(_CurrentPCB: PCB): void {
+            this.PC = _CurrentPCB.PC;
+            this.Acc = _CurrentPCB.Acc;
+            this.Xreg = _CurrentPCB.Xreg;
+            this.Yreg = _CurrentPCB.Yreg;
+            this.Zflag = _CurrentPCB.Zflag;
+        }
+
         public cycle(): void {
             _Kernel.krnTrace('CPU cycle');
             var opCode = _MM.readFromMemory(_CurrPartitionOfMem, this.PC);
-            console.log(_CurrPartitionOfMem);
-            console.log(this.PC);
-            this.updateCPUElements();
-            console.log(opCode);
+            console.log("_CurrPartitionOfMem = " +_CurrPartitionOfMem);
+            console.log("this.PC = " + this.PC);
+            this.printCPUElements();
+            console.log("opCode = " + opCode);
             this.opCodes(opCode);
-            console.log("PC = " + this.PC);
+            //console.log("PC = " + this.PC);
 
             if (_SingleStep){
                 this.isExecuting = false;
