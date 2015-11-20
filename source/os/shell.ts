@@ -588,6 +588,7 @@ module TSOS {
                 for(var i = 0; i < _ReadyQueue.length; i++){
                     if(_ReadyQueue[i].PID == terminatePID){
                         _ReadyQueue[i].processState = "Terminated";
+                        Control.clearReadyQueueDisplayRow(_ReadyQueue[i], _ReadyQueue.length);
                         _ReadyQueue.splice(i, 1);
 
                         if(_ReadyQueue.length > 0){
@@ -595,6 +596,7 @@ module TSOS {
                             _CurrentPCB = _ReadyQueue[0];
                             _RunningPID = parseInt(_ReadyQueue[0].PID);
                             _ReadyQueue[0].processState = "Running";
+
 
                             _CPU.PC = _CurrentPCB.PC;
                             _CPU.Acc = _CurrentPCB.Acc;

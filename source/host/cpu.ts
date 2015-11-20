@@ -211,15 +211,16 @@ module TSOS {
         public branchNBytes(){
             //branch n bytes if Zflag = 0
             if(this.Zflag === 0){
-                var branchSpan = _MM.hex2Dec(_MM.readFromMemory(_CurrPartitionOfMem, this.PC));
-                this.PC++;
-                this.PC = this.PC + branchSpan;
+                var branch = _MM.hex2Dec(_MM.readFromMemory(_CurrPartitionOfMem, this.PC++));
+                //this.PC++;
+                this.PC = this.PC + branch;
                 if(this.PC >= 256){
                     this.PC = this.PC - 256;
                 }
             } else {
                 this.PC++;
             }
+            _Kernel.krnTrace("branch");
         }
 
         public incrementByte(){

@@ -43,16 +43,23 @@ var TSOS;
             if (_ReadyQueue.length > 1) {
                 _CPU.isExecuting = true;
                 _ReadyQueue[0].processState = "Waiting";
-                var pcbSwitch = _ReadyQueue.shift(); //_CurrentPCB;
+                var pcbSwitch = _ReadyQueue.shift();
+                pcbSwitch.processState = "Terminated";
+                TSOS.Control.clearReadyQueueDisplayRow(pcbSwitch, _ReadyQueue.length);
                 pcbSwitch.PC = _CPU.PC;
                 pcbSwitch.Acc = _CPU.Acc;
                 pcbSwitch.Xreg = _CPU.Xreg;
                 pcbSwitch.Yreg = _CPU.Yreg;
                 pcbSwitch.Zflag = _CPU.Zflag;
                 _CurrentPCB = _ReadyQueue[0];
+                _CurrentPCB.processState = "Running";
+                _CurrPartitionOfMem = _CurrentPCB.baseRegister / 256;
                 _CPU.updateCPUElements(_CurrentPCB);
             }
             else {
+                _ReadyQueue[0].processState = "Terminated";
+                TSOS.Control.clearReadyQueueDisplayRow(_ReadyQueue[0], 0);
+                _ReadyQueue.shift();
                 _CPU.isExecuting = false;
             }
         };

@@ -495,6 +495,7 @@ var TSOS;
                 for (var i = 0; i < _ReadyQueue.length; i++) {
                     if (_ReadyQueue[i].PID == terminatePID) {
                         _ReadyQueue[i].processState = "Terminated";
+                        TSOS.Control.clearReadyQueueDisplayRow(_ReadyQueue[i], _ReadyQueue.length);
                         _ReadyQueue.splice(i, 1);
                         if (_ReadyQueue.length > 0) {
                             _CurrPartitionOfMem = _ReadyQueue[0].baseRegister / 256;

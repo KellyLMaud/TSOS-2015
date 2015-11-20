@@ -211,6 +211,50 @@ var TSOS;
             document.getElementById("tdP2Limit").innerHTML = _ReadyQueue[2].limitRegister.toString();
             document.getElementById("tdP2State").innerHTML = _ReadyQueue[2].processState.toString();
         };
+        Control.clearReadyQueueDisplayRow = function (pcb, row) {
+            if (row == 0) {
+                this.clearProcessOne(pcb);
+            }
+            else if (row == 1) {
+                this.clearProcessTwo(pcb);
+            }
+            else if (row == 2) {
+                this.clearProcessThree(pcb);
+            }
+        };
+        Control.clearProcessOne = function (pcb) {
+            document.getElementById("tdP0PID").innerHTML = pcb.PID.toString();
+            document.getElementById("tdP0PC").innerHTML = pcb.PC.toString();
+            document.getElementById("tdP0Acc").innerHTML = pcb.Acc.toString();
+            document.getElementById("tdP0XReg").innerHTML = pcb.Xreg.toString();
+            document.getElementById("tdP0YReg").innerHTML = pcb.Yreg.toString();
+            document.getElementById("tdP0ZFlag").innerHTML = pcb.Zflag.toString();
+            document.getElementById("tdP0Base").innerHTML = pcb.baseRegister.toString();
+            document.getElementById("tdP0Limit").innerHTML = pcb.limitRegister.toString();
+            document.getElementById("tdP0State").innerHTML = pcb.processState.toString();
+        };
+        Control.clearProcessTwo = function (pcb) {
+            document.getElementById("tdP1PID").innerHTML = pcb.PID.toString();
+            document.getElementById("tdP1PC").innerHTML = pcb.PC.toString();
+            document.getElementById("tdP1Acc").innerHTML = pcb.Acc.toString();
+            document.getElementById("tdP1XReg").innerHTML = pcb.Xreg.toString();
+            document.getElementById("tdP1YReg").innerHTML = pcb.Yreg.toString();
+            document.getElementById("tdP1ZFlag").innerHTML = pcb.Zflag.toString();
+            document.getElementById("tdP1Base").innerHTML = pcb.baseRegister.toString();
+            document.getElementById("tdP1Limit").innerHTML = pcb.limitRegister.toString();
+            document.getElementById("tdP1State").innerHTML = pcb.processState.toString();
+        };
+        Control.clearProcessThree = function (pcb) {
+            document.getElementById("tdP2PID").innerHTML = pcb.PID.toString();
+            document.getElementById("tdP2PC").innerHTML = pcb.PC.toString();
+            document.getElementById("tdP2Acc").innerHTML = pcb.Acc.toString();
+            document.getElementById("tdP2XReg").innerHTML = pcb.Xreg.toString();
+            document.getElementById("tdP2YReg").innerHTML = pcb.Yreg.toString();
+            document.getElementById("tdP2ZFlag").innerHTML = pcb.Zflag.toString();
+            document.getElementById("tdP2Base").innerHTML = pcb.baseRegister.toString();
+            document.getElementById("tdP2Limit").innerHTML = pcb.limitRegister.toString();
+            document.getElementById("tdP2State").innerHTML = pcb.processState.toString();
+        };
         return Control;
     })();
     TSOS.Control = Control;
