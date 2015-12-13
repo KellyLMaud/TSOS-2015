@@ -19,7 +19,7 @@ var TSOS;
             return this.memory[partition];
         };
         Memory.prototype.clearMemory = function () {
-            this.initializeMemory(this.memorySize);
+            this.initializeMemory(3);
             TSOS.Control.clearMemTable(_CurrPartitionOfMem);
         };
         Memory.prototype.isEmpty = function () {

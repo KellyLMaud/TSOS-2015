@@ -36,6 +36,7 @@ var _ReadyQueue = [];
 var _QUANTUM = 6;
 var _CPUScheduler;
 var _CycleCounter = null;
+var _SchedulingAlgorithm = "rr";
 var _CPU; // Utilize TypeScript's type annotation system to ensure that _CPU is an instance of the Cpu class.
 var _OSclock = 0; // Page 23.
 var _Mode = 0; // (currently unused)  0 = Kernel Mode, 1 = User Mode.  See page 21.

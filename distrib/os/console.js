@@ -140,7 +140,7 @@ var TSOS;
             }
             _Console.buffer = backspacedBuffer;
             _Console.currentXPosition = curXPos - charWidth;
-            _DrawingContext.fillStyle = "#DFDBC3";
+            _DrawingContext.fillStyle = "#4d4d4d";
             _DrawingContext.fillRect(_Console.currentXPosition, _Console.currentYPosition - _DefaultFontSize - 2, charWidth, _DefaultFontSize + _FontHeightMargin + 2);
         };
         Console.prototype.putText = function (text) {
@@ -154,6 +154,7 @@ var TSOS;
             //         Consider fixing that.
             if (text !== "") {
                 // Draw the text at the current X and Y coordinates.
+                _DrawingContext.strokeStyle = "#00b7ff";
                 _DrawingContext.drawText(this.currentFont, this.currentFontSize, this.currentXPosition, this.currentYPosition, text);
                 // Move the current X position.
                 var offset = _DrawingContext.measureText(this.currentFont, this.currentFontSize, text);

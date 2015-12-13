@@ -7,12 +7,19 @@ module TSOS {
         }
 
         public contextSwitchCheck(): void {
-            if(_CycleCounter >= _QUANTUM && _ReadyQueue.length > 0){
-                this.roundRobin();
+            if(_SchedulingAlgorithm == "rr"){
+                if(_CycleCounter >= _QUANTUM && _ReadyQueue.length > 0){
+                    this.roundRobin();
+                    _CycleCounter = 0;
+                }
+            }else if(_SchedulingAlgorithm == "fcfs"){
                 _CycleCounter = 0;
+            } else if(_SchedulingAlgorithm == "priority"){
+                this.priority();
             }
+
             _CycleCounter++;
-            console.log("_CycleCounter++  " + _CycleCounter);
+            //console.log("_CycleCounter++  " + _CycleCounter);
             //_CPU.cycle();
         }
 
@@ -72,6 +79,12 @@ module TSOS {
                 _ReadyQueue.shift();
                 _CPU.isExecuting = false;
             }
+
+        }
+
+
+        public priority(): void {
+            _ResidentList.sort(function(a, b){return a.priority-b.priority});
 
         }
 

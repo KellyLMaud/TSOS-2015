@@ -12,6 +12,8 @@ var TSOS;
             this.baseRegister = _CurrPartitionOfMem * 256;
             this.limitRegister = (_CurrPartitionOfMem * 256) + 255;
             this.processState = null;
+            this.priority = null;
+            this.location = null;
         }
         PCB.prototype.printPCB = function () {
             _CPU.printPCB(this.PID, this.PC, this.Acc, this.Xreg, this.Yreg, this.Zflag);

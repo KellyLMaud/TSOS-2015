@@ -67,17 +67,21 @@ module TSOS {
         }
 
         public static hostLog(msg: string, source: string = "?"): void {
+            var taLog = <HTMLInputElement> document.getElementById("taHostLog");
             // Note the OS CLOCK.
             var clock: number = _OSclock;
 
             // Note the REAL clock in milliseconds since January 1, 1970.
-            var now: number = new Date().getTime();
+            //var now: number = new Date().getTime();
+            var date = new Date();
+            var now = date.toLocaleDateString() + ", " + date.toLocaleTimeString();
 
             // Build the log string.
-            var str: string = "({ clock:" + clock + ", source:" + source + ", msg:" + msg + ", now:" + now  + " })"  + "\n";
-
+            //var str: string = "({ clock:" + clock + ", source:" + source + ", msg:" + msg + ", now:" + now  + " })"  + "\n";
+            var str = now + "\n" + "[" + clock + "] " + source + " - " + msg + "\n";
             // Update the log console.
-            var taLog = <HTMLInputElement> document.getElementById("taHostLog");
+
+
             taLog.value = str + taLog.value;
 
             // TODO in the future: Optionally update a log database or some streaming service.

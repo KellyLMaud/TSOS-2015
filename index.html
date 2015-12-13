@@ -42,7 +42,9 @@
 <body onload="onDocumentLoad()">
 
 <div id="divMain" style="width:100%;">
-    <label>adiOS</label>
+    <label id="osName" style="margin-left:4px; width:100px;">adiOS</label>
+    <label id="date" style="margin-left:104px; width:100px;"></label>
+    <label id="status" style="margin-left:208px; width:100px;"></label>
 
    <div id="divButtonBar" style="margin:4px;">
       <input type="button"
@@ -122,37 +124,13 @@
       </canvas>
    </div>
 
-    <div id="divDateTime" style="margin-left:520px;">
-        <label>
-            Date:
-            <br>
-            <textarea name="DateTime"
-                  id  ="DateTime"
-                  rows="1"
-                  cols="48"
-                  readonly></textarea>
-        </label>
-    </div>
-
-    <div id="divStatusBar" style="margin-left:520px;">
-        <label>
-            Status:
-            <br>
-            <textarea name="taStatusBar"
-                  id  ="taStatusBar"
-                  rows="2"
-                  cols="48"
-                  readonly></textarea>
-        </label>
-    </div>
-
     <div id="divLog" style="margin-left:520px;">
       <label>
          Host Log
          <br>
          <textarea name="taHostLog"
                    id  ="taHostLog"
-                   rows="26"
+                   rows="8"
                    cols="48"
          ></textarea>
       </label>
@@ -169,14 +147,12 @@
          ></textarea>
       </label>
    </div>
-
-
-
     <br>
-
-    <div id="divCPUComponentsDisplay">
+    <div id="divCPUComponentsDisplay" style = "position:absolute;margin-left:520px; width:300px; height:75px">
         <label id='CPUDisplayLabel'>CPU</label>
-        <table id="tableCPUComponents">
+        <table style="position:absolute;width:362px; height:75px" id="tableCPUComponents">
+
+            <thead>
             <tr style="text-align: center;">
                 <th>PC</th>
                 <th>IR</th>
@@ -185,6 +161,8 @@
                 <th>Y-Reg</th>
                 <th>Z-Flag</th>
             </tr>
+            </thead>
+            <tbody>
             <tr style="text-align: center;">
                 <td id="tdPC"></td>
                 <td id="tdIR"></td>
@@ -193,17 +171,20 @@
                 <td id="tdYReg"></td>
                 <td id="tdZFlag"></td>
             </tr>
+            </tbody>
         </table>
     </div>
+    <br>
+
 
     <br>
 
-    <label style="clear:left; float: left;">Ready Queue</label>
+    <label style="position:absolute; top:55px; left:900px; width:200px; height:25px; clear:left; float: left;" id="readyQueueLabel">Ready Queue</label>
 
     <br>
 
-    <div id="pcbReadyQueue" >
-        <table id="pcbReadyQueueTable" >
+    <div id="pcbReadyQueue" style="position: absolute; top:76px; left:898px; width:900px; height:25px">
+        <table id="pcbReadyQueueTable" style="width:600px; height: 160px;">
             <thead>
             <tr style="text-align: center;">
                 <th> PID </th>
@@ -214,7 +195,7 @@
                 <th> Z-Flag </th>
                 <th> Base </th>
                 <th> Limit </th>
-                <th> State </th>
+                <th style="width:150px;"> State </th>
 
             </tr>
             </thead>
@@ -225,7 +206,7 @@
                 <td id="tdP0Acc"></td>
                 <td id="tdP0XReg"></td>
                 <td id="tdP0YReg"></td>
-                <td id="tdP0ZFlag"><td>
+                <td id="tdP0ZFlag"></td>
                 <td id="tdP0Base"></td>
                 <td id="tdP0Limit"></td>
                 <td id="tdP0State"></td>
@@ -236,7 +217,7 @@
                 <td id="tdP1Acc"></td>
                 <td id="tdP1XReg"></td>
                 <td id="tdP1YReg"></td>
-                <td id="tdP1ZFlag"><td>
+                <td id="tdP1ZFlag"></td>
                 <td id="tdP1Base"></td>
                 <td id="tdP1Limit"></td>
                 <td id="tdP1State"></td>
@@ -247,7 +228,7 @@
                 <td id="tdP2Acc"></td>
                 <td id="tdP2XReg"></td>
                 <td id="tdP2YReg"></td>
-                <td id="tdP2ZFlag"><td>
+                <td id="tdP2ZFlag"></td>
                 <td id="tdP2Base"></td>
                 <td id="tdP2Limit"></td>
                 <td id="tdP2State"></td>
@@ -256,21 +237,31 @@
 
         </table>
     </div>
+    <br>
 
+    <div id="divFileSystemDisplay">
+        <label style="position:absolute; top:246px; left:900px; width:400px; height:25px; clear:left; float: left;" id='FileSystemLabel'>File System</label>
+            <br>
+            <div id="fileSystemDisplayWrapper">
+                <table style="position:absolute; top:267px; left:900px; width:400px; height:75px" id="fileSystem">
+                    <thead>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+    </div>
     <br>
 
 
     <div id="divMemoryDisplay">
-        <label id='memoryLabel'>
-            Memory
-            <br>
-            <div id="memoryDisplayWrapper" style = "height: 200px; width: 250px; overflow: scroll; background-color: aliceblue">
+        <label style="position:absolute; top:399px; left:900px; float: left;" id='memoryLabel'>Memory</label>
+            <div id="memoryDisplayWrapper" style = "position:absolute; top:420px; left:900px; height: 160px; width: auto; overflow-y: scroll;">
                 <table id="memoryTable">
                     <tbody>
                     </tbody>
                 </table>
             </div>
-        </label>
     </div>
 
 

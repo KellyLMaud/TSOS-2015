@@ -151,8 +151,53 @@ module TSOS {
                                   "<pid> - kill an active process.");
             this.commandList[this.commandList.length] = sc;
 
-            // ps  - list the running processes and their IDs
-            // kill <id> - kills the specified process id.
+            // create <filename>
+            sc = new ShellCommand(this.shellCreate,
+                                  "create",
+                                  "<fileame> - creates the file, filename.");
+            this.commandList[this.commandList.length] = sc;
+
+            // read <filename>
+            sc = new ShellCommand(this.shellRead,
+                                  "read",
+                                  "<filename> - read and display the contents of filename.");
+            this.commandList[this.commandList.length] = sc;
+
+            // write <filename> "data"
+            sc = new ShellCommand(this.shellWrite,
+                                  "write",
+                                  "<filename> 'data' - write the data inside the quotes to filename.");
+            this.commandList[this.commandList.length] = sc;
+
+            // delete <filename>
+            sc = new ShellCommand(this.shellDelete,
+                                  "delete",
+                                  "<filename> - remove the filename and display a message.");
+            this.commandList[this.commandList.length] = sc;
+
+            // format
+            sc = new ShellCommand(this.shellFormat,
+                                  "format",
+                                  " - initialize all blocks in all sectors in all tracks.");
+            this.commandList[this.commandList.length] = sc;
+
+            // ls
+            sc = new ShellCommand(this.shellLs,
+                                  "ls",
+                                  " - list files currently stored on the disk.");
+            this.commandList[this.commandList.length] = sc;
+
+            // setschedule [rr, tcfs, priority]
+            sc = new ShellCommand(this.shellSetSchedule,
+                                  "setschedule",
+                                  "<rr, fcfs, priority> - set the cpu scheduling algorithm by selecting one from the list.");
+            this.commandList[this.commandList.length] = sc;
+
+            // getschedule
+            sc = new ShellCommand(this.shellGetSchedule,
+                                  "getschedule",
+                                  " - return currently selected cpu scheduling algorithm.");
+            this.commandList[this.commandList.length] = sc;
 
             //
             // Display the initial prompt.
@@ -366,6 +411,30 @@ module TSOS {
                     case "kill":
                         _StdOut.putText("kill <pid> - kill an active process.");
                         break;
+                    case "create":
+                        _StdOut.putText("create <filename> - create the file, filename.");
+                        break;
+                    case "read":
+                        _StdOut.putText("read <filename> - read and display the contents of filename.");
+                        break;
+                    case "write":
+                        _StdOut.putText("write <filename> 'data' - write the data in the quotes to filename.");
+                        break;
+                    case "delete":
+                        _StdOut.putText("delete <filename> - remove filename from storage.");
+                        break;
+                    case "format":
+                        _StdOut.putText("format - initialize all blocks in all sectors in all tracks.");
+                        break;
+                    case "ls":
+                        _StdOut.putText("ls - list the files currently stored on the disk.");
+                        break;
+                    case "setschedule":
+                        _StdOut.putText("setschedule [rr, fcfs, priority] - set the cpu scheduling algorithm by selecting one from the list.");
+                        break;
+                    case "getschedule":
+                        _StdOut.putText("getschedule - return currently selected cpu scheduling algorithm.");
+                        break;
                     default:
                         _StdOut.putText("No manual entry for " + args[0] + ".");
                 }
@@ -432,6 +501,10 @@ module TSOS {
         }
 
         public shellLoad(args) {
+            var priority = 0;
+            if (args > 0){
+                priority = args[0];
+            }
             _ProgramInput = (<HTMLInputElement>document.getElementById("taProgramInput")).value.trim().toUpperCase();
             var isValid = true;
             if(_ProgramInput.length > 0){
@@ -458,6 +531,7 @@ module TSOS {
 
                     _CurrentPCB = new PCB();
                     _CurrentPCB.processState = "Resident";
+                    _CurrentPCB.priority = priority;
 
                     if(_CurrPartitionOfMem >= 2){
                         _CurrentPCB.baseRegister = baseRegister;
@@ -492,10 +566,7 @@ module TSOS {
                     newstatus = newstatus + " " + args[i];
                 }
             }
-            var status = <HTMLInputElement>document.getElementById("taStatusBar");
-            var date = new Date();
-            var datetime = date.toLocaleDateString() + " " + date.toLocaleTimeString();
-            status.value = datetime + " -" + newstatus + "\n" + status.value + "\n";
+            document.getElementById("status").innerHTML = newstatus;
         }
 
         public shellBSOD(args) {
@@ -608,6 +679,70 @@ module TSOS {
                         }
                     }
                 }
+            }
+        }
+
+        //<fileame> - creates the file, filename.
+        public shellCreate(args){
+
+        }
+
+        //<filename> - read and display the contents of filename.
+        public shellRead(args){
+
+        }
+
+        //<filename> 'data' - write the data inside the quotes to filename.
+        public shellWrite(args){
+
+        }
+
+        //<filename> - remove the filename and display a message.
+        public shellDelete(args){
+
+        }
+
+        //initialize all blocks in all sectors in all tracks.
+        public shellFormat(args){
+
+        }
+
+        //list files currently stored on the disk
+        public shellLs(args){
+
+        }
+
+        //<rr, fcfs, priority> - set the cpu scheduling algorithm by selecting one from the list.
+        public shellSetSchedule (args){
+            var sched = args[0];
+
+            if(sched === "rr"){
+                _SchedulingAlgorithm = sched;
+                _StdOut.putText("CPU Scheduling algorithm set to Round Robin");
+
+            }else if(sched === "fcfs"){
+                _SchedulingAlgorithm = sched;
+                _StdOut.putText("CPU Scheduling algorithm set to First Come First Served");
+
+            }else if(sched === "priority"){
+                _SchedulingAlgorithm = sched;
+                _StdOut.putText("CPU Scheduling algorithm set to Priority");
+                _CPUScheduler.priority();
+
+            } else {
+                _StdOut.putText("invalid scheduling algorithm.");
+            }
+        }
+
+        //return currently selected cpu scheduling algorithm.
+        public shellGetSchedule(args){
+
+            if(_SchedulingAlgorithm === "rr"){
+                _StdOut.putText("Round Robin");
+            } else if(_SchedulingAlgorithm === "fcfs"){
+                _StdOut.putText("First Come First Serve");
+            } else if(_SchedulingAlgorithm === "priority"){
+                _StdOut.putText("Priority");
             }
         }
 

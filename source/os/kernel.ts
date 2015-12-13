@@ -80,10 +80,10 @@ module TSOS {
                This, on the other hand, is the clock pulse from the hardware / VM / host that tells the kernel
                that it has to look for interrupts and process them if it finds any.                           */
 
-            var dt = <HTMLInputElement>document.getElementById("DateTime");
+
             var date = new Date();
             var datetime = date.toLocaleDateString() + " " + date.toLocaleTimeString();
-            dt.value = datetime;
+            document.getElementById("date").innerHTML = datetime;
 
             // Check for an interrupt, are any. Page 560
             if (_KernelInterruptQueue.getSize() > 0) {
@@ -165,6 +165,7 @@ module TSOS {
         // OS Utility Routines
         //
         public krnTrace(msg: string) {
+            var count = 0;
              // Check globals to see if trace is set ON.  If so, then (maybe) log the message.
              if (_Trace) {
                 if (msg === "Idle") {
@@ -172,7 +173,9 @@ module TSOS {
                     if (_OSclock % 10 == 0) {
                         // Check the CPU_CLOCK_INTERVAL in globals.ts for an
                         // idea of the tick rate and adjust this line accordingly.
+
                         Control.hostLog(msg, "OS");
+
                     }
                 } else {
                     Control.hostLog(msg, "OS");

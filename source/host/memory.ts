@@ -26,7 +26,7 @@ module TSOS {
         }
 
         public clearMemory(): void {
-            this.initializeMemory(this.memorySize);
+            this.initializeMemory(3);
             Control.clearMemTable(_CurrPartitionOfMem);
         }
 

@@ -4,12 +4,20 @@ var TSOS;
         function CpuScheduler() {
         }
         CpuScheduler.prototype.contextSwitchCheck = function () {
-            if (_CycleCounter >= _QUANTUM && _ReadyQueue.length > 0) {
-                this.roundRobin();
+            if (_SchedulingAlgorithm == "rr") {
+                if (_CycleCounter >= _QUANTUM && _ReadyQueue.length > 0) {
+                    this.roundRobin();
+                    _CycleCounter = 0;
+                }
+            }
+            else if (_SchedulingAlgorithm == "fcfs") {
                 _CycleCounter = 0;
             }
+            else if (_SchedulingAlgorithm == "priority") {
+                this.priority();
+            }
             _CycleCounter++;
-            console.log("_CycleCounter++  " + _CycleCounter);
+            //console.log("_CycleCounter++  " + _CycleCounter);
             //_CPU.cycle();
         };
         CpuScheduler.prototype.roundRobin = function () {
@@ -62,6 +70,9 @@ var TSOS;
                 _ReadyQueue.shift();
                 _CPU.isExecuting = false;
             }
+        };
+        CpuScheduler.prototype.priority = function () {
+            _ResidentList.sort(function (a, b) { return a.priority - b.priority; });
         };
         return CpuScheduler;
     })();

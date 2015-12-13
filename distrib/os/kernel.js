@@ -68,10 +68,9 @@ var TSOS;
                This is NOT the same as a TIMER, which causes an interrupt and is handled like other interrupts.
                This, on the other hand, is the clock pulse from the hardware / VM / host that tells the kernel
                that it has to look for interrupts and process them if it finds any.                           */
-            var dt = document.getElementById("DateTime");
             var date = new Date();
             var datetime = date.toLocaleDateString() + " " + date.toLocaleTimeString();
-            dt.value = datetime;
+            document.getElementById("date").innerHTML = datetime;
             // Check for an interrupt, are any. Page 560
             if (_KernelInterruptQueue.getSize() > 0) {
                 // Process the first interrupt on the interrupt queue.
@@ -143,6 +142,7 @@ var TSOS;
         // OS Utility Routines
         //
         Kernel.prototype.krnTrace = function (msg) {
+            var count = 0;
             // Check globals to see if trace is set ON.  If so, then (maybe) log the message.
             if (_Trace) {
                 if (msg === "Idle") {

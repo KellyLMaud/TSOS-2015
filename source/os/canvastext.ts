@@ -176,6 +176,7 @@ module TSOS {
                         ctx.lineTo( x + a[0]*mag, y - a[1]*mag);
                     }
                 }
+                ctx.strokeStyle = "#00b7ff";
                 ctx.stroke();
                 x += c.width*mag;
             }

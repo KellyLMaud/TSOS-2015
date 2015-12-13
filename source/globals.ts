@@ -45,6 +45,7 @@ var _ReadyQueue: any[] = [];
 var _QUANTUM: number = 6;
 var _CPUScheduler: TSOS.CpuScheduler;
 var _CycleCounter: number = null;
+var _SchedulingAlgorithm = "rr";
 
 
 

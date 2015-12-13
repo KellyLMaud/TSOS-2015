@@ -210,17 +210,65 @@ module TSOS {
 
         public branchNBytes(){
             //branch n bytes if Zflag = 0
-            if(this.Zflag === 0){
-                var branch = _MM.hex2Dec(_MM.readFromMemory(_CurrPartitionOfMem, this.PC));
-                this.PC++;
-                this.PC = this.PC + branch;
-                if(this.PC >= 256){
-                    this.PC = this.PC - 256;
+            //if(this.Zflag === 0){
+            //    var branch = _MM.hex2Dec(_MM.readFromMemory(_CurrPartitionOfMem, this.PC));
+            //    //this.PC++;
+            //    this.PC = this.PC + branch + 1;
+            //    if(this.PC >= 256){
+            //        this.PC = this.PC - 256;
+            //    }
+            //} else {
+            //    this.PC++;
+            //}
+
+            if (this.Zflag===0){
+                //console.log("this.PC before converting and reading " + this.PC);
+                this.PC +=_MM.hex2Dec(_MM.readFromMemory(_CurrPartitionOfMem, this.PC++))+1 ;
+                //console.log("this.PC after converting and reading " + this.PC);
+                //console.log("_CurrentPCB.base " + _CurrentPCB.baseRegister);
+                if (this.PC>=256){
+                    //console.log("this.PC if >= 256 before " + this.PC);
+                    this.PC-=256
+                    //console.log("this.PC if >= 256 after " + this.PC);
                 }
-            } else {
-                this.PC++;
             }
+            else {
+                this.PC++;
+                //console.log("this.PC else " + this.PC);
+            }
+
             _Kernel.krnTrace("branch");
+
+
+
+            //var branch = _MM.hex2Dec(_MM.readFromMemory(_CurrPartitionOfMem, this.PC++));
+            //if(this.Zflag === 0){
+            //    var b  = this.PC + branch;
+            //    if(b >= _CurrentPCB.limit){
+            //        this.PC = b - 255;
+            //    }else{
+            //        this.PC = b + 1;
+            //    }
+            //} else {
+            //    this.PC++;
+            //}
+            //_Kernel.krnTrace("branch");
+
+            //++this.PC;
+            //var swap = memManager.readCodeInMemory(this.PC);
+            //var num = parseInt(swap, 16);
+            //if(this.Zflag == 0){
+            //    var jump = this.PC + num;
+            //    if(jump > currentlyExecuting.limit){
+            //        this.PC = jump -255;
+            //    }
+            //    else{
+            //        this.PC = jump + 1;
+            //    }
+            //}
+            //else{
+            //    this.PC+=1;
+            //}
         }
 
         public incrementByte(){
@@ -284,8 +332,14 @@ module TSOS {
             console.log("_CurrPartitionOfMem = " +_CurrPartitionOfMem);
             console.log("this.PC = " + this.PC);
             this.printCPUElements();
+            //this.updateCPUElements(_CurrentPCB);
             console.log("opCode = " + opCode);
-            this.opCodes(opCode);
+            if(this.Yreg >= _CurrentPCB.baseRegister + 256){
+                this.break();
+                _Kernel.krnTrace('invalid memory access');
+            }else{
+                this.opCodes(opCode);
+            }
             //console.log("PC = " + this.PC);
 
             if (_SingleStep){

@@ -11,6 +11,8 @@ module TSOS {
         baseRegister: number;
         limitRegister: number;
         processState: string;
+        priority: number;
+        location: string;
 
         constructor(){
             this.PID = _PID++;
@@ -22,6 +24,8 @@ module TSOS {
             this.baseRegister = _CurrPartitionOfMem * 256;
             this.limitRegister = (_CurrPartitionOfMem * 256) + 255;
             this.processState = null;
+            this.priority = null;
+            this.location = null;
         }
 
         public printPCB(): void {
