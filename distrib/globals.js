@@ -26,6 +26,7 @@ var _SingleStep = false;
 var _MEM = null;
 var _MemTable = null;
 var _MM = null;
+var _FileTable = null;
 var _ProgramInput = "";
 var _CurrPartitionOfMem = -1;
 var _CurrentPCB = null;
@@ -37,6 +38,9 @@ var _QUANTUM = 6;
 var _CPUScheduler;
 var _CycleCounter = null;
 var _SchedulingAlgorithm = "rr";
+//deviceDriverFileSystem
+var _fsDD;
+var diskIsFormatted = false;
 var _CPU; // Utilize TypeScript's type annotation system to ensure that _CPU is an instance of the Cpu class.
 var _OSclock = 0; // Page 23.
 var _Mode = 0; // (currently unused)  0 = Kernel Mode, 1 = User Mode.  See page 21.

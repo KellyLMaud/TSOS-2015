@@ -47,6 +47,8 @@ var TSOS;
             _MM = new TSOS.MemoryManager();
             //initialize cpuScheduler
             _CPUScheduler = new TSOS.CpuScheduler();
+            _fsDD = new TSOS.DeviceDriverFileSystem();
+            _fsDD.initializeFileSystemToScreen();
             // Check for our testing and enrichment core, which
             // may be referenced here (from index.html) as function Glados().
             if (typeof Glados === "function") {
@@ -257,6 +259,10 @@ var TSOS;
             document.getElementById("tdP2Base").innerHTML = pcb.baseRegister.toString();
             document.getElementById("tdP2Limit").innerHTML = pcb.limitRegister.toString();
             document.getElementById("tdP2State").innerHTML = pcb.processState.toString();
+        };
+        Control.updateFileSystemAtLoc = function (tsb, tableCel, newCode) {
+            //tableRow =
+            //_MemTable.rows[tableRow].cells[tableCel].innerHTML = newCode;
         };
         return Control;
     })();

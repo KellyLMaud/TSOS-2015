@@ -41,7 +41,7 @@ h3 {
   width: auto;
   color: #ff2e73;
   background-color: #4d4d4d;
-  font-weight: bold;
+  font-weight: 200;
   font-family: Arial;
   font-size: 12pt;
   margin: 5px;
@@ -61,22 +61,10 @@ h3 {
   cursor: default;
 }
 
-#memoryDisplayWrapper {
+textarea {
   background-color: #4d4d4d;
   border: 2px solid #efe180;
-  cursor: default;
-  color: #ffa111;
-}
-
-#pcbReadyQueueTable th, td, tr {
-  background-color: #4d4d4d;
-  border-collapse: collapse;
-  border: 2px solid #efe180;
-  color: #ffa111;
-}
-
-table {
-  border-collapse: collapse;
+  color: #a7e645;
 }
 
 label {
@@ -93,63 +81,116 @@ label {
   font-weight: bold;
 }
 
-#tableCpuComponents table, th, td, tr {
+/* Memory Display */
+#memoryDisplayWrapper {
   background-color: #4d4d4d;
-  border-collapse: collapse;
   border: 2px solid #efe180;
+  cursor: default;
   color: #a7e645;
 }
 
-td#tdPC{     color: #a7e645;  }
-td#tdIR{     color: #a7e645;  }
-td#tdAccum{  color: #a7e645;  }
-td#tdXReg{   color: #a7e645;  }
-td#tdYReg{   color: #a7e645;  }
-td#tdZFlag{  color: #a7e645;  }
+table.mem, .mem th, .mem td, .mem tr {
+  font-family: "Courier New", Courier, monospace;
+  font-size: 11pt;
+/*#memoryTable table, th, td, tr {*/
+  padding: 12px;
+  text-align: center;
+  background-color: #4d4d4d;
+  border-collapse: collapse;
+  border: 1px solid #efe180;
+  color: #a7e645;
+}
 
-#memoryTable th, td, tr {
-  padding: 10px;
+/*table.invoice, .invoice th, .invoice td{*/
+  /*border: 1px solid black;*/
+/*}*/
+
+#memoryLabel{
+  color: #a7e645;
+}
+
+/* Ready Queue Display */
+/*#pcbReadyQueueTable table, th, td, tr {*/
+table.pcb, .pcb th, .pcb td, .pcb tr {
+  font-family: "Courier New", Courier, monospace;
+  font-size: 11pt;
+  padding: 0px;
+  background-color: #4d4d4d;
+  border-collapse: collapse;
+  border: 2px solid #efe180;
+  color: #ffa111;
+  font-weight: normal;
+}
+
+#readyQueueLabel{
+  color: #ffa111;
+}
+
+/* CPU Display */
+/*#tableCpuComponents table, th, td, tr {*/
+table.cpu, .cpu th, .cpu td, .cpu tr {
+  font-family: "Courier New", Courier, monospace;
+  font-size: 11pt;
+  padding: 0px;
+  background-color: #4d4d4d;
+  border-collapse: collapse;
+  border: 2px solid #efe180;
+  color: #ffa111;
+}
+
+#CPUDisplayLabel{
+  color: #ffa111;
+}
+
+td#tdPC, #tdIR, #tdAccum, #tdXReg, #tdYReg, #tdZFlag{     color: #ffa111;  }
+
+/* File System Display */
+#FileSystemLabel{
+  color: #ffa111;
+}
+
+#fileSystemDisplayWrapper {
+  background-color: #4d4d4d;
+  border: 2px solid #efe180;
+  cursor: default;
+  color: #ffa111;
+}
+
+/*#fileSystem table, th, td, tr {*/
+table.file, .file th, .file td, .file tr {
+  font-family: "Courier New", Courier, monospace;
+  font-size: 11pt;
+  padding: 4px;
   text-align: center;
   background-color: #4d4d4d;
   border-collapse: collapse;
   border: 2px solid #efe180;
   color: #ffa111;
-
 }
 
-textarea {
-  background-color: #4d4d4d;
-  border: 2px solid #efe180;
-  color: #a7e645;
-
-}
-
-#memoryLabel{
-  color: #ffa111;
-}
-#FileSystemLabel{
-  color: #ffa111;
-}
-#CPUDisplayLabel{
-  color: #a7e645;
-}
-#readyQueueLabel{
-  color: #ffa111;
-}
-
+/* custom Scrollbar */
 ::-webkit-scrollbar {
   width: 12px;
 }
 
 ::-webkit-scrollbar-track {
-  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+  -webkit-box-shadow: inset 0 0 8px #333333;
+  -webkit-border-radius: 10px;
   border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb {
   border-radius: 10px;
+  -webkit-border-radius: 10px;
+  background: #404040;
   -webkit-box-shadow: inset 0 0 6px #13e4f3;
 }
+
+::-webkit-scrollbar-corner {
+  background: #404040;
+
+}
+
 
 
 /*

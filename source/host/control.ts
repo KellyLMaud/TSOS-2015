@@ -54,6 +54,8 @@ module TSOS {
             _MM = new MemoryManager();
             //initialize cpuScheduler
             _CPUScheduler = new CpuScheduler();
+            _fsDD = new DeviceDriverFileSystem();
+            _fsDD.initializeFileSystemToScreen();
 
 
             // Check for our testing and enrichment core, which
@@ -296,6 +298,14 @@ module TSOS {
             document.getElementById("tdP2Limit").innerHTML = pcb.limitRegister.toString();
             document.getElementById("tdP2State").innerHTML = pcb.processState.toString();
         }
+
+
+
+        public static updateFileSystemAtLoc(tsb, tableCel, newCode): void {
+            //tableRow =
+            //_MemTable.rows[tableRow].cells[tableCel].innerHTML = newCode;
+        }
+
 
     }
 }

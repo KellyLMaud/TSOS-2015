@@ -32,6 +32,7 @@
     <script type="text/javascript" src="distrib/os/pcb.js"></script>
     <script type="text/javascript" src="distrib/os/cpuScheduler.js"></script>
    <script type="text/javascript" src="distrib/os/kernel.js"></script>
+    <script type="text/javascript" src="distrib/os/deviceDriverFileSystem.js"></script>
 
    <!-- Other Routines -->
    <script type="text/javascript" src="distrib/utils.js"></script>
@@ -130,7 +131,7 @@
          <br>
          <textarea name="taHostLog"
                    id  ="taHostLog"
-                   rows="8"
+                   rows="9"
                    cols="48"
          ></textarea>
       </label>
@@ -147,44 +148,28 @@
          ></textarea>
       </label>
    </div>
-    <br>
-    <div id="divCPUComponentsDisplay" style = "position:absolute;margin-left:520px; width:300px; height:75px">
-        <label id='CPUDisplayLabel'>CPU</label>
-        <table style="position:absolute;width:362px; height:75px" id="tableCPUComponents">
-
-            <thead>
-            <tr style="text-align: center;">
-                <th>PC</th>
-                <th>IR</th>
-                <th>Accum</th>
-                <th>X-Reg</th>
-                <th>Y-Reg</th>
-                <th>Z-Flag</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr style="text-align: center;">
-                <td id="tdPC"></td>
-                <td id="tdIR"></td>
-                <td id="tdAccum"></td>
-                <td id="tdXReg"></td>
-                <td id="tdYReg"></td>
-                <td id="tdZFlag"></td>
-            </tr>
-            </tbody>
-        </table>
+    <div id="divMemoryDisplay" style = "position:absolute;margin-left:520px; width:300px; height:75px">
+        <label id='memoryLabel'>Memory</label>
+        <div id="memoryDisplayWrapper" style = "position:absolute; height: 160px; width: 358px; overflow-y: scroll;">
+            <table id="memoryTable"class="mem">
+                <tbody>
+                </tbody>
+            </table>
+        </div>
     </div>
-    <br>
 
 
     <br>
 
-    <label style="position:absolute; top:55px; left:900px; width:200px; height:25px; clear:left; float: left;" id="readyQueueLabel">Ready Queue</label>
 
     <br>
 
-    <div id="pcbReadyQueue" style="position: absolute; top:76px; left:898px; width:900px; height:25px">
-        <table id="pcbReadyQueueTable" style="width:600px; height: 160px;">
+    <label style="position:absolute; top:76px; left:900px; width:200px; height:25px; clear:left; float: left;" id="readyQueueLabel">Ready Queue</label>
+
+    <br>
+
+    <div id="pcbReadyQueue" style="position: absolute; top:96px; left:898px; width:600px; height:25px">
+        <table id="pcbReadyQueueTable" style="width:600px; height: 160px;"class="pcb">
             <thead>
             <tr style="text-align: center;">
                 <th> PID </th>
@@ -240,28 +225,47 @@
     <br>
 
     <div id="divFileSystemDisplay">
-        <label style="position:absolute; top:246px; left:900px; width:400px; height:25px; clear:left; float: left;" id='FileSystemLabel'>File System</label>
+        <label style="position:absolute; top:261px; left:900px; width:400px; height:25px; clear:left; float: left;" id='FileSystemLabel'>File System</label>
             <br>
-            <div id="fileSystemDisplayWrapper">
-                <table style="position:absolute; top:267px; left:900px; width:400px; height:75px" id="fileSystem">
+            <div id="fileSystemDisplayWrapper" style="position:absolute; top:281px; left:900px; width:600px; height:180px; overflow: scroll;">
+                <table id="fileSystem"class="file">
                     <thead>
+                        <tr>
+                            <td style="width:50px;">TSB</td>
+                            <td style="width:50px;">Meta</td>
+                            <td style="width:500px;">Data</td>
+                        </tr>
                     </thead>
-                    <tbody>
-                    </tbody>
                 </table>
             </div>
     </div>
     <br>
 
+    <div id="divCPUComponentsDisplay">
+        <label style="position:absolute; top:470px; left:900px; float:left;width:300px; height:75px"id='CPUDisplayLabel'>CPU</label>
+        <table style="position:absolute; top:490px; left:900px; width:362px; height:60px" id="tableCPUComponents" class="cpu">
 
-    <div id="divMemoryDisplay">
-        <label style="position:absolute; top:399px; left:900px; float: left;" id='memoryLabel'>Memory</label>
-            <div id="memoryDisplayWrapper" style = "position:absolute; top:420px; left:900px; height: 160px; width: auto; overflow-y: scroll;">
-                <table id="memoryTable">
-                    <tbody>
-                    </tbody>
-                </table>
-            </div>
+            <thead>
+            <tr style="text-align: center;">
+                <th>PC</th>
+                <th>IR</th>
+                <th>Accum</th>
+                <th>X-Reg</th>
+                <th>Y-Reg</th>
+                <th>Z-Flag</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr style="text-align: center;">
+                <td id="tdPC"></td>
+                <td id="tdIR"></td>
+                <td id="tdAccum"></td>
+                <td id="tdXReg"></td>
+                <td id="tdYReg"></td>
+                <td id="tdZFlag"></td>
+            </tr>
+            </tbody>
+        </table>
     </div>
 
 

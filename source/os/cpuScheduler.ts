@@ -13,6 +13,7 @@ module TSOS {
                     _CycleCounter = 0;
                 }
             }else if(_SchedulingAlgorithm == "fcfs"){
+                this.firstComeFirstServed();
                 _CycleCounter = 0;
             } else if(_SchedulingAlgorithm == "priority"){
                 this.priority();
@@ -21,6 +22,11 @@ module TSOS {
             _CycleCounter++;
             //console.log("_CycleCounter++  " + _CycleCounter);
             //_CPU.cycle();
+        }
+
+        public firstComeFirstServed(){
+            _CPU.printCPUElements();
+
         }
 
         public roundRobin(): void {

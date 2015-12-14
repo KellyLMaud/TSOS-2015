@@ -40,19 +40,12 @@ var TSOS;
         MemoryManager.prototype.dec2Hex = function (dec) {
             return dec.toString(16);
         };
-        MemoryManager.prototype.stringToHex = function (string) {
+        MemoryManager.stringToHex = function (string) {
             var hexString = "";
             for (var i = 0; i < string.length; i++) {
                 hexString += string.charCodeAt(i).toString(16);
             }
             return hexString;
-        };
-        MemoryManager.prototype.hexToString = function (hexCode) {
-            var hex = hexCode.toString(); //force conversion
-            var str = "";
-            for (var i = 0; i < hex.length; i += 2)
-                str += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
-            return str;
         };
         return MemoryManager;
     })();

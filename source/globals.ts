@@ -31,6 +31,8 @@ var _SingleStep = false;
 var _MEM: any = null;
 var _MemTable: any = null;
 var _MM: any = null;
+var _FileTable: any = null;
+
 
 var _ProgramInput: any = "";
 
@@ -46,6 +48,11 @@ var _QUANTUM: number = 6;
 var _CPUScheduler: TSOS.CpuScheduler;
 var _CycleCounter: number = null;
 var _SchedulingAlgorithm = "rr";
+
+//deviceDriverFileSystem
+var _fsDD: TSOS.DeviceDriverFileSystem;
+var diskIsFormatted: boolean = false;
+
 
 
 

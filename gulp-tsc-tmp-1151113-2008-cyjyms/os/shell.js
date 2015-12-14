@@ -2,8 +2,6 @@
 ///<reference path="../utils.ts" />
 ///<reference path="shellCommand.ts" />
 ///<reference path="userCommand.ts" />
-
-
 /* ------------
    Shell.ts
 
@@ -12,203 +10,113 @@
     Note: While fun and learning are the primary goals of all enrichment center activities,
           serious injuries may occur when trying to write your own Operating System.
    ------------ */
-
 // TODO: Write a base class / prototype for system services and let Shell inherit from it.
-
-module TSOS {
-    export class Shell {
-        // Properties
-        public promptStr = ">";
-        public commandList = [];
-        public curses = "[fuvg],[cvff],[shpx],[phag],[pbpxfhpxre],[zbgureshpxre],[gvgf]";
-        public apologies = "[sorry]";
-
-        constructor() {
+var TSOS;
+(function (TSOS) {
+    var Shell = (function () {
+        function Shell() {
+            // Properties
+            this.promptStr = ">";
+            this.commandList = [];
+            this.curses = "[fuvg],[cvff],[shpx],[phag],[pbpxfhpxre],[zbgureshpxre],[gvgf]";
+            this.apologies = "[sorry]";
         }
-
-        public init() {
+        Shell.prototype.init = function () {
             var sc;
             //
             // Load the command list.
-
             // ver
-            sc = new ShellCommand(this.shellVer,
-                                  "ver",
-                                  "- Displays the current version data.");
+            sc = new TSOS.ShellCommand(this.shellVer, "ver", "- Displays the current version data.");
             this.commandList[this.commandList.length] = sc;
-
             // help
-            sc = new ShellCommand(this.shellHelp,
-                                  "help",
-                                  "- This is the help command. Seek help.");
+            sc = new TSOS.ShellCommand(this.shellHelp, "help", "- This is the help command. Seek help.");
             this.commandList[this.commandList.length] = sc;
-
             // shutdown
-            sc = new ShellCommand(this.shellShutdown,
-                                  "shutdown",
-                                  "- Shuts down the virtual OS but leaves the underlying host / hardware simulation running.");
+            sc = new TSOS.ShellCommand(this.shellShutdown, "shutdown", "- Shuts down the virtual OS but leaves the underlying host / hardware simulation running.");
             this.commandList[this.commandList.length] = sc;
-
             // cls
-            sc = new ShellCommand(this.shellCls,
-                                  "cls",
-                                  "- Clears the screen and resets the cursor position.");
+            sc = new TSOS.ShellCommand(this.shellCls, "cls", "- Clears the screen and resets the cursor position.");
             this.commandList[this.commandList.length] = sc;
-
             // man <topic>
-            sc = new ShellCommand(this.shellMan,
-                                  "man",
-                                  "<topic> - Displays the MANual page for <topic>.");
+            sc = new TSOS.ShellCommand(this.shellMan, "man", "<topic> - Displays the MANual page for <topic>.");
             this.commandList[this.commandList.length] = sc;
-
             // trace <on | off>
-            sc = new ShellCommand(this.shellTrace,
-                                  "trace",
-                                  "<on | off> - Turns the OS trace on or off.");
+            sc = new TSOS.ShellCommand(this.shellTrace, "trace", "<on | off> - Turns the OS trace on or off.");
             this.commandList[this.commandList.length] = sc;
-
             // rot13 <string>
-            sc = new ShellCommand(this.shellRot13,
-                                  "rot13",
-                                  "<string> - Does rot13 obfuscation on <string>.");
+            sc = new TSOS.ShellCommand(this.shellRot13, "rot13", "<string> - Does rot13 obfuscation on <string>.");
             this.commandList[this.commandList.length] = sc;
-
             // prompt <string>
-            sc = new ShellCommand(this.shellPrompt,
-                                  "prompt",
-                                  "<string> - Sets the prompt.");
+            sc = new TSOS.ShellCommand(this.shellPrompt, "prompt", "<string> - Sets the prompt.");
             this.commandList[this.commandList.length] = sc;
-
             // date
-            sc = new ShellCommand(this.shellDate,
-                                 "date",
-                                 "- displays current date and time.");
+            sc = new TSOS.ShellCommand(this.shellDate, "date", "- displays current date and time.");
             this.commandList[this.commandList.length] = sc;
-
             // whereami
-            sc = new ShellCommand(this.shellWhereami,
-                                 "whereami",
-                                 "- displays the users location.");
+            sc = new TSOS.ShellCommand(this.shellWhereami, "whereami", "- displays the users location.");
             this.commandList[this.commandList.length] = sc;
-
             // whichshouldieat <list>
-            sc = new ShellCommand(this.shellWhichshouldieat,
-                                 "whichshouldieat",
-                                 "<list> - chooses a food item from the list.");
+            sc = new TSOS.ShellCommand(this.shellWhichshouldieat, "whichshouldieat", "<list> - chooses a food item from the list.");
             this.commandList[this.commandList.length] = sc;
-
             // load
-            sc = new ShellCommand(this.shellLoad,
-                                 "load",
-                                 "- validates user code in the text area.");
+            sc = new TSOS.ShellCommand(this.shellLoad, "load", "- validates user code in the text area.");
             this.commandList[this.commandList.length] = sc;
-
             // status <string>
-            sc = new ShellCommand(this.shellStatus,
-                                 "status",
-                                 "<string> - displays the string in the status bar.");
+            sc = new TSOS.ShellCommand(this.shellStatus, "status", "<string> - displays the string in the status bar.");
             this.commandList[this.commandList.length] = sc;
-
             // bsod
-            sc = new ShellCommand(this.shellBSOD,
-                                 "bsod",
-                                 "- tests the blue screen of death.");
+            sc = new TSOS.ShellCommand(this.shellBSOD, "bsod", "- tests the blue screen of death.");
             this.commandList[this.commandList.length] = sc;
-
             // run <string>
-            sc = new ShellCommand(this.shellRun,
-                                  "run",
-                                  "<string> - runs the program with the pid specified.");
+            sc = new TSOS.ShellCommand(this.shellRun, "run", "<string> - runs the program with the pid specified.");
             this.commandList[this.commandList.length] = sc;
-
             // clearmem
-            sc = new ShellCommand(this.shellClearmem,
-                                  "clearmem",
-                                  "- clears all memory partitions.");
+            sc = new TSOS.ShellCommand(this.shellClearmem, "clearmem", "- clears all memory partitions.");
             this.commandList[this.commandList.length] = sc;
-
             // runall
-            sc = new ShellCommand(this.shellRunall,
-                                  "runall",
-                                  "- execute all programs at once.");
+            sc = new TSOS.ShellCommand(this.shellRunall, "runall", "- execute all programs at once.");
             this.commandList[this.commandList.length] = sc;
-
             // quantum <int>
-            sc = new ShellCommand(this.shellQuantum,
-                                  "quantum",
-                                  "<int> - set the Round Robin Quantum.");
+            sc = new TSOS.ShellCommand(this.shellQuantum, "quantum", "<int> - set the Round Robin Quantum.");
             this.commandList[this.commandList.length] = sc;
-
             // ps
-            sc = new ShellCommand(this.shellPs,
-                                  "ps",
-                                  "- display PIDs of all active processes.");
+            sc = new TSOS.ShellCommand(this.shellPs, "ps", "- display PIDs of all active processes.");
             this.commandList[this.commandList.length] = sc;
-
             // kill <pid>
-            sc = new ShellCommand(this.shellKill,
-                                  "kill",
-                                  "<pid> - kill an active process.");
+            sc = new TSOS.ShellCommand(this.shellKill, "kill", "<pid> - kill an active process.");
             this.commandList[this.commandList.length] = sc;
-
             // create <filename>
-            sc = new ShellCommand(this.shellCreate,
-                                  "create",
-                                  "<fileame> - creates the file, filename.");
+            sc = new TSOS.ShellCommand(this.shellCreate, "create", "<fileame> - creates the file, filename.");
             this.commandList[this.commandList.length] = sc;
-
             // read <filename>
-            sc = new ShellCommand(this.shellRead,
-                                  "read",
-                                  "<filename> - read and display the contents of filename.");
+            sc = new TSOS.ShellCommand(this.shellRead, "read", "<filename> - read and display the contents of filename.");
             this.commandList[this.commandList.length] = sc;
-
             // write <filename> "data"
-            sc = new ShellCommand(this.shellWrite,
-                                  "write",
-                                  "<filename> 'data' - write the data inside the quotes to filename.");
+            sc = new TSOS.ShellCommand(this.shellWrite, "write", "<filename> 'data' - write the data inside the quotes to filename.");
             this.commandList[this.commandList.length] = sc;
-
             // delete <filename>
-            sc = new ShellCommand(this.shellDelete,
-                                  "delete",
-                                  "<filename> - remove the filename and display a message.");
+            sc = new TSOS.ShellCommand(this.shellDelete, "delete", "<filename> - remove the filename and display a message.");
             this.commandList[this.commandList.length] = sc;
-
             // format
-            sc = new ShellCommand(this.shellFormat,
-                                  "format",
-                                  " - initialize all blocks in all sectors in all tracks.");
+            sc = new TSOS.ShellCommand(this.shellFormat, "format", " - initialize all blocks in all sectors in all tracks.");
             this.commandList[this.commandList.length] = sc;
-
             // ls
-            sc = new ShellCommand(this.shellLs,
-                                  "ls",
-                                  " - list files currently stored on the disk.");
+            sc = new TSOS.ShellCommand(this.shellLs, "ls", " - list files currently stored on the disk.");
             this.commandList[this.commandList.length] = sc;
-
             // setschedule [rr, tcfs, priority]
-            sc = new ShellCommand(this.shellSetSchedule,
-                                  "setschedule",
-                                  "<rr, fcfs, priority> - set the cpu scheduling algorithm by selecting one from the list.");
+            sc = new TSOS.ShellCommand(this.shellSetSchedule, "setschedule", "<rr, fcfs, priority> - set the cpu scheduling algorithm by selecting one from the list.");
             this.commandList[this.commandList.length] = sc;
-
             // getschedule
-            sc = new ShellCommand(this.shellGetSchedule,
-                                  "getschedule",
-                                  " - return currently selected cpu scheduling algorithm.");
+            sc = new TSOS.ShellCommand(this.shellGetSchedule, "getschedule", " - return currently selected cpu scheduling algorithm.");
             this.commandList[this.commandList.length] = sc;
-
             //
             // Display the initial prompt.
             this.putPrompt();
-        }
-
-        public putPrompt() {
+        };
+        Shell.prototype.putPrompt = function () {
             _StdOut.putText(this.promptStr);
-        }
-
-        public handleInput(buffer) {
+        };
+        Shell.prototype.handleInput = function (buffer) {
             _Kernel.krnTrace("Shell Command~" + buffer);
             //
             // Parse the input...
@@ -222,33 +130,36 @@ module TSOS {
             //
             // TypeScript/JavaScript may not support associative arrays in all browsers so we have to iterate over the
             // command list in attempt to find a match.  TODO: Is there a better way? Probably. Someone work it out and tell me in class.
-            var index: number = 0;
-            var found: boolean = false;
+            var index = 0;
+            var found = false;
             var fn = undefined;
             while (!found && index < this.commandList.length) {
                 if (this.commandList[index].command === cmd) {
                     found = true;
                     fn = this.commandList[index].func;
-                } else {
+                }
+                else {
                     ++index;
                 }
             }
             if (found) {
                 this.execute(fn, args);
-            } else {
+            }
+            else {
                 // It's not found, so check for curses and apologies before declaring the command invalid.
-                if (this.curses.indexOf("[" + Utils.rot13(cmd) + "]") >= 0) {     // Check for curses.
+                if (this.curses.indexOf("[" + TSOS.Utils.rot13(cmd) + "]") >= 0) {
                     this.execute(this.shellCurse);
-                } else if (this.apologies.indexOf("[" + cmd + "]") >= 0) {        // Check for apologies.
+                }
+                else if (this.apologies.indexOf("[" + cmd + "]") >= 0) {
                     this.execute(this.shellApology);
-                } else { // It's just a bad command. {
+                }
+                else {
                     this.execute(this.shellInvalidCommand);
                 }
             }
-        }
-
+        };
         // Note: args is an option parameter, ergo the ? which allows TypeScript to understand that.
-        public execute(fn, args?) {
+        Shell.prototype.execute = function (fn, args) {
             // We just got a command, so advance the line...
             _StdOut.advanceLine();
             // ... call the command function passing in the args with some über-cool functional programming ...
@@ -259,95 +170,83 @@ module TSOS {
             }
             // ... and finally write the prompt again.
             this.putPrompt();
-        }
-
-        public parseInput(buffer): UserCommand {
-            var retVal = new UserCommand();
-
+        };
+        Shell.prototype.parseInput = function (buffer) {
+            var retVal = new TSOS.UserCommand();
             // 1. Remove leading and trailing spaces.
-            buffer = Utils.trim(buffer);
-
+            buffer = TSOS.Utils.trim(buffer);
             // 2. Lower-case it.
             buffer = buffer.toLowerCase();
-
             // 3. Separate on spaces so we can determine the command and command-line args, if any.
             var tempList = buffer.split(" ");
-
             // 4. Take the first (zeroth) element and use that as the command.
-            var cmd = tempList.shift();  // Yes, you can do that to an array in JavaScript.  See the Queue class.
+            var cmd = tempList.shift(); // Yes, you can do that to an array in JavaScript.  See the Queue class.
             // 4.1 Remove any left-over spaces.
-            cmd = Utils.trim(cmd);
+            cmd = TSOS.Utils.trim(cmd);
             // 4.2 Record it in the return value.
             retVal.command = cmd;
-
             // 5. Now create the args array from what's left.
             for (var i in tempList) {
-                var arg = Utils.trim(tempList[i]);
+                var arg = TSOS.Utils.trim(tempList[i]);
                 if (arg != "") {
                     retVal.args[retVal.args.length] = tempList[i];
                 }
             }
             return retVal;
-        }
-
+        };
         //
         // Shell Command Functions.  Kinda not part of Shell() class exactly, but
         // called from here, so kept here to avoid violating the law of least astonishment.
         //
-        public shellInvalidCommand() {
+        Shell.prototype.shellInvalidCommand = function () {
             _StdOut.putText("Invalid Command. ");
             if (_SarcasticMode) {
                 _StdOut.putText("Unbelievable. You, [subject name here],");
                 _StdOut.advanceLine();
                 _StdOut.putText("must be the pride of [subject hometown here].");
-            } else {
+            }
+            else {
                 _StdOut.putText("Type 'help' for, well... help.");
             }
-        }
-
-        public shellCurse() {
+        };
+        Shell.prototype.shellCurse = function () {
             _StdOut.putText("Oh, so that's how it's going to be, eh? Fine.");
             _StdOut.advanceLine();
             _StdOut.putText("Bitch.");
             _SarcasticMode = true;
-        }
-
-        public shellApology() {
-           if (_SarcasticMode) {
-              _StdOut.putText("I think we can put our differences behind us.");
-              _StdOut.advanceLine();
-              _StdOut.putText("For science . . . You monster.");
-              _SarcasticMode = false;
-           } else {
-              _StdOut.putText("For what?");
-           }
-        }
-
-        public shellVer(args) {
+        };
+        Shell.prototype.shellApology = function () {
+            if (_SarcasticMode) {
+                _StdOut.putText("I think we can put our differences behind us.");
+                _StdOut.advanceLine();
+                _StdOut.putText("For science . . . You monster.");
+                _SarcasticMode = false;
+            }
+            else {
+                _StdOut.putText("For what?");
+            }
+        };
+        Shell.prototype.shellVer = function (args) {
             _StdOut.putText(APP_NAME + " version " + APP_VERSION);
-        }
-
-        public shellHelp(args) {
+        };
+        Shell.prototype.shellHelp = function (args) {
             _StdOut.putText("Commands:");
             for (var i in _OsShell.commandList) {
                 _StdOut.advanceLine();
                 _StdOut.putText("  " + _OsShell.commandList[i].command + " " + _OsShell.commandList[i].description);
             }
-        }
-
-        public shellShutdown(args) {
-             _StdOut.putText("Shutting down...");
-             // Call Kernel shutdown routine.
+        };
+        Shell.prototype.shellShutdown = function (args) {
+            _StdOut.putText("Shutting down...");
+            // Call Kernel shutdown routine.
             _Kernel.krnShutdown();
             // TODO: Stop the final prompt from being displayed.  If possible.  Not a high priority.  (Damn OCD!)
-        }
-
-        public shellCls(args) {
+        };
+        Shell.prototype.shellCls = function (args) {
             _StdOut.clearScreen();
             _StdOut.resetXY();
-        }
-
-        public shellMan(args) {
+        };
+        Shell.prototype.shellMan = function (args) {
             if (args.length > 0) {
                 var topic = args[0];
                 switch (topic) {
@@ -438,19 +337,20 @@ module TSOS {
                     default:
                         _StdOut.putText("No manual entry for " + args[0] + ".");
                 }
-            } else {
+            }
+            else {
                 _StdOut.putText("Usage: man <topic>  Please supply a topic.");
             }
-        }
-
-        public shellTrace(args) {
+        };
+        Shell.prototype.shellTrace = function (args) {
             if (args.length > 0) {
                 var setting = args[0];
                 switch (setting) {
                     case "on":
                         if (_Trace && _SarcasticMode) {
                             _StdOut.putText("Trace is already on, doofus.");
-                        } else {
+                        }
+                        else {
                             _Trace = true;
                             _StdOut.putText("Trace ON");
                         }
@@ -462,129 +362,116 @@ module TSOS {
                     default:
                         _StdOut.putText("Invalid arguement.  Usage: trace <on | off>.");
                 }
-            } else {
+            }
+            else {
                 _StdOut.putText("Usage: trace <on | off>");
             }
-        }
-
-        public shellRot13(args) {
+        };
+        Shell.prototype.shellRot13 = function (args) {
             if (args.length > 0) {
                 // Requires Utils.ts for rot13() function.
-                _StdOut.putText(args.join(' ') + " = '" + Utils.rot13(args.join(' ')) +"'");
-            } else {
+                _StdOut.putText(args.join(' ') + " = '" + TSOS.Utils.rot13(args.join(' ')) + "'");
+            }
+            else {
                 _StdOut.putText("Usage: rot13 <string>  Please supply a string.");
             }
-        }
-
-        public shellPrompt(args) {
+        };
+        Shell.prototype.shellPrompt = function (args) {
             if (args.length > 0) {
                 _OsShell.promptStr = args[0];
-            } else {
+            }
+            else {
                 _StdOut.putText("Usage: prompt <string>  Please supply a string.");
             }
-        }
-
-        public shellDate(args) {
+        };
+        Shell.prototype.shellDate = function (args) {
             var date = new Date().toLocaleDateString();
             _StdOut.putText(date);
-        }
-
-        public shellWhereami(args) {
+        };
+        Shell.prototype.shellWhereami = function (args) {
             _StdOut.putText("You're in the CLI of the coolest OS ever designed.");
-        }
-
-        public shellWhichshouldieat(args) {
-            if(args.length > 0){
-                var food = args[Math.floor(Math.random() * args.length)]
+        };
+        Shell.prototype.shellWhichshouldieat = function (args) {
+            if (args.length > 0) {
+                var food = args[Math.floor(Math.random() * args.length)];
                 _StdOut.putText(food);
             }
-        }
-
-        public shellLoad(args) {
+        };
+        Shell.prototype.shellLoad = function (args) {
             var priority = 0;
-            if (args > 0){
+            if (args > 0) {
                 priority = args[0];
             }
-            _ProgramInput = (<HTMLInputElement>document.getElementById("taProgramInput")).value.trim().toUpperCase();
+            _ProgramInput = document.getElementById("taProgramInput").value.trim().toUpperCase();
             var isValid = true;
-            if(_ProgramInput.length > 0){
+            if (_ProgramInput.length > 0) {
                 for (var i = 0; i < _ProgramInput.length; i++) {
                     var c = _ProgramInput[i];
-                    if(c!='A'&&c!='B'&&c!='C'&&c!='D'&&c!='E'&&c!='F'&&c!=' '&&c!='1'&&c!='2'&&c!='3'&&c!='4'&&c!='5'&&c!='6'&&c!='7'&&c!='8'&&c!='9'&&c!='0'){
+                    if (c != 'A' && c != 'B' && c != 'C' && c != 'D' && c != 'E' && c != 'F' && c != ' ' && c != '1' && c != '2' && c != '3' && c != '4' && c != '5' && c != '6' && c != '7' && c != '8' && c != '9' && c != '0') {
                         isValid = false;
                     }
                 }
-
-                if(isValid){
+                if (isValid) {
                     _ProgramInput = _ProgramInput.replace(/\n/g, " ").split(" ");
                     var baseRegister;
                     var limitRegister;
-
-                    if(_CurrPartitionOfMem < 2){
+                    if (_CurrPartitionOfMem < 2) {
                         _CurrPartitionOfMem++;
                         baseRegister = _CurrPartitionOfMem * 256;
                         limitRegister = (_CurrPartitionOfMem * 256) + 255;
-                    } else {
+                    }
+                    else {
                         _StdOut.putText("Memory full");
                         return false;
                     }
-
-                    _CurrentPCB = new PCB();
+                    _CurrentPCB = new TSOS.PCB();
                     _CurrentPCB.processState = "Resident";
                     _CurrentPCB.priority = priority;
-
-                    if(_CurrPartitionOfMem >= 2){
+                    if (_CurrPartitionOfMem >= 2) {
                         _CurrentPCB.baseRegister = baseRegister;
                         _CurrentPCB.limitRegister = limitRegister;
                     }
-
                     _ResidentList.push(_CurrentPCB);
-
-                    if(_CurrPartitionOfMem <= 2) {
+                    if (_CurrPartitionOfMem <= 2) {
                         _MM.storeProgramInMemory(_CurrPartitionOfMem, _ProgramInput);
                         _MEM.memory[_CurrPartitionOfMem] = _ProgramInput;
                     }
-
-
                     _StdOut.putText("Program successfully loaded");
                     _StdOut.advanceLine();
                     _StdOut.putText("PID = " + _CurrentPCB.PID);
-
-                }else{
+                }
+                else {
                     _StdOut.putText("User Program Input is Invalid");
                 }
-            }else{
+            }
+            else {
                 _StdOut.putText("No code in User Program Input to load");
             }
-
-        }
-
-        public shellStatus(args) {
+        };
+        Shell.prototype.shellStatus = function (args) {
             var newstatus = "";
-            if(args.length > 0){
-                for(var i = 0; i < args.length; i++){
+            if (args.length > 0) {
+                for (var i = 0; i < args.length; i++) {
                     newstatus = newstatus + " " + args[i];
                 }
             }
             document.getElementById("status").innerHTML = newstatus;
-        }
-
-        public shellBSOD(args) {
+        };
+        Shell.prototype.shellBSOD = function (args) {
             _Kernel.krnTrapError("error");
-        }
-
-
-        public shellRun(args) {
-            if(args.length > 0){
-                if(_MEM.isEmpty()) {
+        };
+        Shell.prototype.shellRun = function (args) {
+            if (args.length > 0) {
+                if (_MEM.isEmpty()) {
                     _StdOut.putText('Nothing is in memory');
-                }else {
+                }
+                else {
                     _RunningPID = parseInt(args[0]);
                     var residentPID = -1;
                     var residentPIDPartition = -1;
-                    for(var i = 0; i < _ResidentList.length; i++){
+                    for (var i = 0; i < _ResidentList.length; i++) {
                         console.log("RunningPID = " + _RunningPID);
-                        if(_ResidentList[i].PID == _RunningPID){
+                        if (_ResidentList[i].PID == _RunningPID) {
                             residentPID = i;
                             residentPIDPartition = _ResidentList[i].baseRegister / 256;
                             _CurrentPCB = _ResidentList[i];
@@ -592,31 +479,31 @@ module TSOS {
                             _ResidentList.splice(i, 1);
                         }
                     }
-                    if(residentPID == -1){
+                    if (residentPID == -1) {
                         _StdOut.putText('Input correct PID');
-                    }else{
+                    }
+                    else {
                         _CurrPartitionOfMem = residentPIDPartition;
                         _CPU.clearProgram();
                         _CycleCounter = 0;
                         _CPU.isExecuting = true;
                     }
                 }
-            }else{
+            }
+            else {
                 _StdOut.putText("Input PID");
             }
-        }
-
-        public shellClearmem(args) {
+        };
+        Shell.prototype.shellClearmem = function (args) {
             _MEM.clearMemory();
             _CurrPartitionOfMem = -1;
             _StdOut.putText("Memory cleared");
-        }
-
-        public shellRunall(args) {
+        };
+        Shell.prototype.shellRunall = function (args) {
             _ReadyQueue = [];
-            for(var i = 0; i < _ResidentList.length; i++){
+            for (var i = 0; i < _ResidentList.length; i++) {
                 _ReadyQueue.push(_ResidentList[i]);
-                if(i > 0){
+                if (i > 0) {
                     _ReadyQueue[i].processState = "Waiting";
                 }
             }
@@ -628,246 +515,230 @@ module TSOS {
             _CPU.clearProgram();
             _CycleCounter = 0;
             _CPU.isExecuting = true;
-
-        }
-
-        public shellQuantum(args) {
-            if(args.length > 0){
+        };
+        Shell.prototype.shellQuantum = function (args) {
+            if (args.length > 0) {
                 _QUANTUM = args[0];
                 _StdOut.putText("Quantum has been set to " + _QUANTUM);
-            } else {
+            }
+            else {
                 _StdOut.putText("quantum <int> Please supply a quantum number.");
             }
-        }
-
-        public shellPs(args) {
-            if(_ReadyQueue.length == 0){
+        };
+        Shell.prototype.shellPs = function (args) {
+            if (_ReadyQueue.length == 0) {
                 _StdOut.putText("There are no active processes.");
                 _StdOut.advanceLine();
-            }else{
-                for(var i = 0; i < _ReadyQueue.length; i++){
+            }
+            else {
+                for (var i = 0; i < _ReadyQueue.length; i++) {
                     _StdOut.putText("PID: " + _ReadyQueue[i].PID);
                     _StdOut.advanceLine();
                 }
             }
-        }
-
-        public shellKill(args) {
-            if(args.length > 0){
+        };
+        Shell.prototype.shellKill = function (args) {
+            if (args.length > 0) {
                 var terminatePID = args[0];
-
-                for(var i = 0; i < _ReadyQueue.length; i++){
-                    if(_ReadyQueue[i].PID == terminatePID){
+                for (var i = 0; i < _ReadyQueue.length; i++) {
+                    if (_ReadyQueue[i].PID == terminatePID) {
                         _ReadyQueue[i].processState = "Terminated";
-                        Control.clearReadyQueueDisplayRow(_ReadyQueue[i], _ReadyQueue.length);
+                        TSOS.Control.clearReadyQueueDisplayRow(_ReadyQueue[i], _ReadyQueue.length);
                         _ReadyQueue.splice(i, 1);
-
-                        if(_ReadyQueue.length > 0){
+                        if (_ReadyQueue.length > 0) {
                             _CurrPartitionOfMem = _ReadyQueue[0].baseRegister / 256;
                             _CurrentPCB = _ReadyQueue[0];
                             _RunningPID = parseInt(_ReadyQueue[0].PID);
                             _ReadyQueue[0].processState = "Running";
-
-
                             _CPU.PC = _CurrentPCB.PC;
                             _CPU.Acc = _CurrentPCB.Acc;
                             _CPU.Xreg = _CurrentPCB.Xreg;
                             _CPU.Yreg = _CurrentPCB.Yreg;
                             _CPU.Zflag = _CurrentPCB.Zflag;
-                        } else {
+                        }
+                        else {
                             _CPU.isExecuting = false;
                         }
                     }
                 }
             }
-        }
-
-
+        };
         //<rr, fcfs, priority> - set the cpu scheduling algorithm by selecting one from the list.
-        public shellSetSchedule (args){
+        Shell.prototype.shellSetSchedule = function (args) {
             var sched = args[0];
-
-            if(sched === "rr"){
+            if (sched === "rr") {
                 _SchedulingAlgorithm = sched;
                 _StdOut.putText("CPU Scheduling algorithm set to Round Robin");
-
-            }else if(sched === "fcfs"){
+            }
+            else if (sched === "fcfs") {
                 _SchedulingAlgorithm = sched;
                 _StdOut.putText("CPU Scheduling algorithm set to First Come First Served");
-
-            }else if(sched === "priority"){
+            }
+            else if (sched === "priority") {
                 _SchedulingAlgorithm = sched;
                 _StdOut.putText("CPU Scheduling algorithm set to Priority");
                 _CPUScheduler.priority();
-
-            } else {
+            }
+            else {
                 _StdOut.putText("invalid scheduling algorithm.");
             }
-        }
-
+        };
         //return currently selected cpu scheduling algorithm.
-        public shellGetSchedule(args){
-
-            if(_SchedulingAlgorithm === "rr"){
+        Shell.prototype.shellGetSchedule = function (args) {
+            if (_SchedulingAlgorithm === "rr") {
                 _StdOut.putText("Round Robin");
-            } else if(_SchedulingAlgorithm === "fcfs"){
+            }
+            else if (_SchedulingAlgorithm === "fcfs") {
                 _StdOut.putText("First Come First Serve");
-            } else if(_SchedulingAlgorithm === "priority"){
+            }
+            else if (_SchedulingAlgorithm === "priority") {
                 _StdOut.putText("Priority");
             }
-        }
-
+        };
         // file system
-        public shellCreate(args){
-            if(diskIsFormatted){
-                if(args.length === 1){
+        Shell.prototype.shellCreate = function (args) {
+            if (diskIsFormatted) {
+                if (args.length === 1) {
                     var fileName = args[0];
-
-                    if(fileName.charAt(0) == "."){
+                    if (fileName.charAt(0) == ".") {
                         _StdOut.putText("File name cannot start with \".\"");
-                    } else {
-                        var createSuccessful = _fsDD.createFile(fileName);
-
-                        if(createSuccessful){
-                            _StdOut.putText("Successfully created file \"" + fileName + "\"" );
-                        }else{
-                            _StdOut.putText("Error creating file, \"" + fileName + "\"");
+                    }
+                    else {
+                        var success = _fsDD.createFile(fileName);
+                        if (success) {
+                            _StdOut.putText("Successfully created file \"" + fileName + "\"");
                         }
                     }
-                } else {
+                }
+                else {
                     _StdOut.putText("Error creating file, supplied parameters is wrong.");
                 }
-            } else {
+            }
+            else {
                 _StdOut.putText("Please format disk first.");
             }
-        }
-
-        public shellRead(args){
-            if(diskIsFormatted){
-                if(args.length >= 1){
+        };
+        Shell.prototype.shellRead = function (args) {
+            if (diskIsFormatted) {
+                if (args.length >= 1) {
                     var fileName = args[0];
                     var tsb = _fsDD.findFile(fileName);
-
-                    if(tsb === -1){
+                    if (tsb === -1) {
                         _StdOut.putText("File could not be found.");
-                    } else {
+                    }
+                    else {
                         var data = _fsDD.readFile(tsb);
-
-                        data = _MM.hexToString(data);
+                        data = _MM.hex2String(data);
                         _StdOut.putText(data);
                     }
-                } else {
+                }
+                else {
                     _StdOut.putText("Error, please supply a file name.");
                 }
-            } else {
+            }
+            else {
                 _StdOut.putText("Please format disk first.");
             }
-        }
-
-        public shellWrite(args){
-            if(diskIsFormatted){
-                if(args.length >= 2){
+        };
+        Shell.prototype.shellWrite = function (args) {
+            if (diskIsFormatted) {
+                if (args.length >= 2) {
                     var fileName = args[0];
-
-                    if(fileName.charAt(0) == "."){
+                    if (fileName.charAt(0) == ".") {
                         _StdOut.putText("Cannot write to swap file.");
-                    } else {
+                    }
+                    else {
                         var data = "";
-                        for(var i = 1; i < args.length; i++){
-                            if(i > 1){
+                        for (var i = 1; i < args.length; i++) {
+                            if (i > 1) {
                                 data += " " + args[i];
-                            } else {
+                            }
+                            else {
                                 data += args[i];
                             }
                         }
-
                         // remove double quotes
-                        data = data.substring(1, data.length-1);
-
+                        data = data.substring(1, data.length - 1);
                         var tsb = _fsDD.findFile(fileName);
-
-                        if(tsb === -1){
+                        if (tsb === -1) {
                             _StdOut.putText("File could not be found.");
-                        } else {
+                        }
+                        else {
                             var success = _fsDD.writeFile(tsb, data);
-
-                            if(success){
+                            if (success) {
                                 _StdOut.putText("Successfully wrote to file \"" + fileName + "\"");
                             }
                         }
                     }
-                } else {
+                }
+                else {
                     _StdOut.putText("Error, please supply a file name and data.");
                 }
-            } else {
+            }
+            else {
                 _StdOut.putText("Please format disk first.");
             }
-        }
-
-        public shellDelete(args){
-            if(args.length === 1){
+        };
+        Shell.prototype.shellDelete = function (args) {
+            if (args.length === 1) {
                 var fileName = args[0];
-
-                if(fileName.charAt(0) == "."){
+                if (fileName.charAt(0) == ".") {
                     _StdOut.putText("Cannot delete files starting with \".\"");
-                } else {
+                }
+                else {
                     var tsb = _fsDD.findFile(fileName);
-
-                    if(tsb === -1){
+                    if (tsb === -1) {
                         _StdOut.putText("File could not be found.");
-                    } else {
+                    }
+                    else {
                         var success = _fsDD.deleteFile(tsb, fileName);
-
-                        if(success){
+                        if (success) {
                             _StdOut.putText("Successfully deleted file \"" + fileName + "\"");
                         }
                     }
                 }
-            } else {
+            }
+            else {
                 _StdOut.putText("Error deleting file, supplied parameters is wrong.");
             }
-        }
-
-        public shellFormat(){
-            if(_CPU.isExecuting === true){
+        };
+        Shell.prototype.shellFormat = function () {
+            if (_CPU.isExecuting === true) {
                 _StdOut.putText("Cannot format disk, CPU is running.");
-            } else {
+            }
+            else {
                 var result = _fsDD.format();
-                if(result){
+                if (result) {
                     _StdOut.putText("File system has been formatted.");
                     diskIsFormatted = true;
-                } else {
+                }
+                else {
                     _StdOut.putText("Error formatting file system.");
                 }
             }
-        }
-
-        public shellLs(){
+        };
+        Shell.prototype.shellLs = function () {
             var tsb = _fsDD.getNextFreeDirTSB();
-
-            if(tsb[0] === 0 && tsb[1] === 0 && tsb[2] === 0){
+            if (tsb[0] === 0 && tsb[1] === 0 && tsb[2] === 0) {
                 _StdOut.putText("No files currently on disk.");
-            } else {
-                for(var track = 0; track < _fsDD.tracks; track++){
-                    for(var sector = 0; sector < _fsDD.sectors; sector++){
-                        for(var block = 0; block < _fsDD.blocks; block++){
-                            if(track === tsb[0] && sector === tsb[1] && block === tsb[2]){
+            }
+            else {
+                for (var track = 0; track < _fsDD.tracks; track++) {
+                    for (var sector = 0; sector < _fsDD.sectors; sector++) {
+                        for (var block = 0; block < _fsDD.blocks; block++) {
+                            if (track === tsb[0] && sector === tsb[1] && block === tsb[2]) {
                                 return;
                             }
-
                             var data = sessionStorage.getItem(_fsDD.makeKey(track, sector, block));
-                            data = _MM.hexToString(data);
+                            data = _MM.hex2String(data);
                             _StdOut.putText(data);
                             _StdOut.advanceLine();
                         }
                     }
                 }
             }
-        }
-
-
-
-
-
-    }
-}
+        };
+        return Shell;
+    })();
+    TSOS.Shell = Shell;
+})(TSOS || (TSOS = {}));
