@@ -217,7 +217,7 @@ var TSOS;
             for (var track = 0; track < this.tracks; track++) {
                 for (var sector = 0; sector < this.sectors; sector++) {
                     for (var block = 0; block < this.blocks; block++) {
-                        metaData = "0---"; //this.createInitialData().substr(0, 4);
+                        metaData = "0000"; //this.createInitialData().substr(0, 4);
                         data = this.createInitialData().substr(4);
                         tr = document.createElement("tr");
                         tr.id = "fs" + this.makeKey(track, sector, block);

@@ -142,6 +142,7 @@ module TSOS {
                 _Console.currentYPosition-_DefaultFontSize - 2,
                 charWidth,
                 _DefaultFontSize + _FontHeightMargin + 2 );
+
         }
         public putText(text): void {
             // My first inclination here was to write two functions: putChar() and putString().
@@ -153,7 +154,6 @@ module TSOS {
             // UPDATE: Even though we are now working in TypeScript, char and string remain undistinguished.
             //         Consider fixing that.
             if (text !== "") {
-                // Draw the text at the current X and Y coordinates.
                 _DrawingContext.strokeStyle = "#00b7ff";
                 _DrawingContext.drawText(this.currentFont, this.currentFontSize, this.currentXPosition, this.currentYPosition, text);
                 // Move the current X position.

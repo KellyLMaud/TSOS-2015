@@ -266,7 +266,7 @@ module TSOS {
                 for (var sector = 0; sector < this.sectors; sector++) {//8 sectors
                     for (var block = 0; block < this.blocks; block++) {//8 blocks
 
-                        metaData = "0---";//this.createInitialData().substr(0, 4);
+                        metaData = "0000";//this.createInitialData().substr(0, 4);
                         data = this.createInitialData().substr(4);
 
                         tr = document.createElement("tr");
