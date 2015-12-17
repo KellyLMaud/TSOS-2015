@@ -18,14 +18,11 @@ var TSOS;
                 this.priority();
             }
             _CycleCounter++;
-            //console.log("_CycleCounter++  " + _CycleCounter);
-            //_CPU.cycle();
         };
         CpuScheduler.prototype.firstComeFirstServed = function () {
             _CPU.printCPUElements();
         };
         CpuScheduler.prototype.roundRobin = function () {
-            //console.log("ROUNDROBINCONTEXTSWITCH");
             _CPU.printCPUElements();
             _ReadyQueue[0].processState = "Waiting";
             var pcbSwitch = _ReadyQueue.shift(); //_CurrentPCB;
@@ -37,8 +34,6 @@ var TSOS;
             _ReadyQueue.push(pcbSwitch);
             _CurrentPCB = _ReadyQueue[0];
             _CPU.updateCPUElements(_CurrentPCB);
-            console.log("_CurrentPCB");
-            console.log(_CurrentPCB);
             _RunningPID = parseInt(_ReadyQueue[0].PID);
             _ReadyQueue[0].processState = "Running";
             _CPU.PC = _CurrentPCB.PC;

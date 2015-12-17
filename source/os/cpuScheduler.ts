@@ -20,8 +20,6 @@ module TSOS {
             }
 
             _CycleCounter++;
-            //console.log("_CycleCounter++  " + _CycleCounter);
-            //_CPU.cycle();
         }
 
         public firstComeFirstServed(){
@@ -30,7 +28,6 @@ module TSOS {
         }
 
         public roundRobin(): void {
-            //console.log("ROUNDROBINCONTEXTSWITCH");
             _CPU.printCPUElements();
 
             _ReadyQueue[0].processState = "Waiting";
@@ -44,8 +41,6 @@ module TSOS {
 
             _CurrentPCB = _ReadyQueue[0];
             _CPU.updateCPUElements(_CurrentPCB);
-            console.log("_CurrentPCB");
-            console.log(_CurrentPCB);
             _RunningPID = parseInt(_ReadyQueue[0].PID);
             _ReadyQueue[0].processState = "Running";
 

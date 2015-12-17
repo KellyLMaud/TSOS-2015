@@ -60,59 +60,45 @@ module TSOS {
             this.PC++;
             switch (input) {
                 case "A9": //load accumulator with a constant
-                    console.log("A9");
                     this.loadAccumConst();
                     break;
                 case "AD": //load the accumulator from memory
-                    console.log("AD");
                     this.loadAccumMem();
                     break;
                 case "8D": //store the accumulator in memory
-                    console.log("8D");
                     this.storeAccumMem();
                     break;
                 case "6D": //add with carry
-                    console.log("6D");
                     this.addCarry();
                     break;
                 case "A2": //load the x register with a constant
-                    console.log("A2");
                     this.loadXRegConst();
                     break;
                 case "AE": //load the x register from memory
-                    console.log("AE");
                     this.loadXRegMem();
                     break;
                 case "A0": //load the y register with a constant
-                    console.log("A0");
                     this.loadYRegConst();
                     break;
                 case "AC": //load the y register from memory
-                    console.log("AC");
                     this.loadYRegMem();
                     break;
                 case "EA": //no operation
-                    console.log("EA");
                     this.noOperation();
                     break;
                 case "00": //break
-                    console.log("00");
                     this.break();
                     break;
                 case "EC": //compare a byte in memory to the x reg
-                    console.log("EC");
                     this.compareXReg();
                     break;
                 case "D0": //branch n bytes if Zflag = 0
-                    console.log("D0");
                     this.branchNBytes();
                     break;
                 case "EE": //increment the value of a byte
-                    console.log("EE");
                     this.incrementByte();
                     break;
                 case "FF": //system call
-                    console.log("FF");
                     this.systemCall();
                     break;
                 default:
@@ -175,9 +161,7 @@ module TSOS {
         public loadYRegMem(){
             //load the y register from memory
             var adr = _MM.hex2Dec(_MM.readFromMemory(_CurrPartitionOfMem, this.PC));
-            //console.log(adr);
             this.Yreg = _MM.hex2Dec(_MM.readFromMemory(_CurrPartitionOfMem, adr));
-            //console.log(this.Yreg);
             this.PC++;
             this.PC++;
         }
@@ -206,26 +190,16 @@ module TSOS {
         }
 
         public branchNBytes(){
-
-
             if (this.Zflag===0){
-                //console.log("this.PC before converting and reading " + this.PC);
                 this.PC +=_MM.hex2Dec(_MM.readFromMemory(_CurrPartitionOfMem, this.PC++))+1 ;
-                //console.log("this.PC after converting and reading " + this.PC);
-                //console.log("_CurrentPCB.base " + _CurrentPCB.baseRegister);
                 if (this.PC>=256){
-                    //console.log("this.PC if >= 256 before " + this.PC);
                     this.PC-=256
-                    //console.log("this.PC if >= 256 after " + this.PC);
                 }
             }
             else {
                 this.PC++;
-                //console.log("this.PC else " + this.PC);
             }
-
             _Kernel.krnTrace("branch");
-
         }
 
         public incrementByte(){
@@ -285,21 +259,14 @@ module TSOS {
 
         public cycle(): void {
             _Kernel.krnTrace('CPU cycle');
-            console.log("_CurrPartitionOfMem = " +_CurrPartitionOfMem);
-            console.log("this.PC = " + this.PC);
             var opCode = _MM.readFromMemory(_CurrPartitionOfMem, this.PC);
-            console.log("_CurrPartitionOfMem = " +_CurrPartitionOfMem);
-            console.log("this.PC = " + this.PC);
             this.printCPUElements();
-            //this.updateCPUElements(_CurrentPCB);
-            console.log("opCode = " + opCode);
             if(this.Yreg >= _CurrentPCB.baseRegister + 256){
                 this.break();
                 _Kernel.krnTrace('invalid memory access');
             }else{
                 this.opCodes(opCode);
             }
-            //console.log("PC = " + this.PC);
 
             if (_SingleStep){
                 this.isExecuting = false;

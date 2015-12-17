@@ -288,5 +288,46 @@ module TSOS {
             }
             _FileTable.appendChild(tbody);
         }
+
+        public swap(){
+            var tsb, programData;
+            _CurrPartitionOfMem = 0;
+            _CurrentPCB.baseRegister = 0;
+            _CurrentPCB.limitRegister = 255;
+
+            programData = _MEM.getMemoryPartition(_CurrPartitionOfMem).toString().replace(/,/g, " ");
+
+            for(var i = 0; i < _ResidentList.length; i++){
+                if(_ResidentList[i].baseRegister === 0){
+                    var pidAtFirstLocation = _ResidentList[i].PID;
+                    _ResidentList[i].location = "On Disk";
+                }
+            }
+
+            _CurrentPCB.location = "In Memory";
+            var dataToBeInserted = _fsDD.readFile(_fsDD.findFile(".swap" + _CurrentPCB.PID));
+            dataToBeInserted = dataToBeInserted.replace(/0+$/, '');
+            dataToBeInserted = _MM.hexToString(dataToBeInserted);
+            dataToBeInserted = dataToBeInserted.substring(0, dataToBeInserted.length - 1);
+            dataToBeInserted += "00";
+
+            var swap = [];
+
+            for (var i = 0, charsLength = dataToBeInserted.length; i < charsLength; i += 2) {
+                swap.push(dataToBeInserted.substring(i, i + 2));
+            }
+
+            _MM.storeProgramInMemory(_CurrPartitionOfMem, swap);
+
+            tsb = _fsDD.findFile(".swap" + _CurrentPCB.PID);
+            _fsDD.deleteFile(tsb, ".swap" + _CurrentPCB.PID);
+
+            if(pidAtFirstLocation !== "undefined"){
+                _fsDD.createFile(".swap" + pidAtFirstLocation);
+                tsb = _fsDD.findFile(".swap" + pidAtFirstLocation);
+                _fsDD.writeFile(tsb, programData);
+            }
+
+        }
     }
 }

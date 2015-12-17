@@ -60,59 +60,45 @@ var TSOS;
             this.PC++;
             switch (input) {
                 case "A9":
-                    console.log("A9");
                     this.loadAccumConst();
                     break;
                 case "AD":
-                    console.log("AD");
                     this.loadAccumMem();
                     break;
                 case "8D":
-                    console.log("8D");
                     this.storeAccumMem();
                     break;
                 case "6D":
-                    console.log("6D");
                     this.addCarry();
                     break;
                 case "A2":
-                    console.log("A2");
                     this.loadXRegConst();
                     break;
                 case "AE":
-                    console.log("AE");
                     this.loadXRegMem();
                     break;
                 case "A0":
-                    console.log("A0");
                     this.loadYRegConst();
                     break;
                 case "AC":
-                    console.log("AC");
                     this.loadYRegMem();
                     break;
                 case "EA":
-                    console.log("EA");
                     this.noOperation();
                     break;
                 case "00":
-                    console.log("00");
                     this.break();
                     break;
                 case "EC":
-                    console.log("EC");
                     this.compareXReg();
                     break;
                 case "D0":
-                    console.log("D0");
                     this.branchNBytes();
                     break;
                 case "EE":
-                    console.log("EE");
                     this.incrementByte();
                     break;
                 case "FF":
-                    console.log("FF");
                     this.systemCall();
                     break;
                 default:
@@ -166,9 +152,7 @@ var TSOS;
         Cpu.prototype.loadYRegMem = function () {
             //load the y register from memory
             var adr = _MM.hex2Dec(_MM.readFromMemory(_CurrPartitionOfMem, this.PC));
-            //console.log(adr);
             this.Yreg = _MM.hex2Dec(_MM.readFromMemory(_CurrPartitionOfMem, adr));
-            //console.log(this.Yreg);
             this.PC++;
             this.PC++;
         };
@@ -194,12 +178,8 @@ var TSOS;
         };
         Cpu.prototype.branchNBytes = function () {
             if (this.Zflag === 0) {
-                //console.log("this.PC before converting and reading " + this.PC);
                 this.PC += _MM.hex2Dec(_MM.readFromMemory(_CurrPartitionOfMem, this.PC++)) + 1;
-                //console.log("this.PC after converting and reading " + this.PC);
-                //console.log("_CurrentPCB.base " + _CurrentPCB.baseRegister);
                 if (this.PC >= 256) {
-                    //console.log("this.PC if >= 256 before " + this.PC);
                     this.PC -= 256;
                 }
             }
@@ -261,14 +241,8 @@ var TSOS;
         };
         Cpu.prototype.cycle = function () {
             _Kernel.krnTrace('CPU cycle');
-            console.log("_CurrPartitionOfMem = " + _CurrPartitionOfMem);
-            console.log("this.PC = " + this.PC);
             var opCode = _MM.readFromMemory(_CurrPartitionOfMem, this.PC);
-            console.log("_CurrPartitionOfMem = " + _CurrPartitionOfMem);
-            console.log("this.PC = " + this.PC);
             this.printCPUElements();
-            //this.updateCPUElements(_CurrentPCB);
-            console.log("opCode = " + opCode);
             if (this.Yreg >= _CurrentPCB.baseRegister + 256) {
                 this.break();
                 _Kernel.krnTrace('invalid memory access');
@@ -276,7 +250,6 @@ var TSOS;
             else {
                 this.opCodes(opCode);
             }
-            //console.log("PC = " + this.PC);
             if (_SingleStep) {
                 this.isExecuting = false;
             }
