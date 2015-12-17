@@ -93,13 +93,11 @@ module TSOS {
                 fileName += "0";
             }
 
-            // sets filename to 1 + t,s,b + 60 bytes of data (which includes filename)
             fileName = "1" + dataTSBKey + fileName;
 
             sessionStorage.setItem(tsbKey, fileName);
             Control.updateTSBAtLoc("fs" + tsbKey + "meta", fileName.substr(0, 4));
             Control.updateTSBAtLoc("fs" + tsbKey + "data", fileName.substr(4));
-
 
             var initialData = this.createInitialData();
             initialData = "1---" + initialData.substr(4);
@@ -193,9 +191,7 @@ module TSOS {
                     }
                 }
             }
-
             return true;
-
         }
 
         public readFile(startingTSB): string {
@@ -251,12 +247,12 @@ module TSOS {
                 }
             }
 
-            this.initializeFileSystemToScreen();
+            this.initializeFileSystem();
             this.createStartFile();
             return true;
         }
 
-        public initializeFileSystemToScreen(): void {
+        public initializeFileSystem(): void {
             _FileTable = <HTMLTableElement>document.getElementById("fileSystem");
             var tbody = document.createElement("tbody");
             var data, metaData, tr, td, td1, td2;
@@ -287,13 +283,10 @@ module TSOS {
                         tr.appendChild(td2);
 
                         tbody.appendChild(tr);
-
                     }
                 }
             }
             _FileTable.appendChild(tbody);
         }
-
     }
-
 }

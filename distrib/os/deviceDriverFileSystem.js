@@ -74,7 +74,6 @@ var TSOS;
             for (var i = fileName.length; i < this.numOfDataBytes; i++) {
                 fileName += "0";
             }
-            // sets filename to 1 + t,s,b + 60 bytes of data (which includes filename)
             fileName = "1" + dataTSBKey + fileName;
             sessionStorage.setItem(tsbKey, fileName);
             TSOS.Control.updateTSBAtLoc("fs" + tsbKey + "meta", fileName.substr(0, 4));
@@ -206,11 +205,11 @@ var TSOS;
                     }
                 }
             }
-            this.initializeFileSystemToScreen();
+            this.initializeFileSystem();
             this.createStartFile();
             return true;
         };
-        DeviceDriverFileSystem.prototype.initializeFileSystemToScreen = function () {
+        DeviceDriverFileSystem.prototype.initializeFileSystem = function () {
             _FileTable = document.getElementById("fileSystem");
             var tbody = document.createElement("tbody");
             var data, metaData, tr, td, td1, td2;

@@ -55,7 +55,7 @@ module TSOS {
             //initialize cpuScheduler
             _CPUScheduler = new CpuScheduler();
             _fsDD = new DeviceDriverFileSystem();
-            _fsDD.initializeFileSystemToScreen();
+            _fsDD.initializeFileSystem();
 
 
             // Check for our testing and enrichment core, which

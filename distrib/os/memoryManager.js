@@ -25,6 +25,10 @@ var TSOS;
             var memPartition = _MEM.getMemoryPartition(partition);
             return memPartition[loc];
         };
+        MemoryManager.prototype.readStringFromMemory = function (partition, loc) {
+            var memPartition = _MEM.getMemoryPartition(partition);
+            return memPartition[loc];
+        };
         MemoryManager.prototype.writeToMemory = function (partition, loc, code) {
             var row = partition * 32;
             var hexCode = this.dec2Hex(code);

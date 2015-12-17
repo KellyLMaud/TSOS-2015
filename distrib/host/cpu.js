@@ -1,18 +1,15 @@
 ///<reference path="../globals.ts" />
 /* ------------
-     CPU.ts
-
-     Requires global.ts.
-
-     Routines for the host CPU simulation, NOT for the OS itself.
-     In this manner, it's A LITTLE BIT like a hypervisor,
-     in that the Document environment inside a browser is the "bare metal" (so to speak) for which we write code
-     that hosts our client OS. But that analogy only goes so far, and the lines are blurred, because we are using
-     TypeScript/JavaScript in both the host and client environments.
-
-     This code references page numbers in the text book:
-     Operating System Concepts 8th edition by Silberschatz, Galvin, and Gagne.  ISBN 978-0-470-12872-5
-     ------------ */
+ CPU.ts
+ Requires global.ts.
+ Routines for the host CPU simulation, NOT for the OS itself.
+ In this manner, it's A LITTLE BIT like a hypervisor,
+ in that the Document environment inside a browser is the "bare metal" (so to speak) for which we write code
+ that hosts our client OS. But that analogy only goes so far, and the lines are blurred, because we are using
+ TypeScript/JavaScript in both the host and client environments.
+ This code references page numbers in the text book:
+ Operating System Concepts 8th edition by Silberschatz, Galvin, and Gagne.  ISBN 978-0-470-12872-5
+ ------------ */
 var TSOS;
 (function (TSOS) {
     var Cpu = (function () {
@@ -196,17 +193,6 @@ var TSOS;
             this.PC++;
         };
         Cpu.prototype.branchNBytes = function () {
-            //branch n bytes if Zflag = 0
-            //if(this.Zflag === 0){
-            //    var branch = _MM.hex2Dec(_MM.readFromMemory(_CurrPartitionOfMem, this.PC));
-            //    //this.PC++;
-            //    this.PC = this.PC + branch + 1;
-            //    if(this.PC >= 256){
-            //        this.PC = this.PC - 256;
-            //    }
-            //} else {
-            //    this.PC++;
-            //}
             if (this.Zflag === 0) {
                 //console.log("this.PC before converting and reading " + this.PC);
                 this.PC += _MM.hex2Dec(_MM.readFromMemory(_CurrPartitionOfMem, this.PC++)) + 1;
@@ -221,33 +207,6 @@ var TSOS;
                 this.PC++;
             }
             _Kernel.krnTrace("branch");
-            //var branch = _MM.hex2Dec(_MM.readFromMemory(_CurrPartitionOfMem, this.PC++));
-            //if(this.Zflag === 0){
-            //    var b  = this.PC + branch;
-            //    if(b >= _CurrentPCB.limit){
-            //        this.PC = b - 255;
-            //    }else{
-            //        this.PC = b + 1;
-            //    }
-            //} else {
-            //    this.PC++;
-            //}
-            //_Kernel.krnTrace("branch");
-            //++this.PC;
-            //var swap = memManager.readCodeInMemory(this.PC);
-            //var num = parseInt(swap, 16);
-            //if(this.Zflag == 0){
-            //    var jump = this.PC + num;
-            //    if(jump > currentlyExecuting.limit){
-            //        this.PC = jump -255;
-            //    }
-            //    else{
-            //        this.PC = jump + 1;
-            //    }
-            //}
-            //else{
-            //    this.PC+=1;
-            //}
         };
         Cpu.prototype.incrementByte = function () {
             //increment the value of a byte
@@ -302,6 +261,8 @@ var TSOS;
         };
         Cpu.prototype.cycle = function () {
             _Kernel.krnTrace('CPU cycle');
+            console.log("_CurrPartitionOfMem = " + _CurrPartitionOfMem);
+            console.log("this.PC = " + this.PC);
             var opCode = _MM.readFromMemory(_CurrPartitionOfMem, this.PC);
             console.log("_CurrPartitionOfMem = " + _CurrPartitionOfMem);
             console.log("this.PC = " + this.PC);

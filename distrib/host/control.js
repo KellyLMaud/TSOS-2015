@@ -48,7 +48,7 @@ var TSOS;
             //initialize cpuScheduler
             _CPUScheduler = new TSOS.CpuScheduler();
             _fsDD = new TSOS.DeviceDriverFileSystem();
-            _fsDD.initializeFileSystemToScreen();
+            _fsDD.initializeFileSystem();
             // Check for our testing and enrichment core, which
             // may be referenced here (from index.html) as function Glados().
             if (typeof Glados === "function") {

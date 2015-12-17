@@ -415,18 +415,26 @@ var TSOS;
                     _ProgramInput = _ProgramInput.replace(/\n/g, " ").split(" ");
                     var baseRegister;
                     var limitRegister;
-                    if (_CurrPartitionOfMem < 2) {
+                    var location;
+                    if (_CurrPartitionOfMem >= 2 && diskIsFormatted === true) {
+                        location = "On Disk";
+                        baseRegister = -1;
+                        limitRegister = -1;
+                        _CurrPartitionOfMem++;
+                    }
+                    else if (_CurrPartitionOfMem < 2) {
                         _CurrPartitionOfMem++;
                         baseRegister = _CurrPartitionOfMem * 256;
                         limitRegister = (_CurrPartitionOfMem * 256) + 255;
                     }
                     else {
-                        _StdOut.putText("Memory full");
+                        _StdOut.putText("Memory full, format disk first");
                         return false;
                     }
                     _CurrentPCB = new TSOS.PCB();
                     _CurrentPCB.processState = "Resident";
                     _CurrentPCB.priority = priority;
+                    _CurrentPCB.location = location;
                     if (_CurrPartitionOfMem >= 2) {
                         _CurrentPCB.baseRegister = baseRegister;
                         _CurrentPCB.limitRegister = limitRegister;
@@ -435,6 +443,15 @@ var TSOS;
                     if (_CurrPartitionOfMem <= 2) {
                         _MM.storeProgramInMemory(_CurrPartitionOfMem, _ProgramInput);
                         _MEM.memory[_CurrPartitionOfMem] = _ProgramInput;
+                    }
+                    else {
+                        var dataForDisk = "";
+                        for (var i = 0; i < _ProgramInput.length; i++) {
+                            dataForDisk += _ProgramInput[i];
+                        }
+                        _fsDD.createFile(".swap" + _CurrentPCB.PID);
+                        var tsb = _fsDD.findFile(".swap" + _CurrentPCB.PID);
+                        _fsDD.writeFile(tsb, dataForDisk);
                     }
                     _StdOut.putText("Program successfully loaded");
                     _StdOut.advanceLine();
@@ -461,6 +478,7 @@ var TSOS;
             _Kernel.krnTrapError("error");
         };
         Shell.prototype.shellRun = function (args) {
+            var tsb;
             if (args.length > 0) {
                 if (_MEM.isEmpty()) {
                     _StdOut.putText('Nothing is in memory');
@@ -473,19 +491,60 @@ var TSOS;
                         console.log("RunningPID = " + _RunningPID);
                         if (_ResidentList[i].PID == _RunningPID) {
                             residentPID = i;
-                            residentPIDPartition = _ResidentList[i].baseRegister / 256;
                             _CurrentPCB = _ResidentList[i];
                             _ReadyQueue.push(_ResidentList[i]);
                             _ResidentList.splice(i, 1);
+                            if (_CurrentPCB.location === "On Disk") {
+                                // sets to first block because thats where we are swapping to
+                                _CurrPartitionOfMem = 0;
+                                _CurrentPCB.baseRegister = 0;
+                                _CurrentPCB.limitRegister = 255;
+                                // get all data in current memory location
+                                var programData = "";
+                                programData = _MEM.getMemoryPartition(_CurrPartitionOfMem).toString().replace(/,/g, " ");
+                                console.log(programData);
+                                // swap file in memory out to disk
+                                // get the pid of the file in memory location 1
+                                for (var i = 0; i < _ResidentList.length; i++) {
+                                    if (_ResidentList[i].baseRegister === 0) {
+                                        var pidAtFirstLocation = _ResidentList[i].PID;
+                                        _ResidentList[i].location = "On Disk";
+                                    }
+                                }
+                                // get data from disk and put it in memory
+                                _CurrentPCB.location = "In Memory";
+                                var dataToBeInserted = _fsDD.readFile(_fsDD.findFile(".swap" + _CurrentPCB.PID));
+                                dataToBeInserted = dataToBeInserted.replace(/0+$/, '');
+                                dataToBeInserted = _MM.hexToString(dataToBeInserted);
+                                dataToBeInserted = dataToBeInserted.substring(0, dataToBeInserted.length - 1);
+                                dataToBeInserted += "00";
+                                var chunks = [];
+                                for (var i = 0, charsLength = dataToBeInserted.length; i < charsLength; i += 2) {
+                                    chunks.push(dataToBeInserted.substring(i, i + 2));
+                                }
+                                // fill memory location with data from disk
+                                _MM.storeProgramInMemory(_CurrPartitionOfMem, chunks);
+                                tsb = _fsDD.findFile(".swap" + _CurrentPCB.PID);
+                                _fsDD.deleteFile(tsb, ".swap" + _CurrentPCB.PID);
+                                if (pidAtFirstLocation !== "undefined") {
+                                    _fsDD.createFile(".swap" + pidAtFirstLocation);
+                                    tsb = _fsDD.findFile(".swap" + pidAtFirstLocation);
+                                    _fsDD.writeFile(tsb, programData);
+                                }
+                            }
                         }
                     }
                     if (residentPID == -1) {
                         _StdOut.putText('Input correct PID');
                     }
                     else {
-                        _CurrPartitionOfMem = residentPIDPartition;
+                        //residentPIDPartition = _ResidentList[i].baseRegister / 256;
+                        //console.log(residentPIDPartition);
+                        _CurrPartitionOfMem = _CurrentPCB.baseRegister / 256;
+                        console.log(_CurrPartitionOfMem);
                         _CPU.clearProgram();
                         _CycleCounter = 0;
+                        console.log("we are hereeeeeeeeeee");
                         _CPU.isExecuting = true;
                     }
                 }
@@ -500,6 +559,7 @@ var TSOS;
             _StdOut.putText("Memory cleared");
         };
         Shell.prototype.shellRunall = function (args) {
+            var tsb;
             _ReadyQueue = [];
             for (var i = 0; i < _ResidentList.length; i++) {
                 _ReadyQueue.push(_ResidentList[i]);
@@ -508,6 +568,50 @@ var TSOS;
                 }
             }
             _CurrentPCB = _ReadyQueue[0];
+            if (_CurrentPCB.location === "On Disk") {
+                //_CPU.isExecuting = false;
+                // sets to first block because thats where we are swapping to
+                _CurrPartitionOfMem = 0;
+                _CurrentPCB.baseRegister = 0;
+                _CurrentPCB.limitRegister = 255;
+                // get all data in current memory location
+                var programData = "";
+                programData = _MEM.getMemoryPartition(_CurrPartitionOfMem).toString().replace(/,/g, " ");
+                //for(var i = 0; i < 256; i++){
+                //    programData += _MM.readFromMemory(_CurrPartitionOfMem, i).toString();
+                //}
+                // swap file in memory out to disk
+                // get the pid of the file in memory location 1
+                for (var i = 0; i < _ResidentList.length; i++) {
+                    if (_ResidentList[i].baseRegister === 0) {
+                        var pidAtFirstLocation = _ResidentList[i].PID;
+                        _ResidentList[i].location = "On Disk";
+                    }
+                    console.log("// get the pid of the file in memory location 1");
+                }
+                // get data from disk and put it in memory
+                _CurrentPCB.location = "In Memory";
+                var dataToBeInserted = _fsDD.readFile(_fsDD.findFile(".swap" + _CurrentPCB.PID));
+                dataToBeInserted = dataToBeInserted.replace(/0+$/, '');
+                dataToBeInserted = _MM.hexToString(dataToBeInserted);
+                dataToBeInserted = dataToBeInserted.substring(0, dataToBeInserted.length - 1);
+                dataToBeInserted += "00";
+                console.log("datatobeinserted");
+                var chunks = [];
+                for (var i = 0, charsLength = dataToBeInserted.length; i < charsLength; i += 2) {
+                    chunks.push(dataToBeInserted.substring(i, i + 2));
+                }
+                // fill memory location with data from disk
+                _MM.storeProgramInMemory(_CurrPartitionOfMem, chunks);
+                console.log("fillmemorywithdatafromdisk");
+                tsb = _fsDD.findFile(".swap" + _CurrentPCB.PID);
+                _fsDD.deleteFile(tsb, ".swap" + _CurrentPCB.PID);
+                if (pidAtFirstLocation !== "undefined") {
+                    _fsDD.createFile(".swap" + pidAtFirstLocation);
+                    tsb = _fsDD.findFile(".swap" + pidAtFirstLocation);
+                    _fsDD.writeFile(tsb, programData);
+                }
+            }
             _CurrPartitionOfMem = _CurrentPCB.baseRegister / 256;
             _CurrentPCB.processState = "Running";
             _RunningPID = parseInt(_ReadyQueue[0].PID);

@@ -32,6 +32,11 @@ module TSOS {
             return memPartition[loc];
         }
 
+        public readStringFromMemory(partition, loc): string {
+            var memPartition = _MEM.getMemoryPartition(partition);
+            return memPartition[loc];
+        }
+
         public writeToMemory(partition, loc, code): void {
             var row = partition * 32;
 

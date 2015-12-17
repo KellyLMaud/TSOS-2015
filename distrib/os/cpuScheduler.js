@@ -25,7 +25,7 @@ var TSOS;
             _CPU.printCPUElements();
         };
         CpuScheduler.prototype.roundRobin = function () {
-            console.log("ROUNDROBINCONTEXTSWITCH");
+            //console.log("ROUNDROBINCONTEXTSWITCH");
             _CPU.printCPUElements();
             _ReadyQueue[0].processState = "Waiting";
             var pcbSwitch = _ReadyQueue.shift(); //_CurrentPCB;
