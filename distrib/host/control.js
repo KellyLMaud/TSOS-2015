@@ -260,9 +260,8 @@ var TSOS;
             document.getElementById("tdP2Limit").innerHTML = pcb.limitRegister.toString();
             document.getElementById("tdP2State").innerHTML = pcb.processState.toString();
         };
-        Control.updateFileSystemAtLoc = function (tsb, tableCel, newCode) {
-            //tableRow =
-            //_MemTable.rows[tableRow].cells[tableCel].innerHTML = newCode;
+        Control.updateTSBAtLoc = function (tsb, newCode) {
+            document.getElementById(tsb).innerHTML = newCode;
         };
         return Control;
     })();

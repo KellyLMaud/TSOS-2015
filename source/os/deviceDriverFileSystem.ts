@@ -71,8 +71,8 @@ module TSOS {
             startFileData = "1---" + startFileData;
 
             sessionStorage.setItem(tsbKey, startFileData);
-            document.getElementById("fs" + tsbKey + "meta").innerHTML = startFileData.substr(0, 4);
-            document.getElementById("fs" + tsbKey + "data").innerHTML = startFileData.substr(4);
+            Control.updateTSBAtLoc("fs" + tsbKey + "meta", startFileData.substr(0, 4));
+            Control.updateTSBAtLoc("fs" + tsbKey + "data", startFileData.substr(4));
 
         }
 
@@ -97,16 +97,16 @@ module TSOS {
             fileName = "1" + dataTSBKey + fileName;
 
             sessionStorage.setItem(tsbKey, fileName);
-            document.getElementById("fs" + tsbKey + "meta").innerHTML = fileName.substr(0, 4);
-            document.getElementById("fs" + tsbKey + "data").innerHTML = fileName.substr(4);
+            Control.updateTSBAtLoc("fs" + tsbKey + "meta", fileName.substr(0, 4));
+            Control.updateTSBAtLoc("fs" + tsbKey + "data", fileName.substr(4));
 
 
             var initialData = this.createInitialData();
             initialData = "1---" + initialData.substr(4);
 
             sessionStorage.setItem(dataTSBKey, initialData);
-            document.getElementById("fs" + dataTSBKey + "meta").innerHTML = initialData.substr(0, 4);
-            document.getElementById("fs" + dataTSBKey + "data").innerHTML = initialData.substr(4);
+            Control.updateTSBAtLoc("fs" + dataTSBKey + "meta", initialData.substr(0, 4));
+            Control.updateTSBAtLoc("fs" + dataTSBKey + "data", initialData.substr(4));
 
             return true;
         }
@@ -153,8 +153,8 @@ module TSOS {
                 data = "1---" + data;
 
                 sessionStorage.setItem(startingTSB.substr(1), data);
-                document.getElementById("fs" + startingTSB.substr(1) + "meta").innerHTML = data.substr(0, 4);
-                document.getElementById("fs" + startingTSB.substr(1) + "data").innerHTML = data.substr(4);
+                Control.updateTSBAtLoc("fs" + startingTSB.substr(1) + "meta", data.substr(0, 4));
+                Control.updateTSBAtLoc("fs" + startingTSB.substr(1) + "data", data.substr(4));
             } else {
                 for(var x = 0; x <= numOfRows; x++){
                     var nextFreeTSB = this.getNextFreeDataTSB();
@@ -162,8 +162,8 @@ module TSOS {
 
                     if(x === 0){
                         sessionStorage.setItem(startingTSB.substr(1), "1" + nextFreeTSBKey + data.substr(x*this.numOfDataBytes, this.numOfDataBytes));
-                        document.getElementById("fs" + startingTSB.substr(1) + "meta").innerHTML = "1" + nextFreeTSBKey;
-                        document.getElementById("fs" + startingTSB.substr(1) + "data").innerHTML = data.substr(i*this.numOfDataBytes, this.numOfDataBytes);
+                        Control.updateTSBAtLoc("fs" + startingTSB.substr(1) + "meta", "1" + nextFreeTSBKey);
+                        Control.updateTSBAtLoc("fs" + startingTSB.substr(1) + "data", data.substr(i*this.numOfDataBytes, this.numOfDataBytes));
                     } else {
                         if(x == numOfRows){
                             var lastRowOfData = data.substr(x*this.numOfDataBytes);
@@ -172,8 +172,8 @@ module TSOS {
                             }
                             lastRowOfData = "1---" + lastRowOfData;
                             sessionStorage.setItem(nextFreeTSBKey, lastRowOfData);
-                            document.getElementById("fs" + nextFreeTSBKey + "meta").innerHTML = lastRowOfData.substr(0, 4);
-                            document.getElementById("fs" + nextFreeTSBKey + "data").innerHTML = lastRowOfData.substr(4);
+                            Control.updateTSBAtLoc("fs" + nextFreeTSBKey + "meta", lastRowOfData.substr(0, 4));
+                            Control.updateTSBAtLoc("fs" + nextFreeTSBKey + "data", lastRowOfData.substr(4));
                         } else {
                             var nextFreeTSBPlusOne;
 
@@ -187,8 +187,8 @@ module TSOS {
 
                             var nextFreeTSBPlusOneKey = this.makeKey(nextFreeTSBPlusOne[0], nextFreeTSBPlusOne[1], nextFreeTSBPlusOne[2]);
                             sessionStorage.setItem(nextFreeTSBKey, "1" + nextFreeTSBPlusOneKey + data.substr(x*this.numOfDataBytes, this.numOfDataBytes));
-                            document.getElementById("fs" + nextFreeTSBKey + "meta").innerHTML = "1" + nextFreeTSBPlusOneKey;
-                            document.getElementById("fs" + nextFreeTSBKey + "data").innerHTML = data.substr(i*this.numOfDataBytes, this.numOfDataBytes);
+                            Control.updateTSBAtLoc("fs" + nextFreeTSBKey + "meta", "1" + nextFreeTSBPlusOneKey);
+                            Control.updateTSBAtLoc("fs" + nextFreeTSBKey + "data", data.substr(i*this.numOfDataBytes, this.numOfDataBytes));
                         }
                     }
                 }
@@ -206,7 +206,6 @@ module TSOS {
                 data += sessionStorage.getItem(nextTSB).substr(4);
                 nextTSB = sessionStorage.getItem(nextTSB).substr(1,3);
             }
-
             return data;
         }
 
@@ -220,13 +219,13 @@ module TSOS {
             var dirTSB = this.findFileDir(fileName);
 
             sessionStorage.setItem(dirTSB, initialData);
-            document.getElementById("fs" + dirTSB + "meta").innerHTML = initialData.substr(0, 4);
-            document.getElementById("fs" + dirTSB + "data").innerHTML = initialData.substr(4);
+            Control.updateTSBAtLoc("fs" + dirTSB + "meta", initialData.substr(0, 4));
+            Control.updateTSBAtLoc("fs" + dirTSB + "data", initialData.substr(4));
 
             while(nextTSB != "---"){
                 sessionStorage.setItem(nextTSB, initialData);
-                document.getElementById("fs" + nextTSB + "meta").innerHTML = initialData.substr(0, 4);
-                document.getElementById("fs" + nextTSB + "data").innerHTML = initialData.substr(4);
+                Control.updateTSBAtLoc("fs" + nextTSB + "meta", initialData.substr(0, 4));
+                Control.updateTSBAtLoc("fs" + nextTSB + "data", initialData.substr(4));
                 nextTSB = nextNextTSB;
                 if(nextTSB == "---"){
                     break;
@@ -235,8 +234,8 @@ module TSOS {
             }
 
             sessionStorage.setItem(startingTSB.substr(1), initialData);
-            document.getElementById("fs" + startingTSB.substr(1) + "meta").innerHTML = initialData.substr(0, 4);
-            document.getElementById("fs" + startingTSB.substr(1) + "data").innerHTML = initialData.substr(4);
+            Control.updateTSBAtLoc("fs" + startingTSB.substr(1) + "meta", initialData.substr(0, 4));
+            Control.updateTSBAtLoc("fs" + startingTSB.substr(1) + "data", initialData.substr(4));
 
             return true;
         }

@@ -301,9 +301,8 @@ module TSOS {
 
 
 
-        public static updateFileSystemAtLoc(tsb, tableCel, newCode): void {
-            //tableRow =
-            //_MemTable.rows[tableRow].cells[tableCel].innerHTML = newCode;
+        public static updateTSBAtLoc(tsb, newCode): void {
+            document.getElementById(tsb).innerHTML = newCode;
         }
 
 
